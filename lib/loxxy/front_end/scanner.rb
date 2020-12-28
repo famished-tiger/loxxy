@@ -2,6 +2,8 @@
 
 require 'strscan'
 require 'rley'
+require_relative '../datatype/all_datatypes'
+require_relative 'literal'
 
 module Loxxy
   module FrontEnd
@@ -97,13 +99,16 @@ module Loxxy
 
         token = nil
 
-        if "(){},.-+;/*".include? curr_ch
+        if "(){},.;/*".include? curr_ch
           # Single delimiter or separator character
           token = build_token(@@lexeme2name[curr_ch], scanner.getch)
+        elsif (lexeme = scanner.scan(/[+\-](?!\d)/))
+          # Minus or plus character not preceding a digit
+          token = build_token(@@lexeme2name[lexeme], lexeme)
         elsif (lexeme = scanner.scan(/[!=><]=?/))
           # One or two special character tokens
           token = build_token(@@lexeme2name[lexeme], lexeme)
-        elsif (lexeme = scanner.scan(/\d+\.?\d+/))
+        elsif (lexeme = scanner.scan(/-?\d+(?:\.\d+)?/))
           token = build_token('NUMBER', lexeme)
         elsif (lexeme = scanner.scan(/"(?:\\"|[^"])*"/))
           token = build_token('STRING', lexeme)
@@ -126,7 +131,11 @@ module Loxxy
           (value, symb) = convert_to(aLexeme, aSymbolName)
           col = scanner.pos - aLexeme.size - @line_start + 1
           pos = Rley::Lexical::Position.new(@lineno, col)
-          token = Rley::Lexical::Token.new(value, symb, pos)
+          if value
+            token = Literal.new(value, aLexeme.dup, symb, pos)
+          else
+            token = Rley::Lexical::Token.new(aLexeme.dup, symb, pos)
+          end
         rescue StandardError => e
           puts "Failing with '#{aSymbolName}' and '#{aLexeme}'"
           raise e
@@ -139,15 +148,15 @@ module Loxxy
         symb = aSymbolName
         case aSymbolName
           when 'FALSE'
-            value = false
+            value = Datatype::False.instance
           when 'NUMBER'
-            value = aLexeme.to_f
+            value = Datatype::Number.new(aLexeme)
           when 'STRING'
             value = aLexeme.gsub(/(^")|("$)/, '')
           when 'TRUE'
-            value = true
+            value = Datatype::True.instance
           else
-            value = aLexeme
+            value = nil
         end
 
         return [value, symb]

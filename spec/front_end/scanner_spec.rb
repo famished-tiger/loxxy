@@ -83,7 +83,7 @@ module Loxxy
             print return super this var while
 LOX_END
           subject.start_with(keywords)
-          expectations = [          
+          expectations = [
             # [token lexeme]
             %w[AND and],
             %w[CLASS class],
@@ -101,23 +101,68 @@ LOX_END
           ]
           match_expectations(subject, expectations)
         end
-=begin
-        it 'should tokenize integer values' do
-          subject.scanner.string = ' 123 '
-          token = subject.tokens.first
-          expect(token).to be_kind_of(Rley::Lexical::Token)
-          expect(token.terminal).to eq('INTEGER')
-          expect(token.lexeme).to eq('123')
+
+        it 'should recognize a false boolean token' do
+          subject.start_with('false')
+          (token_false, token_true) = subject.tokens
+          expect(token_false).to be_kind_of(Literal)
+          expect(token_false.terminal).to eq('FALSE')
+          expect(token_false.lexeme).to eq('false')
+          expect(token_false.value).to be_kind_of(Datatype::False)
         end
 
-        it 'should tokenize single digits' do
-          subject.scanner.string = ' 1 '
-          token = subject.tokens.first
-          expect(token).to be_kind_of(Rley::Lexical::Token)
-          expect(token.terminal).to eq('DIGIT_LIT')
-          expect(token.lexeme).to eq('1')
+        it 'should recognize a true boolean token' do
+          subject.start_with('true')
+          (token_false, token_true) = subject.tokens
+          expect(token_false).to be_kind_of(Literal)
+          expect(token_false.terminal).to eq('TRUE')
+          expect(token_false.lexeme).to eq('true')
+          expect(token_false.value).to be_kind_of(Datatype::True)
         end
-=end
+
+        it 'should recognize number values' do
+          input =<<-LOX_END
+          123     987654
+          0       -0
+          123.456 -0.001
+LOX_END
+
+          expectations = [
+            ['123', 123],
+            ['987654', 987654],
+            ['0', 0],
+            ['-0', 0],
+            ['123.456', 123.456],
+            ['-0.001', -0.001],
+          ]
+
+          subject.start_with(input)
+          subject.tokens[0..-2].each_with_index do |tok, i|
+            expect(tok).to be_kind_of(Literal)
+            expect(tok.terminal).to eq('NUMBER')
+            (lexeme, val) = expectations[i]
+            expect(tok.lexeme).to eq(lexeme)
+            expect(tok.value).to be_kind_of(Datatype::Number)
+            expect(tok.value.value).to eq(val)
+          end
+        end
+
+        it 'should recognize leading and trailing dots as distinct tokens' do
+          input = '.456 123.'
+
+          subject.start_with(input)
+          tokens = subject.tokens[0..-2]
+          expect(tokens[0]).to be_kind_of(Rley::Lexical::Token)
+          expect(tokens[0].terminal).to eq('DOT')
+          expect(tokens[1]).to be_kind_of(Literal)
+          expect(tokens[1].terminal).to eq('NUMBER')
+          expect(tokens[1].value.value).to eq(456)
+          expect(tokens[2]).to be_kind_of(Literal)
+          expect(tokens[2].terminal).to eq('NUMBER')
+          expect(tokens[2].value.value).to eq(123)
+          expect(tokens[3]).to be_kind_of(Rley::Lexical::Token)
+          expect(tokens[3].terminal).to eq('DOT')
+        end
       end # context
 
 
