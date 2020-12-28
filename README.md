@@ -39,7 +39,7 @@ TODO: Write usage instructions here
 ## Other Lox implementations in Ruby
 An impressive list of Lox implementations can be found [here](https://github.com/munificent/craftinginterpreters/wiki/Lox-implementations
 
-For Ruby, theris the [lox](https://github.com/rdodson41/ruby-lox) gem.
+For Ruby, ther is the [lox](https://github.com/rdodson41/ruby-lox) gem.
 There are other Ruby-based projects as well:  
 - [SlowLox](https://github.com/ArminKleinert/SlowLox), described as a "1-to-1 conversion of JLox to Ruby"
 - [rulox](https://github.com/LevitatingBusinessMan/rulox)
@@ -52,7 +52,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/loxxy.
+Bug reports and pull requests are welcome on GitHub at https://github.com/famished_tiger/loxxy.
 
 
 ## License
