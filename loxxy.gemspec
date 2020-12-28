@@ -46,10 +46,13 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/famished-tiger/loxxy'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.5.0')
-
+    
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
+  
+  PkgExtending.pkg_files(spec)
+  PkgExtending.pkg_documentation(spec)  
 
   # Runtime dependencies
   spec.add_dependency 'rley', '~> 0.7.06'
