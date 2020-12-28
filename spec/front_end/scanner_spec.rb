@@ -59,7 +59,7 @@ module Loxxy
           ]
           match_expectations(subject, expectations)
         end
-        
+
         it 'should recognize one or two special character tokens' do
           input = '! != = == > >= < <='
           subject.start_with(input)
@@ -75,17 +75,33 @@ module Loxxy
             %w[LESS_EQUAL <=]
           ]
           match_expectations(subject, expectations)
-        end        
-=begin
-        it 'should tokenize keywords' do
-          sample = 'between Exactly oncE optional TWICE'
-          subject.scanner.string = sample
-          subject.tokens.each do |tok|
-            expect(tok).to be_kind_of(Rley::Lexical::Token)
-            expect(tok.terminal).to eq(tok.lexeme.upcase)
-          end
         end
 
+        it 'should recognize non-datatype keywords' do
+          keywords =<<-LOX_END
+            and class else fun for if or
+            print return super this var while
+LOX_END
+          subject.start_with(keywords)
+          expectations = [          
+            # [token lexeme]
+            %w[AND and],
+            %w[CLASS class],
+            %w[ELSE else],
+            %w[FUN fun],
+            %w[FOR for],
+            %w[IF if],
+            %w[OR or],
+            %w[PRINT print],
+            %w[RETURN return],
+            %w[SUPER super],
+            %w[THIS this],
+            %w[VAR var],
+            %w[WHILE while]
+          ]
+          match_expectations(subject, expectations)
+        end
+=begin
         it 'should tokenize integer values' do
           subject.scanner.string = ' 123 '
           token = subject.tokens.first
@@ -145,69 +161,6 @@ module Loxxy
         end
       end # context
 =end
-
-=begin
-      context 'Quantifier tokenization:' do
-        it "should recognize 'exactly ... times'" do
-          input = 'exactly 4 Times'
-          subject.scanner.string = input
-          expectations = [
-            %w[EXACTLY exactly],
-            %w[DIGIT_LIT 4],
-            %w[TIMES Times]
-          ]
-          match_expectations(subject, expectations)
-        end
-
-        it "should recognize 'between ... and ... times'" do
-          input = 'Between 2 AND 4 times'
-          subject.scanner.string = input
-          expectations = [
-            %w[BETWEEN Between],
-            %w[DIGIT_LIT 2],
-            %w[AND AND],
-            %w[DIGIT_LIT 4],
-            %w[TIMES times]
-          ]
-          match_expectations(subject, expectations)
-        end
-
-        it "should recognize 'once or more'" do
-          input = 'Once or MORE'
-          subject.scanner.string = input
-          expectations = [
-            %w[ONCE Once],
-            %w[OR or],
-            %w[MORE MORE]
-          ]
-          match_expectations(subject, expectations)
-        end
-
-        it "should recognize 'never or more'" do
-          input = 'never or more'
-          subject.scanner.string = input
-          expectations = [
-            %w[NEVER never],
-            %w[OR or],
-            %w[MORE more]
-          ]
-          match_expectations(subject, expectations)
-        end
-
-        it "should recognize 'at least  ... times'" do
-          input = 'at least 10 times'
-          subject.scanner.string = input
-          expectations = [
-            %w[AT at],
-            %w[LEAST least],
-            %w[INTEGER 10],
-            %w[TIMES times]
-          ]
-          match_expectations(subject, expectations)
-        end
-      end # context
-=end
-
     end # describe
   end # module
 end # module
