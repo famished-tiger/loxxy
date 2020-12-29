@@ -109,7 +109,7 @@ LOX_END
           expect(token_false.terminal).to eq('FALSE')
           expect(token_false.lexeme).to eq('false')
           expect(token_false.value).to be_kind_of(Datatype::False)
-          expect(token_false.value.value).to be_falsy          
+          expect(token_false.value.value).to be_falsy
         end
 
         it 'should recognize a true boolean token' do
@@ -119,11 +119,11 @@ LOX_END
           expect(token_true.terminal).to eq('TRUE')
           expect(token_true.lexeme).to eq('true')
           expect(token_true.value).to be_kind_of(Datatype::True)
-          expect(token_true.value.value).to be_truthy           
+          expect(token_true.value.value).to be_truthy
         end
 
         it 'should recognize number values' do
-          input =<<-LOX_END
+          input = <<-LOX_END
           123     987654
           0       -0
           123.456 -0.001
@@ -188,7 +188,7 @@ LOX_END
             expect(str.value.value).to eq(val)
           end
         end
-          
+
         it 'should recognize a nil token' do
           subject.start_with('nil')
           token_nil = subject.tokens[0]
@@ -196,7 +196,33 @@ LOX_END
           expect(token_nil.terminal).to eq('NIL')
           expect(token_nil.lexeme).to eq('nil')
           expect(token_nil.value).to be_kind_of(Datatype::Nil)
-        end          
+        end
+      end # context
+
+      context 'Handling comments:' do
+        it 'should cope with one line comment only' do
+          subject.start_with('// comment')
+
+          # No token found, except eof marker
+          eof_token = subject.tokens[0]
+          expect(eof_token.terminal).to eq('EOF')
+        end
+
+        it 'should skip end of line comments' do
+          input = <<-LOX_END
+            // first comment
+            print "ok"; // second comment
+            // third comment
+LOX_END
+          subject.start_with(input)
+          expectations = [
+            # [token lexeme]
+            %w[PRINT print],
+            %w[STRING "ok"],
+            %w[SEMICOLON ;]
+          ]
+          match_expectations(subject, expectations)
+        end
       end # context
     end # describe
   end # module

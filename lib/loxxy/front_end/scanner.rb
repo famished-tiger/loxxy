@@ -181,7 +181,7 @@ module Loxxy
             cmt_found = true
             case scanner.matched
               when '//'
-                scanner.skip(/;[^\r\n]*(?:(?:\r\n)|\r|\n)?/)
+                scanner.skip(/[^\r\n]*(?:(?:\r\n)|\r|\n)?/)
                 next_line
               when '/*'
                 skip_block_comment
