@@ -149,10 +149,12 @@ module Loxxy
         case aSymbolName
           when 'FALSE'
             value = Datatype::False.instance
+          when 'NIL'
+            value = Datatype::Nil.instance            
           when 'NUMBER'
             value = Datatype::Number.new(aLexeme)
           when 'STRING'
-            value = aLexeme.gsub(/(^")|("$)/, '')
+            value = Datatype::LXString.new(aLexeme)
           when 'TRUE'
             value = Datatype::True.instance
           else

@@ -18,7 +18,7 @@ module Loxxy
       protected
       
       def validated_value(aValue)
-        raise NotImplementedError
+        aValue
       end
     end # class
   end # module

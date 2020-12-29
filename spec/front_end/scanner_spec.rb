@@ -39,7 +39,7 @@ module Loxxy
         end
       end # context
 
-      context 'Single token recognition:' do
+      context 'Input tokenization:' do
         it 'should recognize single special character token' do
           input = '(){},.-+;*/'
           subject.start_with(input)
@@ -104,20 +104,22 @@ LOX_END
 
         it 'should recognize a false boolean token' do
           subject.start_with('false')
-          (token_false, token_true) = subject.tokens
+          token_false = subject.tokens[0]
           expect(token_false).to be_kind_of(Literal)
           expect(token_false.terminal).to eq('FALSE')
           expect(token_false.lexeme).to eq('false')
           expect(token_false.value).to be_kind_of(Datatype::False)
+          expect(token_false.value.value).to be_falsy          
         end
 
         it 'should recognize a true boolean token' do
           subject.start_with('true')
-          (token_false, token_true) = subject.tokens
-          expect(token_false).to be_kind_of(Literal)
-          expect(token_false.terminal).to eq('TRUE')
-          expect(token_false.lexeme).to eq('true')
-          expect(token_false.value).to be_kind_of(Datatype::True)
+          token_true = subject.tokens[0]
+          expect(token_true).to be_kind_of(Literal)
+          expect(token_true.terminal).to eq('TRUE')
+          expect(token_true.lexeme).to eq('true')
+          expect(token_true.value).to be_kind_of(Datatype::True)
+          expect(token_true.value.value).to be_truthy           
         end
 
         it 'should recognize number values' do
@@ -133,7 +135,7 @@ LOX_END
             ['0', 0],
             ['-0', 0],
             ['123.456', 123.456],
-            ['-0.001', -0.001],
+            ['-0.001', -0.001]
           ]
 
           subject.start_with(input)
@@ -163,49 +165,39 @@ LOX_END
           expect(tokens[3]).to be_kind_of(Rley::Lexical::Token)
           expect(tokens[3].terminal).to eq('DOT')
         end
-      end # context
 
+        it 'should recognize string values' do
+          input =<<-LOX_END
+          ""
+          "string"
+          "123"
+LOX_END
 
-=begin
-      context 'String literal tokenization:' do
-        it "should recognize 'literally ...'" do
-          input = 'literally "hello"'
-          subject.scanner.string = input
           expectations = [
-            %w[LITERALLY literally],
-            %w[STRING_LIT hello]
+            '',
+            'string',
+            '123'
           ]
-          match_expectations(subject, expectations)
-        end
-      end # context
 
-      context 'Character range tokenization:' do
-        it "should recognize 'letter from ... to ...'" do
-          input = 'letter a to f'
-          subject.scanner.string = input
-          expectations = [
-            %w[LETTER letter],
-            %w[LETTER_LIT a],
-            %w[TO to],
-            %w[LETTER_LIT f]
-          ]
-          match_expectations(subject, expectations)
+          subject.start_with(input)
+          subject.tokens[0..-2].each_with_index do |str, i|
+            expect(str).to be_kind_of(Literal)
+            expect(str.terminal).to eq('STRING')
+            val = expectations[i]
+            expect(str.value).to be_kind_of(Datatype::LXString)
+            expect(str.value.value).to eq(val)
+          end
         end
-
-        it "should recognize 'letter from ... to ... followed by comma'" do
-          input = 'letter a to f,'
-          subject.scanner.string = input
-          expectations = [
-            %w[LETTER letter],
-            %w[LETTER_LIT a],
-            %w[TO to],
-            %w[LETTER_LIT f],
-            %w[COMMA ,]
-          ]
-          match_expectations(subject, expectations)
-        end
+          
+        it 'should recognize a nil token' do
+          subject.start_with('nil')
+          token_nil = subject.tokens[0]
+          expect(token_nil).to be_kind_of(Literal)
+          expect(token_nil.terminal).to eq('NIL')
+          expect(token_nil.lexeme).to eq('nil')
+          expect(token_nil.value).to be_kind_of(Datatype::Nil)
+        end          
       end # context
-=end
     end # describe
   end # module
 end # module

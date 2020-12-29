@@ -8,12 +8,6 @@ module Loxxy
     # An instance acts merely as a wrapper around a Ruby representation
     # of the value.
     class Boolean < BuiltinDatatype
-
-      protected
-
-      def validated_value(aValue)
-        aValue
-      end
     end # class
   end # module
 end # module
