@@ -147,5 +147,5 @@ module Loxxy
   # And now build the grammar and make it accessible via a constant
   # @return [Rley::Syntax::Grammar]
   Grammar = builder.grammar
-  en # module
+  end # module
 end # module
