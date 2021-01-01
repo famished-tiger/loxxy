@@ -12,6 +12,20 @@ module Loxxy
         super(aValue)
       end
 
+      # Compare a Lox String with another Lox (or genuine Ruby) String
+      # @param other [Datatype::LxString, String]
+      # @return [Boolean]
+      def ==(other)
+        case other
+          when LXString
+            value == other.value
+          when String
+            value == other
+        else
+          raise StandardError, 'Cannot compare a #{self.class} with #{other.class}'
+        end
+      end
+
       protected
 
       def validated_value(aValue)

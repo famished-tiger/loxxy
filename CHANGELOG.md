@@ -1,3 +1,13 @@
+## [0.0.4] - 2021-01-01
+- A first parser implementation able to parse Lox source code.
+
+## Added
+- Method `LXString::==` equality operator.
+
+## Changed
+- class `Parser` renamed to `RawParser`
+- File `README.md` Added an example showing the use of `RawParser` class.
+
 ## [0.0.3] - 2020-12-29
 - Scanner can recognize strings and nil tokens
 ### Added

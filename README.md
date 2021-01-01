@@ -11,10 +11,36 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 
 ## Roadmap
 - [DONE] Scanner (tokenizer)
-- [STARTED] Recognizer
-- [TODO] Parser
+- [DONE] Raw parser. It parses Lox programs and generates a parse tree.
+- [TODO] Tailored parser for generating AST (Abstract Syntax Tree)
 - [TODO] Interpreter or transpiler
 
+
+## Example
+At this, stage, the raw parser is able to recognize Lox input and to generate
+a concrete parse tree from it.
+
+```ruby
+require 'loxxy'
+
+lox_input = <<-LOX_END
+  // Your first Lox program!
+  print "Hello, world!";
+LOX_END
+
+# Show that the raw parser accepts the above program
+base_parser = Loxxy::FrontEnd::RawParser.new
+
+# Now parse the input into a concrete parse tree...
+ptree = base_parser.parse(lox_input)
+
+# Dump the parse tree contents...
+p ptree # Lengthy (unwieldy) output
+```
+
+Soon, the `loxxy`will host another, tailored parser, that will generate
+abstract syntax tree which much more convenient for further processing 
+(like implementing an interpreter).
 
 ## Installation
 
