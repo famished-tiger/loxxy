@@ -23,6 +23,7 @@ module Loxxy
       add_terminals('NIL', 'NUMBER', 'OR', 'PRINT')
       add_terminals('RETURN', 'STRING', 'SUPER', 'THIS')
       add_terminals('TRUE', 'VAR', 'WHILE')
+      add_terminals('EOF')
 
       # Top-level rule that matches an entire Lox program
       rule('program' => 'declaration_star EOF')
@@ -35,17 +36,17 @@ module Loxxy
       rule('declaration' => 'varDecl')
       rule('declaration' => 'statement')
 
-      rule('classDecl' => 'class class_naming class_body')
-      rule('class_naming' => 'IDENTIFIER LESS IDENTIFIER')
-      rule('class_naming' => 'IDENTIFIER')
+      rule('classDecl' => 'CLASS classNaming class_body')
+      rule('classNaming' => 'IDENTIFIER LESS IDENTIFIER')
+      rule('classNaming' => 'IDENTIFIER')
       rule('class_body' => 'LEFT_BRACE function_star RIGHT_BRACE')
       rule('function_star' => 'function_star function')
       rule('function_star' => [])
 
       rule('funDecl' => 'FUN function')
 
-      rule('varDecl' => 'var IDENTIFIER SEMICOLON')
-      rule('varDecl' => 'var IDENTIFIER EQUAL expression SEMICOLON')
+      rule('varDecl' => 'VAR IDENTIFIER SEMICOLON')
+      rule('varDecl' => 'VAR IDENTIFIER EQUAL expression SEMICOLON')
 
       # Statements: produce side effects, but don't introduce bindings
       rule('statement' => 'exprStmt')
@@ -63,7 +64,7 @@ module Loxxy
       rule('forInitialization' => 'varDecl')
       rule('forInitialization' => 'exprStmt')
       rule('forInitialization' => 'SEMICOLON')
-      rule('forTest' => 'expression_opt SEMI_COLON')
+      rule('forTest' => 'expression_opt SEMICOLON')
       rule('forUpdate' => 'expression_opt')
 
       rule('ifStmt' => 'IF ifCondition statement elsePart_opt')
@@ -74,7 +75,7 @@ module Loxxy
       rule('printStmt' => 'PRINT expression SEMICOLON')
       rule('returnStmt' => 'RETURN expression_opt SEMICOLON')
       rule('whileStmt' => 'WHILE LEFT_PAREN expression RIGHT_PAREN statement')
-      rule('block)' => 'LEFT_BRACE declaration_star RIGHT_BRACE')
+      rule('block' => 'LEFT_BRACE declaration_star RIGHT_BRACE')
 
       # Expressions: produce values
       rule('expression_opt' => 'expression')
@@ -147,5 +148,5 @@ module Loxxy
   # And now build the grammar and make it accessible via a constant
   # @return [Rley::Syntax::Grammar]
   Grammar = builder.grammar
-  en # module
+  end # module
 end # module
