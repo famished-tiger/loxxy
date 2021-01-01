@@ -12,11 +12,10 @@ module PkgExtending
       '.rspec',
       '.travis.yml',
       '.yardopts',
-      'appveyor.yml',
       'Gemfile',
       'Rakefile',
       'CHANGELOG.md',
-      'CODE_OF_CONDUCT.md',      
+      'CODE_OF_CONDUCT.md',
       'LICENSE.txt',
       'README.md',
       'loxxy.gemspec',
@@ -45,20 +44,20 @@ Gem::Specification.new do |spec|
   spec.description   = %q{An implementation of the Lox programming language. WIP}
   spec.homepage      = 'https://github.com/famished-tiger/loxxy'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '~> 2.5'
-    
+  spec.required_ruby_version = '~> 2.4'
+
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
-  
+
   PkgExtending.pkg_files(spec)
-  PkgExtending.pkg_documentation(spec)  
+  PkgExtending.pkg_documentation(spec)
 
   # Runtime dependencies
   spec.add_dependency 'rley', '~> 0.7.06'
-  
+
   # Development dependencies
-  spec.add_development_dependency "bundler", "~> 2.0"
-  spec.add_development_dependency "rake", "~> 12.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency 'bundler', '~> 2.0'
+  spec.add_development_dependency 'rake', '~> 12.0'
+  spec.add_development_dependency 'rspec', '~> 3.0'
 end

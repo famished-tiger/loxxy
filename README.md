@@ -10,8 +10,8 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
   a Lox interpreter written in Lox.
 
 ## Roadmap
-- [STARTED] Scanner (tokenizer)
-- [TODO] Recognizer
+- [DONE] Scanner (tokenizer)
+- [STARTED] Recognizer
 - [TODO] Parser
 - [TODO] Interpreter or transpiler
 
