@@ -13,6 +13,8 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 - [DONE] Scanner (tokenizer)
 - [DONE] Raw parser. It parses Lox programs and generates a parse tree.
 - [TODO] Tailored parser for generating AST (Abstract Syntax Tree)
+- [TODO] Custom AST builder class  
+- [TODO] Hierarchy classes for representing Lox expressions in AST  
 - [TODO] Interpreter or transpiler
 
 
