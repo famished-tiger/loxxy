@@ -6,12 +6,6 @@ module Loxxy
   module Datatype
     # Class for representing a Lox string of characters value.
     class LXString < BuiltinDatatype
-
-      # Build the sole instance
-      def initialize(aValue)
-        super(aValue)
-      end
-
       # Compare a Lox String with another Lox (or genuine Ruby) String
       # @param other [Datatype::LxString, String]
       # @return [Boolean]
@@ -22,7 +16,8 @@ module Loxxy
           when String
             value == other
         else
-          raise StandardError, 'Cannot compare a #{self.class} with #{other.class}'
+          err_msg = "Cannot compare a #{self.class} with #{other.class}"
+          raise StandardError, err_msg
         end
       end
 
@@ -34,7 +29,7 @@ module Loxxy
         end
 
         # Remove double quotes delimiter
-        aValue.gsub(/(^")|("$)/, '')  
+        aValue.gsub(/(^")|("$)/, '')
       end
     end # class
   end # module

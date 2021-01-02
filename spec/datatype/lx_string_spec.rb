@@ -10,12 +10,12 @@ module Loxxy
     describe LXString do
       let(:sample_text) { 'some_text' }
       subject { LXString.new(sample_text) }
-      
+
       context 'Initialization:' do
         it 'should accept a String value at initialization' do
           expect { LXString.new(sample_text) }.not_to raise_error
         end
-        
+
         it 'should know its value' do
           expect(subject.value).to eq(sample_text)
         end

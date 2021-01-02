@@ -8,13 +8,13 @@ module Loxxy
     # Class for representing a Lox nil "value".
     class Nil < BuiltinDatatype
       include Singleton # Make a singleton class
-      
+
       # Build the sole instance
       def initialize
         super(nil)
       end
     end # class
-    
-    Nil.instance.freeze  # Make the sole instance immutable
+
+    Nil.instance.freeze # Make the sole instance immutable
   end # module
 end # module

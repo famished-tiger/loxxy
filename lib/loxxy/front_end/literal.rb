@@ -14,7 +14,7 @@ module Loxxy
       # @param theLexeme [String] the lexeme (= piece of text from input)
       # @param aTerminal [Rley::Syntax::Terminal, String]
       #   The terminal symbol corresponding to the lexeme.
-      # @param aPosition [Rley::Lexical::Position] The position of lexeme 
+      # @param aPosition [Rley::Lexical::Position] The position of lexeme
       #   in input text.
       def initialize(aValue, aLexeme, aTerminal, aPosition)
         super(aLexeme, aTerminal, aPosition)

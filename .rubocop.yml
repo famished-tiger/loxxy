@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'exp/**/*'
+    - 'demo/**/*'
 
 Layout/ArgumentAlignment:
   Enabled: false
@@ -55,6 +56,9 @@ Layout/MultilineMethodCallBraceLayout:
 
 Layout/SpaceAroundOperators:
   Enabled: true
+  
+Layout/SpaceBeforeBrackets:
+  Enabled: true
 
 Layout/SpaceInsideParens:
   Enabled: true
@@ -69,6 +73,9 @@ Layout/TrailingEmptyLines:
   Enabled: true
 
 Layout/TrailingWhitespace:
+  Enabled: true
+  
+Lint/AmbiguousAssignment:
   Enabled: true
 
 Lint/DuplicateBranch:
@@ -225,6 +232,9 @@ Style/GuardClause:
   Enabled: false
 
 Style/HashEachMethods:
+  Enabled: true
+  
+Style/HashExcept:
   Enabled: true
 
 Style/HashTransformKeys:

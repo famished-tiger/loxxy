@@ -131,7 +131,7 @@ module Loxxy
       rule('primary' => 'IDENTIFIER')
       rule('primary' => 'LEFT_PAREN expression RIGHT_PAREN')
       rule('primary' => 'SUPER DOT IDENTIFIER')
-      
+
       # Utility rules
       rule('function' => 'IDENTIFIER LEFT_PAREN params_opt RIGHT_PAREN block')
       rule('params_opt' => 'parameters')
@@ -142,11 +142,10 @@ module Loxxy
       rule('arguments_opt' => [])
       rule('arguments' => 'arguments COMMA expression')
       rule('arguments' => 'expression')
-      
     end
 
-  # And now build the grammar and make it accessible via a constant
-  # @return [Rley::Syntax::Grammar]
-  Grammar = builder.grammar
+    # And now build the grammar and make it accessible via a constant
+    # @return [Rley::Syntax::Grammar]
+    Grammar = builder.grammar
   end # module
 end # module

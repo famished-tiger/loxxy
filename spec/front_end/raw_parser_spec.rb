@@ -92,6 +92,8 @@ LOX_END
           expect(leaf_node.token.value).to eq('Hello, world!')
           expect(prnt_stmt.subnodes[2]).to be_kind_of(Rley::PTree::TerminalNode)
           expect(prnt_stmt.subnodes[2].symbol.name).to eq('SEMICOLON')
+          expect(eof).to be_kind_of(Rley::PTree::TerminalNode)
+          expect(eof.symbol.name).to eq('EOF')
         end
       end
     end # describe

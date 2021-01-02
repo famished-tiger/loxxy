@@ -78,7 +78,7 @@ module Loxxy
         end
 
         it 'should recognize non-datatype keywords' do
-          keywords =<<-LOX_END
+          keywords = <<-LOX_END
             and class else fun for if or
             print return super this var while
 LOX_END
@@ -167,7 +167,7 @@ LOX_END
         end
 
         it 'should recognize string values' do
-          input =<<-LOX_END
+          input = <<-LOX_END
           ""
           "string"
           "123"

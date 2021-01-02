@@ -8,13 +8,13 @@ module Loxxy
     # Class for representing a Lox true value.
     class True < Boolean
       include Singleton # Make a singleton class
-      
+
       # Build the sole instance
       def initialize
         super(true)
-      end      
+      end
     end # class
-    
-    True.instance.freeze  # Make the sole instance immutable
+
+    True.instance.freeze # Make the sole instance immutable
   end # module
 end # module

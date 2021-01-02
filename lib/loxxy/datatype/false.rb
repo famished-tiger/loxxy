@@ -8,13 +8,13 @@ module Loxxy
     # Class for representing a Lox false value.
     class False < Boolean
       include Singleton # Make a singleton class
-      
+
       # Build the sole instance
       def initialize
         super(false)
       end
     end # class
-    
-    False.instance.freeze  # Make the sole instance immutable
+
+    False.instance.freeze # Make the sole instance immutable
   end # module
 end # module

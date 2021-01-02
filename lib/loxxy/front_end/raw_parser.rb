@@ -15,7 +15,7 @@ module Loxxy
     # A TerminalNode is leaf node, that is, it has no child node.
     # While concrete parse tree nodes can be generated out of the box,
     # they have the following drawbacks:
-    # - Generic node classes that aren't always suited for the needs of 
+    # - Generic node classes that aren't always suited for the needs of
     #     the language being processing.
     # - Concrete parse tree tend to be deeply nested, which may complicate
     #   further processing.
@@ -27,7 +27,6 @@ module Loxxy
         # Create a Rley facade object
         @engine = Rley::Engine.new do |cfg|
           cfg.diagnose = true
-          # cfg.repr_builder = SkmBuilder
         end
 
         # Step 1. Load Lox grammar

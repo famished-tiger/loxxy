@@ -50,7 +50,7 @@ module Loxxy
         '>' => 'GREATER',
         '>=' => 'GREATER_EQUAL',
         '<' => 'LESS',
-        '<=' => 'LESS_EQUAL',
+        '<=' => 'LESS_EQUAL'
       }.freeze
 
       # Here are all the implemented Lox keywords (in uppercase)
@@ -99,7 +99,7 @@ module Loxxy
 
         token = nil
 
-        if "(){},.;/*".include? curr_ch
+        if '(){},.;/*'.include? curr_ch
           # Single delimiter or separator character
           token = build_token(@@lexeme2name[curr_ch], scanner.getch)
         elsif (lexeme = scanner.scan(/[+\-](?!\d)/))
@@ -150,7 +150,7 @@ module Loxxy
           when 'FALSE'
             value = Datatype::False.instance
           when 'NIL'
-            value = Datatype::Nil.instance            
+            value = Datatype::Nil.instance
           when 'NUMBER'
             value = Datatype::Number.new(aLexeme)
           when 'STRING'
@@ -167,8 +167,6 @@ module Loxxy
       # Skip non-significant whitespaces and comments.
       # Advance the scanner until something significant is found.
       def skip_intertoken_spaces
-        pre_pos = scanner.pos
-
         loop do
           ws_found = scanner.skip(/[ \t\f]+/) ? true : false
           nl_found = scanner.skip(/(?:\r\n)|\r|\n/)
@@ -191,7 +189,7 @@ module Loxxy
           break unless ws_found || cmt_found
         end
 
-        curr_pos = scanner.pos
+        scanner.pos
       end
 
       def skip_block_comment

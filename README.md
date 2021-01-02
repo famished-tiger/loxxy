@@ -34,11 +34,45 @@ base_parser = Loxxy::FrontEnd::RawParser.new
 # Now parse the input into a concrete parse tree...
 ptree = base_parser.parse(lox_input)
 
-# Dump the parse tree contents...
-p ptree # Lengthy (unwieldy) output
+# Display the parse tree thanks to Rley formatters...
+visitor = Rley::ParseTreeVisitor.new(ptree)
+tree_formatter = Rley::Formatter::Asciitree.new($stdout)
+tree_formatter.render(visitor)
 ```
 
-Soon, the `loxxy`will host another, tailored parser, that will generate
+This is the output produced by the above example:
+```
+program
++-- declaration_star
+|   +-- declaration_star
+|   +-- declaration
+|       +-- statement
+|           +-- printStmt
+|               +-- PRINT: 'print'
+|               +-- expression
+|               |   +-- assignment
+|               |       +-- logic_or
+|               |           +-- logic_and
+|               |           |   +-- equality
+|               |           |   |   +-- comparison
+|               |           |   |   |   +-- term
+|               |           |   |   |   |   +-- factor
+|               |           |   |   |   |   |   +-- unary
+|               |           |   |   |   |   |   |   +-- call
+|               |           |   |   |   |   |   |       +-- primary
+|               |           |   |   |   |   |   |       |   +-- STRING: '"Hello, world!"'
+|               |           |   |   |   |   |   |       +-- refinement_star
+|               |           |   |   |   |   |   +-- multiplicative_star
+|               |           |   |   |   |   +-- additive_star
+|               |           |   |   |   +-- comparisonTest_star
+|               |           |   |   +-- equalityTest_star
+|               |           |   +-- conjunct_star
+|               |           +-- disjunct_star
+|               +-- SEMICOLON: ';'
++-- EOF: ''
+```
+
+Soon, the `loxxy` will host another, tailored parser, that will generate
 abstract syntax tree which much more convenient for further processing 
 (like implementing an interpreter).
 
