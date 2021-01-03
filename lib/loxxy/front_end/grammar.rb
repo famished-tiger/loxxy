@@ -144,8 +144,10 @@ module Loxxy
       rule('arguments' => 'expression')
     end
 
-    # And now build the grammar and make it accessible via a constant
-    # @return [Rley::Syntax::Grammar]
-    Grammar = builder.grammar
+    unless defined?(Grammar)
+      # And now build the grammar and make it accessible via a constant
+      # @return [Rley::Syntax::Grammar]
+      Grammar = builder.grammar
+    end
   end # module
 end # module

@@ -1,3 +1,24 @@
+## [0.0.6] - 2021-01-03
+- First iteration of a parser with AST generation.
+
+## Added
+- Class `Parser` this one generates AST's (Abstract Syntax Tree)
+- Class `AST::ASTBuilder` default code to generate an AST.
+
+## Changed
+- File `spec_helper.rb`: removed Bundler dependency
+- File `README.md` Added example with AST visualization.
+
+## Fixed
+- File `grammar.rb` ensure that the constant `Grammar` is created once only.
+
+## [0.0.5] - 2021-01-02
+- Improved example in `README.md`, code re-styling to please `Rubocop` 1.7
+
+## Changed
+- Code re-styling to please `Rubocop` 1.7
+- File `README.md` Improved example with better parse tree visualization.
+
 ## [0.0.4] - 2021-01-01
 - A first parser implementation able to parse Lox source code.
 
