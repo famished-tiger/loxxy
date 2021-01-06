@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative '../datatype/all_datatypes'
+require_relative 'lox_literal_expr'
+require_relative 'lox_binary_expr'
 
 module Loxxy
   module Ast
@@ -68,6 +70,27 @@ module Loxxy
         end
 
         node
+      end
+
+      # rule('additive_star' => 'additive_star additionOp factor').as 'additionOp_expr'
+      def reduce_additionOp_expr(_production, _range, _tokens, theChildren)
+        (operand1, operator_node, operand2) = theChildren
+        operator = operator_node.symbol.name == 'MINUS' ? :- : :+
+        LoxBinaryExpr.new(operator_node.token.position, operator, operand1, operand2)
+      end
+
+      # rule('multiplicative_star' => 'multiplicative_star multOp unary').as 'multOp_expr'
+      # def reduce_multOp_expr(_production, _range, _tokens, theChildren)
+      #   (operand1, operator, operand2) = theChildren
+      #   LoxBinaryExpr.new(operator.token.position, operator, operand1, operand2)
+      # end
+
+      # rule('primary' => 'FALSE' | TRUE').as 'literal_expr'
+      def reduce_literal_expr(_production, _range, _tokens, theChildren)
+        first_child = theChildren.first
+        pos = first_child.token.position
+        literal = first_child.token.value
+        LoxLiteralExpr.new(pos, literal)
       end
     end # class
   end # module

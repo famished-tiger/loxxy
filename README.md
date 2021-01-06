@@ -1,7 +1,7 @@
 # Loxxy
 
-A Ruby implementation of the [Lox programming language](https://craftinginterpreters.com/the-lox-language.html),
-a simple language used in Bob Nystrom's online book [Crafting Interpreters](https://craftinginterpreters.com/).
+A Ruby implementation of the [Lox programming language](https://craftinginterpreters.com/the-lox-language.html ),
+a simple language used in Bob Nystrom's online book [Crafting Interpreters](https://craftinginterpreters.com/ ).
 
 ## Purpose of this project:
 - To deliver an open source example of a programming language fully implemented in Ruby  
@@ -14,7 +14,7 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 - [DONE] Raw parser. It parses Lox programs and generates a parse tree.
 - [DONE] Tailored parser for generating AST (Abstract Syntax Tree)
 - [STARTED] Custom AST builder class  
-- [TODO] Hierarchy classes for representing Lox expressions in AST  
+- [STARTED] Hierarchy classes for representing Lox expressions in AST  
 - [TODO] Interpreter or transpiler
 
 ## Example
@@ -48,8 +48,7 @@ tree_formatter.render(visitor)
 This is the output produced by the above example:
 ```
 program
-+-- declaration_star
-|   +-- declaration_star
++-- declaration_plus
 |   +-- declaration
 |       +-- statement
 |           +-- printStmt
@@ -58,68 +57,17 @@ program
 |               |   +-- assignment
 |               |       +-- logic_or
 |               |           +-- logic_and
-|               |           |   +-- equality
-|               |           |   |   +-- comparison
-|               |           |   |   |   +-- term
-|               |           |   |   |   |   +-- factor
-|               |           |   |   |   |   |   +-- unary
-|               |           |   |   |   |   |   |   +-- call
-|               |           |   |   |   |   |   |       +-- primary
-|               |           |   |   |   |   |   |       |   +-- STRING: '"Hello, world!"'
-|               |           |   |   |   |   |   |       +-- refinement_star
-|               |           |   |   |   |   |   +-- multiplicative_star
-|               |           |   |   |   |   +-- additive_star
-|               |           |   |   |   +-- comparisonTest_star
-|               |           |   |   +-- equalityTest_star
-|               |           |   +-- conjunct_star
-|               |           +-- disjunct_star
+|               |               +-- equality
+|               |                   +-- comparison
+|               |                       +-- term
+|               |                           +-- factor
+|               |                               +-- unary
+|               |                                   +-- call
+|               |                                       +-- primary
+|               |                                           +-- STRING: '"Hello, world!"'
 |               +-- SEMICOLON: ';'
 +-- EOF: ''
 ```
-
-### Example using Parser class
-Except for the `Parser` class name, this example is identical 
-to the previous one.
-
-```ruby
-require 'loxxy'
-
-
-lox_input = <<-LOX_END
-  // Your first Lox program!
-  print "Hello, world!";
-LOX_END
-
-# Show that the parser accepts the above program
-parser = Loxxy::FrontEnd::Parser.new
-
-# Now parse the input into an abstract parse tree...
-ptree = parser.parse(lox_input)
-
-# Display the parse tree thanks to Rley utility classes...
-visitor = Rley::ParseTreeVisitor.new(ptree)
-tree_formatter = Rley::Formatter::Asciitree.new($stdout)
-tree_formatter.render(visitor)
-```
-
-However the output differs significantly:
-```
-program
-+-- declaration_star
-|   +-- printStmt
-|       +-- PRINT: 'print'
-|       +-- logic_or
-|       |   +-- logic_and
-|       |       +-- equality
-|       |           +-- comparison
-|       |               +-- term
-|       |                   +-- factor
-|       |                       +-- call
-|       |                           +-- STRING: '"Hello, world!"'
-|       +-- SEMICOLON: ';'
-+-- EOF: ''
-```
-
 
 
 ## Installation
