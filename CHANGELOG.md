@@ -1,3 +1,19 @@
+## [0.0.7] - 2021-01-06
+- Lox grammar reworked, initial AST classes created.
+
+## Added
+- Class `Parser` this one generates AST's (Abstract Syntax Tree)
+- Class `AST::ASTVisitor` draft initial implementation.
+- Class `AST::BinaryExpr` draft initial implementation.
+- Class `AST::LoxCompoundExpr` draft initial implementation.
+- Class `AST::LiteralExpr` draft initial implementation.
+- Class `AST::LoxNode` draft initial implementation.
+
+## Changed
+- File `spec_helper.rb`: removed Bundler dependency
+- Class `AST::ASTBuilder` added initial `reduce_` methods.
+- File `README.md` Removed example with AST generation since this is in flux.
+
 ## [0.0.6] - 2021-01-03
 - First iteration of a parser with AST generation.
 
