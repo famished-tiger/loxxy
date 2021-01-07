@@ -206,7 +206,7 @@ LOX_END
           expect(expr.operands[1].literal.value).to eq(0.3)
         end
 
-        it 'should parse multiple additive operations' do
+        it 'should parse multiple multiplicative operations' do
           input = '5 * 2 / 3;'
           ptree = subject.parse(input)
           parent = ptree.root.subnodes[0]
@@ -220,6 +220,54 @@ LOX_END
           expect(expr.operands[0].operands[0].literal.value).to eq(5)
           expect(expr.operands[0].operands[1].literal.value).to eq(2)
           expect(expr.operands[1].literal.value).to eq(3)
+        end
+
+        it 'should parse combination of terms and factors' do
+          input = '5 + 2 / 3;'
+          ptree = subject.parse(input)
+          parent = ptree.root.subnodes[0]
+          expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(parent.symbol.name).to eq('exprStmt')
+          expr = parent.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operator).to eq(:+)
+          expect(expr.operands[0].literal.value).to eq(5)
+          expect(expr.operands[1]).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operands[1].operator).to eq(:/)
+          expect(expr.operands[1].operands[0].literal.value).to eq(2)
+          expect(expr.operands[1].operands[1].literal.value).to eq(3)
+        end
+      end # context
+
+      context 'Parsing string concatenation' do
+        it 'should parse the concatenation of two string literals' do
+          input = '"Lo" + "ve";'
+          ptree = subject.parse(input)
+          parent = ptree.root.subnodes[0]
+          expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(parent.symbol.name).to eq('exprStmt')
+          expr = parent.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operator).to eq(:+)
+          expect(expr.operands[0].literal.value).to eq('Lo')
+          expect(expr.operands[1].literal.value).to eq('ve')
+        end
+      end # context
+
+      context 'Parsing comparison expressions' do
+        it 'should parse the comparison of two number literals' do
+          %w[> >= < <=].each do |predicate|
+            input = "3 #{predicate} 2;"
+            ptree = subject.parse(input)
+            parent = ptree.root.subnodes[0]
+            expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+            expect(parent.symbol.name).to eq('exprStmt')
+            expr = parent.subnodes[0]
+            expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+            expect(expr.operator).to eq(predicate.to_sym)
+            expect(expr.operands[0].literal.value).to eq(3)
+            expect(expr.operands[1].literal.value).to eq(2)
+          end
         end
       end # context
     end # describe

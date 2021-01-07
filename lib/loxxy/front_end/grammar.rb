@@ -102,9 +102,9 @@ module Loxxy
       rule('equalityTest' => 'BANG_EQUAL')
       rule('equalityTest' => 'EQUAL_EQUAL')
       rule('comparison' => 'term')
-      rule('comparison' => 'term comparisonTest_plus')
-      rule('comparisonTest_plus' => 'comparisonTest_plus comparisonTest term')
-      rule('comparisonTest_plus' => 'comparisonTest term')
+      rule('comparison' => 'term comparisonTest_plus').as 'comparison_plus'
+      rule('comparisonTest_plus' => 'comparisonTest_plus comparisonTest term').as 'comparison_t_plus_more'
+      rule('comparisonTest_plus' => 'comparisonTest term').as 'comparison_t_plus_end'
       rule('comparisonTest' => 'GREATER')
       rule('comparisonTest' => 'GREATER_EQUAL')
       rule('comparisonTest' => 'LESS')

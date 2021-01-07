@@ -72,8 +72,8 @@ module Loxxy
         node
       end
 
-      # rule('term' => 'factor additive_plus')
-      def reduce_term_additive(_production, _range, tokens, theChildren)
+      # rule('lhs' => 'nonterm_i nonterm_k_plus')
+      def reduce_binary_operator(_production, _range, tokens, theChildren)
         operand1 = theChildren[0]
 
         # Second child is anray with couples [operator, operand2]
@@ -82,6 +82,32 @@ module Loxxy
         end
 
         operand1
+      end
+
+      # rule('comparison' => 'term comparisonTest_plus')
+      def reduce_comparison_plus(production, range, tokens, theChildren)
+        reduce_binary_operator(production, range, tokens, theChildren)
+      end
+
+      # rule('comparisonTest_plus' => 'comparisonTest_plus comparisonTest term').as 'comparison_t_plus_more'
+      # TODO: is it meaningful to implement this rule?
+
+      # rule('comparisonTest_plus' => 'comparisonTest term')
+      def reduce_comparison_t_plus_end(_production, _range, _tokens, theChildren)
+        name2operators = {
+          'GREATER' => '>',
+          'GREATER_EQUAL' => '>=',
+          'LESS' =>  '<',
+          'LESS_EQUAL' => '<='
+        }
+        operator = name2operators[theChildren[0].symbol.name].to_sym
+        operand2 = theChildren[1]
+        [[operator, operand2]]
+      end
+
+      # rule('term' => 'factor additive_plus')
+      def reduce_term_additive(production, range, tokens, theChildren)
+        reduce_binary_operator(production, range, tokens, theChildren)
       end
 
       # rule('additive_star' => 'additive_star additionOp factor').as 'additionOp_expr'
@@ -100,15 +126,8 @@ module Loxxy
       end
 
       # rule('factor' => 'multiplicative_plus')
-      def reduce_factor_multiplicative(_production, _range, tokens, theChildren)
-        operand1 = theChildren[0]
-
-        # Second child is anray with couples [operator, operand2]
-        theChildren[1].each do |(operator, operand2)|
-          operand1 = LoxBinaryExpr.new(tokens[0].position, operator, operand1, operand2)
-        end
-
-        operand1
+      def reduce_factor_multiplicative(production, range, tokens, theChildren)
+        reduce_binary_operator(production, range, tokens, theChildren)
       end
 
       # rule('multiplicative_plus' => 'multiplicative_plus multOp unary')

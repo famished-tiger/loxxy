@@ -1,8 +1,16 @@
+## [0.0.9] - 2021-01-07
+- AST node generation for comparison expression.
+
+## Changed
+- Class `AST::ASTBuilder` added `reduce_` methods for comparison operations.
+- File `grammar.rb`added name to comparison rules
+
 ## [0.0.8] - 2021-01-07
 - AST node generation for arithmetic operations of number literals.
 
 ## Changed
 - Class `AST::ASTBuilder` added `reduce_` methods for arithmetic operations.
+- File `grammar.rb`added name to arithmetic rules
 
 ## Fixed
 - File `grammar.rb`: second rule for `factor` had a missing member in rhs.
