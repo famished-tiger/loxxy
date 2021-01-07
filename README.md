@@ -9,6 +9,14 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 - The implementation should be mature enough to run (LoxLox)[https://github.com/benhoyt/loxlox],  
   a Lox interpreter written in Lox.
 
+## Current status
+The __loxxy__ gem hosts two distinct parsers classes (`RawParser` and `Parser`).
+- A `RawParser` instance is able to recognize valid Lox input and to generate
+  a concrete parse tree from it.
+- A `Parser` instance can also parse Lox source code but will generate an AST
+  (Abstract Syntax Tree) that will be used by the future tree-walking interpreter.
+  Currently it generates AST for arithmetic expressions with literal numbers only.
+
 ## Roadmap
 - [DONE] Scanner (tokenizer)
 - [DONE] Raw parser. It parses Lox programs and generates a parse tree.
@@ -17,14 +25,7 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 - [STARTED] Hierarchy classes for representing Lox expressions in AST  
 - [TODO] Interpreter or transpiler
 
-## Example
-The __loxxy__ hosts two distinct parsers classes (`RawParser` and `Parser`).  
-- A `RawParser` instance is able to recognize Lox input and to generate
-a concrete parse tree from it.
-- A `Parser` instance can also parse Lox source code but will generate an AST
-(Abstract Syntax Tree) that will be used by the future tree-walking interpreter.
-
-### Example using RawParser class
+## Example using RawParser class
 ```ruby
 require 'loxxy'
 
@@ -69,7 +70,6 @@ program
 +-- EOF: ''
 ```
 
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -91,9 +91,9 @@ Or install it yourself as:
 TODO: Write usage instructions here
 
 ## Other Lox implementations in Ruby
-An impressive list of Lox implementations can be found [here](https://github.com/munificent/craftinginterpreters/wiki/Lox-implementations
+An impressive list of Lox implementations can be found [here](https://github.com/munificent/craftinginterpreters/wiki/Lox-implementations)
 
-For Ruby, ther is the [lox](https://github.com/rdodson41/ruby-lox) gem.
+For Ruby, there is the [lox](https://github.com/rdodson41/ruby-lox) gem.
 There are other Ruby-based projects as well:  
 - [SlowLox](https://github.com/ArminKleinert/SlowLox), described as a "1-to-1 conversion of JLox to Ruby"
 - [rulox](https://github.com/LevitatingBusinessMan/rulox)

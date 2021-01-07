@@ -223,6 +223,18 @@ LOX_END
           ]
           match_expectations(subject, expectations)
         end
+
+        it 'should cope with single slash (divide) expression' do
+          subject.start_with('8 / 2')
+
+          expectations = [
+            # [token lexeme]
+            %w[NUMBER 8],
+            %w[SLASH /],
+            %w[NUMBER 2]
+          ]
+          match_expectations(subject, expectations)
+        end
       end # context
     end # describe
   end # module

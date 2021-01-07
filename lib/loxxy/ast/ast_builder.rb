@@ -72,18 +72,60 @@ module Loxxy
         node
       end
 
-      # rule('additive_star' => 'additive_star additionOp factor').as 'additionOp_expr'
-      def reduce_additionOp_expr(_production, _range, _tokens, theChildren)
-        (operand1, operator_node, operand2) = theChildren
-        operator = operator_node.symbol.name == 'MINUS' ? :- : :+
-        LoxBinaryExpr.new(operator_node.token.position, operator, operand1, operand2)
+      # rule('term' => 'factor additive_plus')
+      def reduce_term_additive(_production, _range, tokens, theChildren)
+        operand1 = theChildren[0]
+
+        # Second child is anray with couples [operator, operand2]
+        theChildren[1].each do |(operator, operand2)|
+          operand1 = LoxBinaryExpr.new(tokens[0].position, operator, operand1, operand2)
+        end
+
+        operand1
       end
 
-      # rule('multiplicative_star' => 'multiplicative_star multOp unary').as 'multOp_expr'
-      # def reduce_multOp_expr(_production, _range, _tokens, theChildren)
-      #   (operand1, operator, operand2) = theChildren
-      #   LoxBinaryExpr.new(operator.token.position, operator, operand1, operand2)
-      # end
+      # rule('additive_star' => 'additive_star additionOp factor').as 'additionOp_expr'
+      def reduce_additive_plus_more(_production, _range, _tokens, theChildren)
+        result = theChildren[0]
+        operator = theChildren[1].symbol.name == 'MINUS' ? :- : :+
+        operand2 = theChildren[2]
+        result << [operator, operand2]
+      end
+
+      # rule('additive_plus' => 'additionOp factor')
+      def reduce_additive_plus_end(_production, _range, _tokens, theChildren)
+        operator = theChildren[0].symbol.name == 'MINUS' ? :- : :+
+        operand2 = theChildren[1]
+        [[operator, operand2]]
+      end
+
+
+      # rule('factor' => 'multiplicative_plus')
+      def reduce_factor_multiplicative(_production, _range, tokens, theChildren)
+        operand1 = theChildren[0]
+
+        # Second child is anray with couples [operator, operand2]
+        theChildren[1].each do |(operator, operand2)|
+          operand1 = LoxBinaryExpr.new(tokens[0].position, operator, operand1, operand2)
+        end
+
+        operand1
+      end
+
+      # rule('multiplicative_plus' => 'multiplicative_plus multOp unary')
+      def reduce_multiplicative_plus_more(_production, _range, _tokens, theChildren)
+        result = theChildren[0]
+        operator = theChildren[1].symbol.name == 'SLASH' ? :/ : :*
+        operand2 = theChildren[2]
+        result << [operator, operand2]
+      end
+
+      # rule('multiplicative_plus' => 'multOp unary')
+      def reduce_multiplicative_plus_end(_production, _range, _tokens, theChildren)
+        operator = theChildren[0].symbol.name == 'SLASH' ? :/ : :*
+        operand2 = theChildren[1]
+        [[operator, operand2]]
+      end
 
       # rule('primary' => 'FALSE' | TRUE').as 'literal_expr'
       def reduce_literal_expr(_production, _range, _tokens, theChildren)

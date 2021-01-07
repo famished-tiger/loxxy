@@ -137,13 +137,89 @@ LOX_END
         end
       end # context
 
-      context 'Parsing literals:' do
+      context 'Parsing arithmetic operations' do
         it 'should parse the addition of two number literals' do
-          # input = '123 + 456;'
-          # ptree = subject.parse(input)
-          # term = walk_subnodes(ptree.root, [0, 0, 0, 0, 0, 0, 0])
-          # expect(leaf).to be_kind_of(Ast::LoxBinaryExpr)
-          # expect(leaf.literal).to be_equal(Datatype::False.instance)
+          input = '123 + 456;'
+          ptree = subject.parse(input)
+          parent = ptree.root.subnodes[0]
+          expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(parent.symbol.name).to eq('exprStmt')
+          expr = parent.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operator).to eq(:+)
+          expect(expr.operands[0].literal.value).to eq(123)
+          expect(expr.operands[1].literal.value).to eq(456)
+        end
+
+        it 'should parse the subtraction of two number literals' do
+          input = '4 - 3;'
+          ptree = subject.parse(input)
+          parent = ptree.root.subnodes[0]
+          expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(parent.symbol.name).to eq('exprStmt')
+          expr = parent.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operator).to eq(:-)
+          expect(expr.operands[0].literal.value).to eq(4)
+          expect(expr.operands[1].literal.value).to eq(3)
+        end
+
+        it 'should parse multiple additive operations' do
+          input = '5 + 2 - 3;'
+          ptree = subject.parse(input)
+          parent = ptree.root.subnodes[0]
+          expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(parent.symbol.name).to eq('exprStmt')
+          expr = parent.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operator).to eq(:-)
+          expect(expr.operands[0]).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operands[0].operator).to eq(:+)
+          expect(expr.operands[0].operands[0].literal.value).to eq(5)
+          expect(expr.operands[0].operands[1].literal.value).to eq(2)
+          expect(expr.operands[1].literal.value).to eq(3)
+        end
+
+        it 'should parse the division of two number literals' do
+          input = '8 / 2;'
+          ptree = subject.parse(input)
+          parent = ptree.root.subnodes[0]
+          expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(parent.symbol.name).to eq('exprStmt')
+          expr = parent.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operator).to eq(:/)
+          expect(expr.operands[0].literal.value).to eq(8)
+          expect(expr.operands[1].literal.value).to eq(2)
+        end
+
+        it 'should parse the product of two number literals' do
+          input = '12.34 * 0.3;'
+          ptree = subject.parse(input)
+          parent = ptree.root.subnodes[0]
+          expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(parent.symbol.name).to eq('exprStmt')
+          expr = parent.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operator).to eq(:*)
+          expect(expr.operands[0].literal.value).to eq(12.34)
+          expect(expr.operands[1].literal.value).to eq(0.3)
+        end
+
+        it 'should parse multiple additive operations' do
+          input = '5 * 2 / 3;'
+          ptree = subject.parse(input)
+          parent = ptree.root.subnodes[0]
+          expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(parent.symbol.name).to eq('exprStmt')
+          expr = parent.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operator).to eq(:/)
+          expect(expr.operands[0]).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operands[0].operator).to eq(:*)
+          expect(expr.operands[0].operands[0].literal.value).to eq(5)
+          expect(expr.operands[0].operands[1].literal.value).to eq(2)
+          expect(expr.operands[1].literal.value).to eq(3)
         end
       end # context
     end # describe

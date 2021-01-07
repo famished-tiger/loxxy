@@ -1,3 +1,12 @@
+## [0.0.8] - 2021-01-07
+- AST node generation for arithmetic operations of number literals.
+
+## Changed
+- Class `AST::ASTBuilder` added `reduce_` methods for arithmetic operations.
+
+## Fixed
+- File `grammar.rb`: second rule for `factor` had a missing member in rhs.
+
 ## [0.0.7] - 2021-01-06
 - Lox grammar reworked, initial AST classes created.
 
