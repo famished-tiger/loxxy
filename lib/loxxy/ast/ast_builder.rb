@@ -99,7 +99,6 @@ module Loxxy
         [[operator, operand2]]
       end
 
-
       # rule('factor' => 'multiplicative_plus')
       def reduce_factor_multiplicative(_production, _range, tokens, theChildren)
         operand1 = theChildren[0]
