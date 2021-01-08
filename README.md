@@ -1,4 +1,7 @@
-# Loxxy
+# loxxy
+[![Gem Version](https://badge.fury.io/rb/loxxy.svg)](https://badge.fury.io/rb/loxxy)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/famished-tiger/loxxy/blob/main/LICENSE.txt)
+
 
 A Ruby implementation of the [Lox programming language](https://craftinginterpreters.com/the-lox-language.html ),
 a simple language used in Bob Nystrom's online book [Crafting Interpreters](https://craftinginterpreters.com/ ).
@@ -18,12 +21,48 @@ The __loxxy__ gem hosts two distinct parsers classes (`RawParser` and `Parser`).
   Currently it generates AST for arithmetic expressions with literal numbers only.
 
 ## Roadmap
-- [DONE] Scanner (tokenizer)
-- [DONE] Raw parser. It parses Lox programs and generates a parse tree.
-- [DONE] Tailored parser for generating AST (Abstract Syntax Tree)
-- [STARTED] Custom AST builder class  
-- [STARTED] Hierarchy classes for representing Lox expressions in AST  
-- [TODO] Interpreter or transpiler
+### Done
+- Scanner (tokenizer)
+- Lox grammar (in format required by Rley gem)   
+- Raw parser. It parses Lox programs and generates a raw parse tree.
+- Tailored parser for generating AST (Abstract Syntax Tree)
+  
+### Started
+-  Custom AST builder class  
+-  Classes for representing Lox expressions in AST
+
+### TODO
+AST Node generation
+Goal: parser should generate AST for any input Lox program
+- [] Equality operator
+- [] Logical operator (and, or)
+- [] Unary expressions (negate, not)
+- [] Grouping expressions
+- [] Print statement
+- [] Simple assignment expressions
+- [] Variable declaration
+- [] Dot notation
+- [] Block statement
+- [] If statement
+- [] For statement
+- [] While statement
+- [] Function declaration
+- [] Call expression
+- [] Return statement
+- [] Class declaration
+- [] AST generation covers complete grammar
+
+Tree-walking:
+- [] Tree visitor recognizes all AST node types
+
+Interpreter:
+- Keywords: symbol table, scope, activation record, class & object model, Lox test suite
+- [] Milestone: Interpreter handles expressions but function calls
+- [] Milestone: Interpreter handles `for`, `if`, `print`, `while` and block statements
+- [] Milestone: Interpreter handles variable declarations (global, block)
+- [] Milestone: Interpreter handles function declarations and calls
+- [] Milestone: Interpreter supports class and object definition
+- [] Milestone: Lox interpreter complete
 
 ## Example using RawParser class
 ```ruby
