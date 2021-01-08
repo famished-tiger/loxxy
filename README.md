@@ -35,7 +35,7 @@ The __loxxy__ gem hosts two distinct parsers classes (`RawParser` and `Parser`).
 AST Node generation
 Goal: parser should generate AST for any input Lox program
 - [X] Equality operator
-- [] Logical operator (and, or)
+- [X] Logical operator (and, or)
 - [] Unary expressions (negate, not)
 - [] Grouping expressions
 - [] Print statement

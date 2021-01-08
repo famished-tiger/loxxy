@@ -303,6 +303,55 @@ LOX_END
           expect(expr.operands[1].literal.value).to be_falsey
         end
       end # context
+
+      context 'Parsing logical expressions' do
+        it 'should parse the logical operations betweentwo sub-expression' do
+          %w[or and].each do |connector|
+            input = "5 > 2 #{connector} 3 <= 4;"
+            ptree = subject.parse(input)
+            parent = ptree.root.subnodes[0]
+            expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+            expect(parent.symbol.name).to eq('exprStmt')
+            expr = parent.subnodes[0]
+            expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+            expect(expr.operator).to eq(connector.to_sym)
+            expect(expr.operands[0]).to be_kind_of(Ast::LoxBinaryExpr)
+            expect(expr.operands[0].operator).to eq(:>)
+            expect(expr.operands[0].operands[0].literal.value).to eq(5)
+            expect(expr.operands[0].operands[1].literal.value).to eq(2)
+            expect(expr.operands[1]).to be_kind_of(Ast::LoxBinaryExpr)
+            expect(expr.operands[1].operator).to eq(:<=)
+            expect(expr.operands[1].operands[0].literal.value).to eq(3)
+            expect(expr.operands[1].operands[1].literal.value).to eq(4)
+          end
+        end
+
+        it 'should parse a combinations of logical expressions' do
+          input = '4 > 3 and 1 < 2 or 4 >= 5;'
+          ptree = subject.parse(input)
+          parent = ptree.root.subnodes[0]
+          expect(parent).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(parent.symbol.name).to eq('exprStmt')
+          expr = parent.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operator).to eq(:or) # or has lower precedence than and
+          expect(expr.operands[0]).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operands[0].operator).to eq(:and)
+          conjuncts = expr.operands[0].operands
+          expect(conjuncts[0]).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(conjuncts[0].operator).to eq(:>)
+          expect(conjuncts[0].operands[0].literal.value).to eq(4)
+          expect(conjuncts[0].operands[1].literal.value).to eq(3)
+          expect(conjuncts[1]).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(conjuncts[1].operator).to eq(:<)
+          expect(conjuncts[1].operands[0].literal.value).to eq(1)
+          expect(conjuncts[1].operands[1].literal.value).to eq(2)
+          expect(expr.operands[1]).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operands[1].operator).to eq(:>=)
+          expect(expr.operands[1].operands[0].literal.value).to eq(4)
+          expect(expr.operands[1].operands[1].literal.value).to eq(5)
+        end
+      end # context
     end # describe
   end # module
 end # module

@@ -1,3 +1,15 @@
+## [0.0.11] - 2021-01-08
+- AST node generation for logical expression (and, or).
+
+## Changed
+- Class `AST::ASTBuilder` added `reduce_` methods for logical operations.
+- File `grammar.rb`added name to logical expression rules
+- File `README.md` added gem version and license badges, expanded roadmap section.
+
+## Fixed
+- File `grammar.rb`: a rule had incomplete non-terminal name `conjunct_` in its lhs.
+
+
 ## [0.0.10] - 2021-01-08
 - AST node generation for equality expression.
 
