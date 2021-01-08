@@ -1,3 +1,14 @@
+## [0.0.10] - 2021-01-08
+- AST node generation for equality expression.
+
+## Changed
+- Class `AST::ASTBuilder` refactoring and added `reduce_` methods for equality operations.
+- File `grammar.rb`added name to equality rules
+- File `README.md` added gem version and license badges, expanded roadmap section.
+
+## Fixed
+- File `grammar.rb`: a rule had still the discarded non-terminal `equalityTest_star` in its lhs.
+
 ## [0.0.9] - 2021-01-07
 - AST node generation for comparison expression.
 

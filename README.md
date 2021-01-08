@@ -9,7 +9,7 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 ## Purpose of this project:
 - To deliver an open source example of a programming language fully implemented in Ruby  
   (from the scanner, parser, code generation).
-- The implementation should be mature enough to run (LoxLox)[https://github.com/benhoyt/loxlox],  
+- The implementation should be mature enough to run [LoxLox](https://github.com/benhoyt/loxlox),  
   a Lox interpreter written in Lox.
 
 ## Current status
@@ -34,7 +34,7 @@ The __loxxy__ gem hosts two distinct parsers classes (`RawParser` and `Parser`).
 ### TODO
 AST Node generation
 Goal: parser should generate AST for any input Lox program
-- [] Equality operator
+- [X] Equality operator
 - [] Logical operator (and, or)
 - [] Unary expressions (negate, not)
 - [] Grouping expressions

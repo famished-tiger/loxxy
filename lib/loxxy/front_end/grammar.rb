@@ -96,9 +96,9 @@ module Loxxy
       rule('conjunct_plus' => 'conjunct_plus AND equality')
       rule('conjunct_' => 'AND equality')
       rule('equality' => 'comparison')
-      rule('equality' => 'comparison equalityTest_plus')
-      rule('equalityTest_plus' => 'equalityTest_plus equalityTest comparison')
-      rule('equalityTest_star' => 'equalityTest comparison')
+      rule('equality' => 'comparison equalityTest_plus').as 'equality_plus'
+      rule('equalityTest_plus' => 'equalityTest_plus equalityTest comparison').as 'equality_t_plus_more'
+      rule('equalityTest_plus' => 'equalityTest comparison').as 'equality_t_plus_end'
       rule('equalityTest' => 'BANG_EQUAL')
       rule('equalityTest' => 'EQUAL_EQUAL')
       rule('comparison' => 'term')

@@ -10,13 +10,31 @@ module Loxxy
     # (Abstract Syntax Tree) from a sequence of input tokens and
     # visit events produced by walking over a GFGParsing object.
     class ASTBuilder < Rley::ParseRep::ASTBaseBuilder
-      # Terminal2NodeClass = {
-      #   'FALSE' => Datatype::False,
-      #   'NIL' => Datatype::Nil,
-      #   'NUMBER' => Datatype::Number,
-      #   'STRING' => Datatype::LXString,
-      #   'TRUE' => Datatype::True
-      # }.freeze
+      # Mapping Token name => operator | separator | delimiter characters
+      # @return [Hash{String => String}]
+      Name2special = {
+        'AND' => 'and',
+        'BANG' => '!',
+        'BANG_EQUAL' => '!=',
+        'COMMA' =>  ',',
+        'DOT' => '.',
+        'EQUAL' => '=',
+        'EQUAL_EQUAL' => '==',
+        'GREATER' => '>',
+        'GREATER_EQUAL' => '>=',
+        'LEFT_BRACE' =>  '{',
+        'LEFT_PAREN' => '(',
+        'LESS' => '<',
+        'LESS_EQUAL' => '<=',
+        'MINUS' => '-',
+        'OR' => 'or',
+        'PLUS' => '+',
+        'RIGHT_BRACE' => '}',
+        'RIGHT_PAREN' => ')',
+        'SEMICOLON' => ';',
+        'SLASH' =>  '/',
+        'STAR' => '*'
+      }.freeze
 
       attr_reader :strict
 
@@ -76,12 +94,42 @@ module Loxxy
       def reduce_binary_operator(_production, _range, tokens, theChildren)
         operand1 = theChildren[0]
 
-        # Second child is anray with couples [operator, operand2]
+        # Second child is array with couples [operator, operand2]
         theChildren[1].each do |(operator, operand2)|
           operand1 = LoxBinaryExpr.new(tokens[0].position, operator, operand1, operand2)
         end
 
         operand1
+      end
+
+      # rule('something_plus' => 'something_plus operator symbol')
+      def reduce_binary_plus_more(_production, _range, _tokens, theChildren)
+        result = theChildren[0]
+        operator = Name2special[theChildren[1].symbol.name].to_sym
+        operand2 = theChildren[2]
+        result << [operator, operand2]
+      end
+
+      # rule('something_plus' => 'something_plus symbol')
+      def reduce_binary_plus_end(_production, _range, _tokens, theChildren)
+        operator = Name2special[theChildren[0].symbol.name].to_sym
+        operand2 = theChildren[1]
+        [[operator, operand2]]
+      end
+
+      # rule('equality' => 'comparison equalityTest_plus')
+      def reduce_equality_plus(production, range, tokens, theChildren)
+        reduce_binary_operator(production, range, tokens, theChildren)
+      end
+
+      # rule('equalityTest_plus' => 'equalityTest_plus equalityTest comparison')
+      def reduce_equality_t_plus_more(production, range, tokens, theChildren)
+        reduce_binary_plus_more(production, range, tokens, theChildren)
+      end
+
+      # rule('equalityTest_star' => 'equalityTest comparison')
+      def reduce_equality_t_plus_end(production, range, tokens, theChildren)
+        reduce_binary_plus_end(production, range, tokens, theChildren)
       end
 
       # rule('comparison' => 'term comparisonTest_plus')
@@ -93,16 +141,8 @@ module Loxxy
       # TODO: is it meaningful to implement this rule?
 
       # rule('comparisonTest_plus' => 'comparisonTest term')
-      def reduce_comparison_t_plus_end(_production, _range, _tokens, theChildren)
-        name2operators = {
-          'GREATER' => '>',
-          'GREATER_EQUAL' => '>=',
-          'LESS' =>  '<',
-          'LESS_EQUAL' => '<='
-        }
-        operator = name2operators[theChildren[0].symbol.name].to_sym
-        operand2 = theChildren[1]
-        [[operator, operand2]]
+      def reduce_comparison_t_plus_end(production, range, tokens, theChildren)
+        reduce_binary_plus_end(production, range, tokens, theChildren)
       end
 
       # rule('term' => 'factor additive_plus')
@@ -111,18 +151,13 @@ module Loxxy
       end
 
       # rule('additive_star' => 'additive_star additionOp factor').as 'additionOp_expr'
-      def reduce_additive_plus_more(_production, _range, _tokens, theChildren)
-        result = theChildren[0]
-        operator = theChildren[1].symbol.name == 'MINUS' ? :- : :+
-        operand2 = theChildren[2]
-        result << [operator, operand2]
+      def reduce_additive_plus_more(production, range, tokens, theChildren)
+        reduce_binary_plus_more(production, range, tokens, theChildren)
       end
 
       # rule('additive_plus' => 'additionOp factor')
-      def reduce_additive_plus_end(_production, _range, _tokens, theChildren)
-        operator = theChildren[0].symbol.name == 'MINUS' ? :- : :+
-        operand2 = theChildren[1]
-        [[operator, operand2]]
+      def reduce_additive_plus_end(production, range, tokens, theChildren)
+        reduce_binary_plus_end(production, range, tokens, theChildren)
       end
 
       # rule('factor' => 'multiplicative_plus')
@@ -131,18 +166,13 @@ module Loxxy
       end
 
       # rule('multiplicative_plus' => 'multiplicative_plus multOp unary')
-      def reduce_multiplicative_plus_more(_production, _range, _tokens, theChildren)
-        result = theChildren[0]
-        operator = theChildren[1].symbol.name == 'SLASH' ? :/ : :*
-        operand2 = theChildren[2]
-        result << [operator, operand2]
+      def reduce_multiplicative_plus_more(production, range, tokens, theChildren)
+        reduce_binary_plus_more(production, range, tokens, theChildren)
       end
 
       # rule('multiplicative_plus' => 'multOp unary')
-      def reduce_multiplicative_plus_end(_production, _range, _tokens, theChildren)
-        operator = theChildren[0].symbol.name == 'SLASH' ? :/ : :*
-        operand2 = theChildren[1]
-        [[operator, operand2]]
+      def reduce_multiplicative_plus_end(production, range, tokens, theChildren)
+        reduce_binary_plus_end(production, range, tokens, theChildren)
       end
 
       # rule('primary' => 'FALSE' | TRUE').as 'literal_expr'
