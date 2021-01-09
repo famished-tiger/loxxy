@@ -39,6 +39,26 @@ module Loxxy
         top.accept(self)
       end
 
+      # Visit event. The visitor is about to visit the ptree.
+      # @param aParseTree [Rley::PTre::ParseTree] the ptree to visit.
+      def start_visit_ptree(aParseTree)
+        broadcast(:before_ptree, aParseTree)
+      end
+
+      # Visit event. The visitor has completed the visit of the ptree.
+      # @param aParseTree [Rley::PTre::ParseTree] the visited ptree.
+      def end_visit_ptree(aParseTree)
+        broadcast(:after_ptree, aParseTree)
+      end
+
+      # Visit event. The visitor is about to visit a print statement expression.
+      # @param aPrintStmt [AST::LOXPrintStmt] the print statement node to visit
+      def visit_print_stmt(aPrintStmt)
+        broadcast(:before_print_stmt, aPrintStmt)
+        traverse_subnodes(aPrintStmt)
+        broadcast(:after_print_stmt, aPrintStmt)
+      end
+
       # Visit event. The visitor is visiting the
       # given terminal node containing a datatype object.
       # @param aLiteralExpr [AST::LoxLiteralExpr] the leaf node to visit.
@@ -47,67 +67,27 @@ module Loxxy
         broadcast(:after_literal_expr, aLiteralExpr)
       end
 
-=begin
-
-
-      def visit_compound_datum(aCompoundDatum)
-        broadcast(:before_compound_datum, aCompoundDatum)
-        traverse_children(aCompoundDatum)
-        broadcast(:after_compound_datum, aCompoundDatum)
+      # Visit event. The visitor is about to visit the given non terminal node.
+      # @param aNonTerminalNode [Rley::PTre::NonTerminalNode] the node to visit.
+      def visit_nonterminal(_non_terminal_node)
+        # Loxxy interpreter encountered a CST node (Concrete Syntax Tree)
+        # that it cannot handle.
+        raise NotImplementedError, 'Loxxy cannot execute this code yet.'
       end
-
-      # Visit event. The visitor is visiting the
-      # given empty list object.
-      # @param anEmptyList [SkmEmptyList] the empty list object to visit.
-      def visit_empty_list(anEmptyList)
-        broadcast(:before_empty_list, anEmptyList)
-        broadcast(:after_empty_list, anEmptyList)
-      end
-
-      def visit_pair(aPair)
-        broadcast(:before_pair, aPair)
-        traverse_car_cdr(aPair)
-        broadcast(:after_pair, aPair)
-      end
-=end
-=begin
-   # Visit event. The visitor is about to visit the given non terminal node.
-    # @param aNonTerminalNode [NonTerminalNode] the node to visit.
-    def visit_nonterminal(aNonTerminalNode)
-      if @traversal == :post_order
-        broadcast(:before_non_terminal, aNonTerminalNode)
-        traverse_subnodes(aNonTerminalNode)
-      else
-        traverse_subnodes(aNonTerminalNode)
-        broadcast(:before_non_terminal, aNonTerminalNode)
-      end
-      broadcast(:after_non_terminal, aNonTerminalNode)
-    end
-=end
 
       private
 
-      def traverse_children(aParent)
-        children = aParent.children
-        broadcast(:before_children, aParent, children)
+      # Visit event. The visitor is about to visit the subnodes of a non
+      # terminal node.
+      # @param aParentNode [Ast::LocCompoundExpr] the parent node.
+      def traverse_subnodes(aParentNode)
+        subnodes = aParentNode.subnodes
+        broadcast(:before_subnodes, aParentNode, subnodes)
 
-        # Let's proceed with the visit of children
-        children.each { |a_child| a_child.accept(self) }
+        # Let's proceed with the visit of subnodes
+        subnodes.each { |a_node| a_node.accept(self) }
 
-        broadcast(:after_children, aParent, children)
-      end
-
-      def traverse_car_cdr(aPair)
-        if aPair.car
-          broadcast(:before_car, aPair, aPair.car)
-          aPair.car.accept(self)
-          broadcast(:after_car, aPair, aPair.car)
-        end
-        if aPair.cdr
-          broadcast(:before_cdr, aPair, aPair.cdr)
-          aPair.cdr.accept(self)
-          broadcast(:after_cdr, aPair, aPair.cdr)
-        end
+        broadcast(:after_subnodes, aParentNode, subnodes)
       end
 
       # Send a notification to all subscribers.
@@ -117,7 +97,7 @@ module Loxxy
         subscribers.each do |subscr|
           next unless subscr.respond_to?(msg) || subscr.respond_to?(:accept_all)
 
-          subscr.send(msg, runtime, *args)
+          subscr.send(msg, *args)
         end
       end
     end # class

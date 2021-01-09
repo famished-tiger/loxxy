@@ -11,6 +11,11 @@ module Loxxy
         @position = aPosition
       end
 
+      # Notification that the parsing was successfully completed
+      def done!
+        # Default: do nothing ...
+      end
+
       # Abstract method.
       # Part of the 'visitee' role in Visitor design pattern.
       # @param _visitor [LoxxyTreeVisitor] the visitor

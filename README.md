@@ -13,58 +13,26 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
   a Lox interpreter written in Lox.
 
 ## Current status
-The __loxxy__ gem hosts two distinct parsers classes (`RawParser` and `Parser`).
-- A `RawParser` instance is able to recognize valid Lox input and to generate
-  a concrete parse tree from it.
-- A `Parser` instance can also parse Lox source code but will generate an AST
-  (Abstract Syntax Tree) that will be used by the future tree-walking interpreter.
-  Currently it generates AST for arithmetic expressions with literal numbers only.
+The project is still in inception and the interpreter is being implemented...
+Currently it can execute a very limited subset of __Lox__ language.
 
-## Roadmap
-### Done
-- Scanner (tokenizer)
-- Lox grammar (in format required by Rley gem)   
-- Raw parser. It parses Lox programs and generates a raw parse tree.
-- Tailored parser for generating AST (Abstract Syntax Tree)
-  
-### Started
--  Custom AST builder class  
--  Classes for representing Lox expressions in AST
+The __loxxy__ gem also a parser class `RawPaser` that can, in principle, any valid Lox input.
 
-### TODO
-AST Node generation
-Goal: parser should generate AST for any input Lox program
-- [X] Equality operator
-- [X] Logical operator (and, or)
-- [] Unary expressions (negate, not)
-- [] Grouping expressions
-- [] Print statement
-- [] Simple assignment expressions
-- [] Variable declaration
-- [] Dot notation
-- [] Block statement
-- [] If statement
-- [] For statement
-- [] While statement
-- [] Function declaration
-- [] Call expression
-- [] Return statement
-- [] Class declaration
-- [] AST generation covers complete grammar
+## Hello world example
+```ruby
+require 'loxxy'
 
-Tree-walking:
-- [] Tree visitor recognizes all AST node types
+lox_program = <<LOX_END
+  // Your first Lox program!
+  print "Hello, world!";
+LOX_END
 
-Interpreter:
-- Keywords: symbol table, scope, activation record, class & object model, Lox test suite
-- [] Milestone: Interpreter handles expressions but function calls
-- [] Milestone: Interpreter handles `for`, `if`, `print`, `while` and block statements
-- [] Milestone: Interpreter handles variable declarations (global, block)
-- [] Milestone: Interpreter handles function declarations and calls
-- [] Milestone: Interpreter supports class and object definition
-- [] Milestone: Lox interpreter complete
+lox = Loxxy::Interpreter.new
+lox.evaluate(lox_program) # => Hello, world!
+```
 
 ## Example using RawParser class
+
 ```ruby
 require 'loxxy'
 
@@ -108,6 +76,16 @@ program
 |               +-- SEMICOLON: ';'
 +-- EOF: ''
 ```
+
+## Suppported Lox language features
+Although the interpreter should parse almost any valid Lox program,
+it currently can evaluate a tiny set of AST node (AST = Abstract Syntax Tree).
+
+Here are the language features supported by the interpreter:
+- Line comments,
+- All the Lox literals (booleans, numbers, strings and nil),
+- `print` statement.
+
 
 ## Installation
 

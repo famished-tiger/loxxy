@@ -5,7 +5,7 @@ require_relative 'lox_node'
 module Loxxy
   module Ast
     class LoxCompoundExpr < LoxNode
-      # @return [Array<Ast::LoxNode>]
+      # @return [Array<Ast::LoxNode>] the children nodes (sub-expressions)
       attr_reader :subnodes
 
       # @param aPosition [Rley::Lexical::Position] Position of the entry in the input stream.

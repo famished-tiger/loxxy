@@ -21,6 +21,12 @@ module Loxxy
         end
       end
 
+      # Method called from Lox to obtain the text representation of the object.
+      # @return [String]
+      def to_str
+        value
+      end
+
       protected
 
       def validated_value(aValue)

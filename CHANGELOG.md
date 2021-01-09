@@ -1,3 +1,16 @@
+## [0.0.12] - 2021-01-09
+- Initial interpreter capable of evaluating a tiny subset of Lox language.
+
+## Added
+- Class `AST::LoxNoopExpr`
+- Class `AST::LoxPrintStmt`
+- Class `BackEnd::Engine` implementation of the print statement logic
+- Class `Interpreter`
+
+## Changed
+- Class `Ast::ASTVisitor` Added visit method
+- File `README.md` added Hello world example.
+
 ## [0.0.11] - 2021-01-08
 - AST node generation for logical expression (and, or).
 

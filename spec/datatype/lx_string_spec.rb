@@ -22,6 +22,10 @@ module Loxxy
       end
 
       context 'Provided services:' do
+        it 'should give its display representation' do
+          expect(subject.to_str).to eq(sample_text)
+        end
+
         it 'compares with another string' do
           expect(subject).to eq(sample_text)
           expect(subject).to eq(LXString.new(sample_text.dup))

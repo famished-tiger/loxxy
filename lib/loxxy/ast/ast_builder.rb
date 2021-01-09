@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../datatype/all_datatypes'
-require_relative 'lox_literal_expr'
+require_relative 'all_lox_nodes'
 require_relative 'lox_binary_expr'
 
 module Loxxy
@@ -10,31 +10,33 @@ module Loxxy
     # (Abstract Syntax Tree) from a sequence of input tokens and
     # visit events produced by walking over a GFGParsing object.
     class ASTBuilder < Rley::ParseRep::ASTBaseBuilder
-      # Mapping Token name => operator | separator | delimiter characters
-      # @return [Hash{String => String}]
-      Name2special = {
-        'AND' => 'and',
-        'BANG' => '!',
-        'BANG_EQUAL' => '!=',
-        'COMMA' =>  ',',
-        'DOT' => '.',
-        'EQUAL' => '=',
-        'EQUAL_EQUAL' => '==',
-        'GREATER' => '>',
-        'GREATER_EQUAL' => '>=',
-        'LEFT_BRACE' =>  '{',
-        'LEFT_PAREN' => '(',
-        'LESS' => '<',
-        'LESS_EQUAL' => '<=',
-        'MINUS' => '-',
-        'OR' => 'or',
-        'PLUS' => '+',
-        'RIGHT_BRACE' => '}',
-        'RIGHT_PAREN' => ')',
-        'SEMICOLON' => ';',
-        'SLASH' =>  '/',
-        'STAR' => '*'
-      }.freeze
+      unless defined?(Name2special)
+        # Mapping Token name => operator | separator | delimiter characters
+        # @return [Hash{String => String}]
+        Name2special = {
+          'AND' => 'and',
+          'BANG' => '!',
+          'BANG_EQUAL' => '!=',
+          'COMMA' =>  ',',
+          'DOT' => '.',
+          'EQUAL' => '=',
+          'EQUAL_EQUAL' => '==',
+          'GREATER' => '>',
+          'GREATER_EQUAL' => '>=',
+          'LEFT_BRACE' =>  '{',
+          'LEFT_PAREN' => '(',
+          'LESS' => '<',
+          'LESS_EQUAL' => '<=',
+          'MINUS' => '-',
+          'OR' => 'or',
+          'PLUS' => '+',
+          'RIGHT_BRACE' => '}',
+          'RIGHT_PAREN' => ')',
+          'SEMICOLON' => ';',
+          'SLASH' =>  '/',
+          'STAR' => '*'
+        }.freeze
+      end # defined
 
       attr_reader :strict
 
@@ -117,6 +119,25 @@ module Loxxy
         [[operator, operand2]]
       end
 
+      #####################################
+      #  SEMANTIC ACTIONS
+      #####################################
+
+      # rule('program' => 'EOF').as 'null_program'
+      def reduce_null_program(_production, range, _tokens, _theChildren)
+        Ast::LoxNoopExpr.new(tokens[0].position)
+      end
+
+      # rule('program' => 'declaration_plus EOF').as ''
+      def reduce_lox_program(_production, range, tokens, theChildren)
+        return_first_child(range, tokens, theChildren)
+      end
+
+      # rule('printStmt' => 'PRINT expression SEMICOLON')
+      def reduce_print_stmt(_production, _range, tokens, theChildren)
+        Ast::LoxPrintStmt.new(tokens[1].position, theChildren[1])
+      end
+
       # rule('logic_or' => 'logic_and disjunct_plus')
       def reduce_logic_or_plus(production, range, tokens, theChildren)
         reduce_binary_operator(production, range, tokens, theChildren)
@@ -141,7 +162,7 @@ module Loxxy
       def reduce_logic_and_plus_more(production, range, tokens, theChildren)
         reduce_binary_plus_more(production, range, tokens, theChildren)
       end
-      
+
       # rule('conjunct_plus' => 'AND equality')
       def reduce_logic_and_plus_end(production, range, tokens, theChildren)
         reduce_binary_plus_end(production, range, tokens, theChildren)

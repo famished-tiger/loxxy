@@ -14,6 +14,12 @@ module Loxxy
         @value = validated_value(aValue)
       end
 
+      # Method called from Lox to obtain the text representation of the boolean.
+      # @return [String]
+      def to_str
+        value.to_s # Default implementation...
+      end
+
       protected
 
       def validated_value(aValue)

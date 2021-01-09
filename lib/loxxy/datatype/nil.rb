@@ -13,6 +13,12 @@ module Loxxy
       def initialize
         super(nil)
       end
+
+      # Method called from Lox to obtain the text representation of nil.
+      # @return [String]
+      def to_str
+        'nil'
+      end
     end # class
 
     Nil.instance.freeze # Make the sole instance immutable

@@ -26,8 +26,8 @@ module Loxxy
       add_terminals('EOF')
 
       # Top-level rule that matches an entire Lox program
-      rule('program' => 'EOF')
-      rule('program' => 'declaration_plus EOF')
+      rule('program' => 'EOF').as 'null_program'
+      rule('program' => 'declaration_plus EOF').as 'lox_program'
 
       # Declarations: bind an identifier to something
       rule('declaration_plus' => 'declaration_plus declaration')
@@ -73,7 +73,7 @@ module Loxxy
       rule('elsePart_opt' => 'ELSE statement')
       rule('elsePart_opt' => [])
 
-      rule('printStmt' => 'PRINT expression SEMICOLON')
+      rule('printStmt' => 'PRINT expression SEMICOLON').as 'print_stmt'
       rule('returnStmt' => 'RETURN expression_opt SEMICOLON')
       rule('whileStmt' => 'WHILE LEFT_PAREN expression RIGHT_PAREN statement')
       rule('block' => 'LEFT_BRACE declaration_plus RIGHT_BRACE')
