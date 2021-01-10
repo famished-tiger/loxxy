@@ -59,6 +59,14 @@ module Loxxy
         broadcast(:after_print_stmt, aPrintStmt)
       end
 
+      # Visit event. The visitor is about to visit a print statement expression.
+      # @param aBinaryExpr [AST::LOXBinaryExpr] the binary expression node to visit
+      def visit_binary_expr(aBinaryExpr)
+        broadcast(:before_binary_expr, aBinaryExpr)
+        traverse_subnodes(aBinaryExpr)
+        broadcast(:after_binary_expr, aBinaryExpr)
+      end
+
       # Visit event. The visitor is visiting the
       # given terminal node containing a datatype object.
       # @param aLiteralExpr [AST::LoxLiteralExpr] the leaf node to visit.

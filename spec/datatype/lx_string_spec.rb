@@ -26,12 +26,30 @@ module Loxxy
           expect(subject.to_str).to eq(sample_text)
         end
 
-        it 'compares with another string' do
-          expect(subject).to eq(sample_text)
-          expect(subject).to eq(LXString.new(sample_text.dup))
+        it 'compares with another Lox string' do
+          result = subject == LXString.new(sample_text.dup)
+          expect(result).to be_true
 
-          expect(subject).not_to eq('')
-          expect(subject).not_to eq('other-text')
+          result = subject == LXString.new('other-text')
+          expect(result).to be_false
+
+          result = subject == LXString.new('')
+          expect(result).to be_false
+
+          # Two empty strings are equal
+          result = LXString.new('') == LXString.new('')
+          expect(result).to be_true
+        end
+
+        it 'compares with a Ruby string' do
+          result = subject == sample_text.dup
+          expect(result).to be_true
+
+          result = subject == 'other-text'
+          expect(result).to be_false
+
+          result = subject == ''
+          expect(result).to be_false
         end
       end
     end # describe

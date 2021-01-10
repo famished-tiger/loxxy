@@ -13,6 +13,12 @@ module Loxxy
       def initialize
         super(false)
       end
+
+      # Is this object representing a false value in Lox?
+      # @return [TrueClass]
+      def false?
+        true
+      end
     end # class
 
     False.instance.freeze # Make the sole instance immutable

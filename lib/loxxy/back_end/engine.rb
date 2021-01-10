@@ -40,6 +40,19 @@ module Loxxy
         @ostream.print tos.to_str
       end
 
+      def after_binary_expr(aBinaryExpr)
+        op = aBinaryExpr.operator
+        operand2 = stack.pop
+        operand1 = stack.pop
+        implemented = [:+].include?(op)
+        if implemented && operand1.respond_to?(op)
+          stack.push operand1.send(op, operand2)
+        else
+          msg1 = "`#{op}': Unimplemented operator for a #{operand1.class}."
+          raise StandardError, msg1
+        end
+      end
+
       # @param literalExpr [Ast::LoxLiteralExpr]
       def before_literal_expr(literalExpr)
         stack.push(literalExpr.literal)

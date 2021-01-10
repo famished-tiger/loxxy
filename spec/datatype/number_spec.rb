@@ -22,6 +22,22 @@ module Loxxy
       end
 
       context 'Provided services:' do
+        it 'should compare with other Lox numbers' do
+          result = subject == Number.new(sample_value)
+          expect(result).to be_true
+
+          result = subject == Number.new(5)
+          expect(result).to be_false
+        end
+
+        it 'should compare with Ruby numbers' do
+          result = subject == sample_value
+          expect(result).to be_true
+
+          result = subject == 5
+          expect(result).to be_false
+        end
+
         it 'should give its display representation' do
           expect(subject.to_str).to eq(sample_value.to_s)
         end

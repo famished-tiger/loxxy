@@ -11,7 +11,6 @@ module Loxxy
         super(aPosition, [anExpression])
       end
 
-      # Abstract method.
       # Part of the 'visitee' role in Visitor design pattern.
       # @param visitor [Ast::ASTVisitor] the visitor
       def accept(visitor)

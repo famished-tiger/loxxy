@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'builtin_datatype'
+require_relative 'false'
+require_relative 'true'
 
 module Loxxy
   module Datatype
@@ -8,16 +9,32 @@ module Loxxy
     class LXString < BuiltinDatatype
       # Compare a Lox String with another Lox (or genuine Ruby) String
       # @param other [Datatype::LxString, String]
-      # @return [Boolean]
+      # @return [Datatype::Boolean]
       def ==(other)
         case other
-          when LXString
-            value == other.value
-          when String
-            value == other
+        when LXString
+          (value == other.value) ? True.instance : False.instance
+        when String
+          (value == other) ? True.instance : False.instance
         else
           err_msg = "Cannot compare a #{self.class} with #{other.class}"
           raise StandardError, err_msg
+        end
+      end
+
+      # Perform the concatenation of two Lox stings or
+      # one Lox string and a Ruby String
+      # @param other [Loxxy::Datatype::LXString, String]
+      # @return [Loxxy::Datatype::LXString]
+      def +(other)
+        case other
+        when LXString
+          self.class.new(value + other.value)
+        when Numeric
+          self.class.new(value + other)
+        else
+          err_msg = "`+': #{other.class} can't be coerced into #{self.class} (TypeError)"
+          raise TypeError, err_msg
         end
       end
 
