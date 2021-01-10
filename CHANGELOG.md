@@ -1,3 +1,15 @@
+## [0.0.13] - 2021-01-10
+- The interpreter can evaluate directly simple literals.
+
+## Changed
+- Class `AST::ASTBuilder` added `reduce_exprStmt` to support the evaluation of literals.
+- File `README.md` added one more example.
+- File `parser_spec.rb` Updated the tests to reflect the change in the AST.
+- File `interpreter_spec.rb` Added a test for literal expression.
+
+## Fixed
+- File `loxxy.rb`: shorthand method `lox_true` referenced the ... false object (oops).
+
 ## [0.0.12] - 2021-01-09
 - Initial interpreter capable of evaluating a tiny subset of Lox language.
 

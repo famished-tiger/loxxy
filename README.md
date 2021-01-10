@@ -13,7 +13,7 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
   a Lox interpreter written in Lox.
 
 ### Current status
-The project is still in inception and the interpreter is being implemented...
+The project is still in inception and the interpreter is being implemented...  
 Currently it can execute a tiny subset of __Lox__ language.
 
 The __loxxy__ gem also a parser class `RawPaser` that can parse, in principle, any valid Lox input.
@@ -63,7 +63,21 @@ lox_program = <<LOX_END
 LOX_END
 
 lox = Loxxy::Interpreter.new
-lox.evaluate(lox_program) # => Hello, world!
+lox.evaluate(lox_program) # Output: Hello, world!
+```
+
+## Retrieving the result from a Lox program
+The __Loxxy__ interpreter returns the value of the last evaluated expression. 
+
+```ruby
+require 'loxxy'
+
+lox = Loxxy::Interpreter.new
+
+lox_program = '12.34; // A fractional number'
+result = lox.evaluate(lox_program) # => Loxxy::Datatype::Number
+
+puts result.value # Output: 12.34
 ```
 
 ## Example using RawParser class

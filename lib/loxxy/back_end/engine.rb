@@ -25,6 +25,7 @@ module Loxxy
       # Given an abstract syntax parse tree visitor, luanch the visit
       # and execute the visit events in the output stream.
       # @param aVisitor [AST::ASTVisitor]
+      # @return [Loxxy::Datatype::BuiltinDatatype]
       def execute(aVisitor)
         aVisitor.subscribe(self)
         aVisitor.start

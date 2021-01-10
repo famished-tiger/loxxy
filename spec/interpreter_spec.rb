@@ -28,6 +28,11 @@ module Loxxy
     context 'Evaluating Lox code:' do
       let(:hello_world) { 'print "Hello, world!";' }
 
+      it 'should evaluate core data types' do
+        result = subject.evaluate('true; // Not false')
+        expect(result).to be_kind_of(Loxxy::Datatype::True)
+      end
+
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Hello, world!')

@@ -19,8 +19,10 @@ module Loxxy
       @config = theOptions
     end
 
-    # Evaluate the given Lox program
+    # Evaluate the given Lox program.
+    # Return the result of the last executed expression (if any)
     # @param lox_input [String] Lox program to evaluate
+    # @return [Loxxy::Datatype::BuiltinDatatype]
     def evaluate(lox_input)
       # Front-end scans, parses the input and blurps an AST...
       parser = FrontEnd::Parser.new

@@ -124,13 +124,18 @@ module Loxxy
       #####################################
 
       # rule('program' => 'EOF').as 'null_program'
-      def reduce_null_program(_production, range, _tokens, _theChildren)
+      def reduce_null_program(_production, _range, _tokens, _theChildren)
         Ast::LoxNoopExpr.new(tokens[0].position)
       end
 
       # rule('program' => 'declaration_plus EOF').as ''
       def reduce_lox_program(_production, range, tokens, theChildren)
-        return_first_child(range, tokens, theChildren)
+        return_first_child(range, tokens, theChildren) # Discard the semicolon
+      end
+
+      # rule('exprStmt' => 'expression SEMICOLON')
+      def reduce_exprStmt(_production, range, tokens, theChildren)
+      return_first_child(range, tokens, theChildren) # Discard the semicolon
       end
 
       # rule('printStmt' => 'PRINT expression SEMICOLON')
