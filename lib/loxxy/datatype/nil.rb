@@ -14,6 +14,22 @@ module Loxxy
         super(nil)
       end
 
+      # Check the equality with another object.
+      # @param other [Datatype::BuiltinDatatype, NilClass, Object]
+      # @return [Datatype::Boolean]
+      def ==(other)
+        is_nil = other.kind_of?(Nil) || other.kind_of?(NilClass)
+        is_nil ? True.instance : False.instance
+      end
+
+      # Check the inequality with another object.
+      # @param other [Datatype::BuiltinDatatype, NilClass, Object]
+      # @return [Datatype::Boolean]
+      def !=(other)
+        is_nil = other.kind_of?(Nil) || other.kind_of?(NilClass)
+        is_nil ? False.instance : True.instance
+      end
+
       # Method called from Lox to obtain the text representation of nil.
       # @return [String]
       def to_str

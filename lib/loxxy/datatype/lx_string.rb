@@ -7,8 +7,8 @@ module Loxxy
   module Datatype
     # Class for representing a Lox string of characters value.
     class LXString < BuiltinDatatype
-      # Compare a Lox String with another Lox (or genuine Ruby) String
-      # @param other [Datatype::LxString, String]
+      # Check the equality of a Lox String with another Lox object.
+      # @param other [Datatype::LxString, String, Object]
       # @return [Datatype::Boolean]
       def ==(other)
         case other
@@ -17,8 +17,21 @@ module Loxxy
         when String
           (value == other) ? True.instance : False.instance
         else
-          err_msg = "Cannot compare a #{self.class} with #{other.class}"
-          raise StandardError, err_msg
+          False.instance
+        end
+      end
+
+      # Check the inequality of a Lox String with another Lox object.
+      # @param other [Datatype::LxString, String, Object]
+      # @return [Datatype::Boolean]
+      def !=(other)
+        case other
+        when LXString
+          (value != other.value) ? True.instance : False.instance
+        when String
+          (value != other) ? True.instance : False.instance
+        else
+          True.instance
         end
       end
 

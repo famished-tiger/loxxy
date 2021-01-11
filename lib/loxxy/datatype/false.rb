@@ -19,6 +19,22 @@ module Loxxy
       def false?
         true
       end
+
+      # Check for equality of a Lox False with another Lox object
+      # @param other [Datatype::BuiltinDatatype, FalseClass, Object]
+      # @return [Datatype::Boolean]
+      def ==(other)
+        falsey = other.kind_of?(False) || other.kind_of?(FalseClass)
+        falsey ? True.instance : False.instance
+      end
+
+      # Check for inequality of a Lox False with another Lox object
+      # @param other [Datatype::BuiltinDatatype, FalseClass, Object]
+      # @return [Datatype::Boolean]
+      def !=(other)
+        falsey = other.kind_of?(False) || other.kind_of?(FalseClass)
+        falsey ? False.instance : True.instance
+      end
     end # class
 
     False.instance.freeze # Make the sole instance immutable

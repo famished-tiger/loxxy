@@ -7,21 +7,6 @@ module Loxxy
   module Datatype
     # Class for representing a Lox numeric value.
     class Number < BuiltinDatatype
-      # Compare a Lox Number with another Lox (or genuine Ruby) Number
-      # @param other [Datatype::Number, Numeric]
-      # @return [Datatype::Boolean]
-      def ==(other)
-        case other
-        when Number
-          (value == other.value) ? True.instance : False.instance
-        when Numeric
-          (value == other) ? True.instance : False.instance
-        else
-          err_msg = "Cannot compare a #{self.class} with #{other.class}"
-          raise StandardError, err_msg
-        end
-      end
-
       # Perform the addition of two Lox numbers or
       # one Lox number and a Ruby Numeric
       # @param other [Loxxy::Datatype::Number, Numeric]
@@ -51,6 +36,66 @@ module Loxxy
         else
           err_msg = "`-': #{other.class} can't be coerced into #{self.class} (TypeError)"
           raise TypeError, err_msg
+        end
+      end
+
+      # Perform the multiplication of two Lox numbers or
+      # one Lox number and a Ruby Numeric
+      # @param other [Loxxy::Datatype::Number, Numeric]
+      # @return [Loxxy::Datatype::Number]
+      def *(other)
+        case other
+        when Number
+          self.class.new(value * other.value)
+        when Numeric
+          self.class.new(value * other)
+        else
+          err_msg = "'*': Operands must be numbers."
+          raise TypeError, err_msg
+        end
+      end
+
+      # Perform the division of two Lox numbers or
+      # one Lox number and a Ruby Numeric
+      # @param other [Loxxy::Datatype::Number, Numeric]
+      # @return [Loxxy::Datatype::Number]
+      def /(other)
+        case other
+        when Number
+          self.class.new(value / other.value)
+        when Numeric
+          self.class.new(value / other)
+        else
+          err_msg = "'/': Operands must be numbers."
+          raise TypeError, err_msg
+        end
+      end
+
+      # Check the equality of a Lox number object with another object
+      # @param other [Datatype::BuiltinDatatype, Numeric, Object]
+      # @return [Datatype::Boolean]
+      def ==(other)
+        case other
+        when Number
+          (value == other.value) ? True.instance : False.instance
+        when Numeric
+          (value == other) ? True.instance : False.instance
+        else
+          False.instance
+        end
+      end
+
+      # Check the inequality of a Lox number object with another object
+      # @param other [Datatype::BuiltinDatatype, Numeric, Object]
+      # @return [Datatype::Boolean]
+      def !=(other)
+        case other
+        when Number
+          (value != other.value) ? True.instance : False.instance
+        when Numeric
+          (value != other) ? True.instance : False.instance
+        else
+          True.instance
         end
       end
 

@@ -166,6 +166,9 @@ The parser recognizes all the __Lox__ operators, delimiters and separators:
 Of these, the interpreter implements: 
 `+` (addition of two numbers or string concatenation)
 `-` (difference between two numbers)
+`*` (product of two numbers)
+`/` (division of two number)
+`==` and `!=` (in)equality testing of two Lox values
 
 #### Delimiters
 The parser knows all the __Lox__ grouping delimiters:  
@@ -193,9 +196,9 @@ loxxy supports  all the standard __Lox__ datatypes:
 ### Implemented expressions
 Loxxy implements expressions:
 - Plain literals only; or,
-- Addition of two numbers; or,
-- Subtraction of two numbers; or,  
-- Concatenation of two strings
+- Addition, subtraction, product and division of two numbers; or,
+- Concatenation of two strings,
+- (In)equality test of two Lox values
 
 ### Implemented statements
 Loxxy implements the following statements:
