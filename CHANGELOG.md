@@ -1,3 +1,25 @@
+## [0.0.16] - 2021-01-11
+- The interpreter can evaluate product and division of two numbers.
+- It also implements equality `==` and inequality `!=` operators
+
+## Added
+- Method `Datatype::False#==` for equality testing
+- Method `Datatype::False#!=` for inequality testing
+- Method `Datatype::LXString#==` for equality testing
+- Method `Datatype::LXString#!=` for inequality testing
+- Method `Datatype::Nil#==` for equality testing
+- Method `Datatype::Nil#!=` for inequality testing
+- Method `Datatype::Number#==` for equality testing
+- Method `Datatype::Number#!=` for inequality testing
+- Method `Datatype::Number#*` for multiply operator
+- Method `Datatype::Number#/` for divide operator
+- Method `Datatype::True#==` for equality testing
+- Method `Datatype::True#!=` for inequality testing
+
+## Changed
+- Method `BackEnd::Engine#after_binary_expr` to allow `*`, `/`, `==`, `!=` operators
+- File `README.md` updated for the newly implemented operators
+
 ## [0.0.15] - 2021-01-11
 - The interpreter can evaluate substraction between two numbers.
 
