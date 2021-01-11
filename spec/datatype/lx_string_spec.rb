@@ -51,6 +51,11 @@ module Loxxy
           result = subject == ''
           expect(result).to be_false
         end
+
+        it 'performs the concatenation with another string' do
+          concatenation = LXString.new('str') + LXString.new('ing')
+          expect(concatenation == 'string').to be_true
+        end
       end
     end # describe
   end # module

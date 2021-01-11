@@ -2,7 +2,7 @@
 [![Gem Version](https://badge.fury.io/rb/loxxy.svg)](https://badge.fury.io/rb/loxxy)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/famished-tiger/loxxy/blob/main/LICENSE.txt)
 
-
+### What is loxxy?
 A Ruby implementation of the [Lox programming language](https://craftinginterpreters.com/the-lox-language.html ),
 a simple language used in Bob Nystrom's online book [Crafting Interpreters](https://craftinginterpreters.com/ ).
 
@@ -16,7 +16,7 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 The project is still in inception and the interpreter is being implemented...  
 Currently it can execute a tiny subset of __Lox__ language.
 
-The __loxxy__ gem also a parser class `RawPaser` that can parse, in principle, any valid Lox input.
+But the __loxxy__ gem hosts also a parser class `RawPaser` that can parse, in principle, any valid Lox input.
 
 ## What's the fuss about Lox?
 ... Nothing...  
@@ -74,7 +74,7 @@ require 'loxxy'
 
 lox = Loxxy::Interpreter.new
 
-lox_program = '37 + 5; // THE answer'
+lox_program = '47 - 5; // THE answer'
 result = lox.evaluate(lox_program) # => Loxxy::Datatype::Number
 
 # `result` is a Ruby object, so let's use it...
@@ -138,7 +138,6 @@ Here are the language features currently supported by the interpreter:
 - [Operators and Special Chars](#operators-and-special-chars)
 - [Datatypes](#datatypes)
 - [Statements](#statements)
-- `print` statement.
 
 ### Comments
 
@@ -166,6 +165,7 @@ The parser recognizes all the __Lox__ operators, delimiters and separators:
 
 Of these, the interpreter implements: 
 `+` (addition of two numbers or string concatenation)
+`-` (difference between two numbers)
 
 #### Delimiters
 The parser knows all the __Lox__ grouping delimiters:  
@@ -183,19 +183,18 @@ The parser recognizes them all but the interpreter accepts the semicolons only.
 
 ### Datatypes
 
-Loxxy supports the following standard __Lox__ datatypes:
+loxxy supports  all the standard __Lox__ datatypes:
 - `Boolean`: Can be `true` or `false`
 - `Number`: Can be an integer or a floating-point numbers. For example: `123, 12.34, -45.67`
 - `String`: Sequence of characters surrounded by `"`. For example: `"Hello!"`
 - `Nil`: Used to define a null value, denoted by the `nil` keyword
 
-All the Lox literals (booleans, numbers, strings and nil),
-
 ## Statements
 ### Implemented expressions
 Loxxy implements expressions:
-- Consisting of literals only; or,
+- Plain literals only; or,
 - Addition of two numbers; or,
+- Subtraction of two numbers; or,  
 - Concatenation of two strings
 
 ### Implemented statements
@@ -207,8 +206,6 @@ Loxxy implements the following statements:
 // Print statement with nested concatenation
 print "Hello" + ", " + "world!";
 ```
-
-
 
 ## Installation
 

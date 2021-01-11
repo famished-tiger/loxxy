@@ -1,3 +1,30 @@
+## [0.0.15] - 2021-01-11
+- The interpreter can evaluate substraction between two numbers.
+
+## Added
+- Method `Datatype::Number#-` implmenting the subtraction operation
+
+## Changed
+- File `README.md` minor editorial changes.
+- File `lx_string_spec.rb` Added test for string concatentation
+- File `number_spec.rb` Added tests for addition and subtraction operations
+- File `interpreter_spec.rb` Added tests for subtraction operation
+
+## [0.0.14] - 2021-01-10
+- The interpreter can evaluate addition of numbers and string concatenation
+
+## Added
+- Method `Ast::ASTVisitor::visit_binary_expr` for visiting binary expressions
+- Method `Ast::LoxBinaryExpr#accept` for visitor pattern
+- Method `BackEnd::Engine#after_binary_expr` to trigger execution of binary operator
+- `Boolean` class hierarchy: added methos `true?` and `false?` to ease spec test writing
+- Method `Datatype::LXString#+` implementation of the string concatenation
+- Method `Datatype::Number#+` implementation of the addition of numbers
+
+## Changed
+- File `interpreter_spec.rb` Added tests for addition operation and string concatenation
+
+
 ## [0.0.13] - 2021-01-10
 - The interpreter can evaluate directly simple literals.
 

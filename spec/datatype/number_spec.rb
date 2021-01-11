@@ -41,6 +41,16 @@ module Loxxy
         it 'should give its display representation' do
           expect(subject.to_str).to eq(sample_value.to_s)
         end
+
+        it 'should compute the addition with another number' do
+          addition = subject + Number.new(10)
+          expect(addition == -2.34).to be_true
+        end
+
+        it 'should compute the subtraction with another number' do
+          subtraction = subject - Number.new(10)
+          expect(subtraction == -22.34).to be_true
+        end
       end
     end # describe
   end # module

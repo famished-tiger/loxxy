@@ -24,16 +24,32 @@ module Loxxy
 
       # Perform the addition of two Lox numbers or
       # one Lox number and a Ruby Numeric
-      # @param numeric [Loxxy::Datatype::Number, Numeric]
+      # @param other [Loxxy::Datatype::Number, Numeric]
       # @return [Loxxy::Datatype::Number]
-      def +(numeric)
-        case numeric
+      def +(other)
+        case other
         when Number
-          self.class.new(value + numeric.value)
+          self.class.new(value + other.value)
         when Numeric
-          self.class.new(value + numeric)
+          self.class.new(value + other)
         else
-          err_msg = "`+': #{numeric.class} can't be coerced into #{self.class} (TypeError)"
+          err_msg = "`+': #{other.class} can't be coerced into #{self.class} (TypeError)"
+          raise TypeError, err_msg
+        end
+      end
+
+      # Perform the subtraction of two Lox numbers or
+      # one Lox number and a Ruby Numeric
+      # @param other [Loxxy::Datatype::Number, Numeric]
+      # @return [Loxxy::Datatype::Number]
+      def -(other)
+        case other
+        when Number
+          self.class.new(value - other.value)
+        when Numeric
+          self.class.new(value - other)
+        else
+          err_msg = "`-': #{other.class} can't be coerced into #{self.class} (TypeError)"
           raise TypeError, err_msg
         end
       end

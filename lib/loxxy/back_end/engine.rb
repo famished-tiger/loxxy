@@ -44,7 +44,7 @@ module Loxxy
         op = aBinaryExpr.operator
         operand2 = stack.pop
         operand1 = stack.pop
-        implemented = [:+].include?(op)
+        implemented = %i[+ -].include?(op)
         if implemented && operand1.respond_to?(op)
           stack.push operand1.send(op, operand2)
         else

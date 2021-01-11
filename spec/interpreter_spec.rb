@@ -33,10 +33,16 @@ module Loxxy
         expect(result).to be_kind_of(Loxxy::Datatype::True)
       end
 
-      it 'should evaluate arithmetic operation' do
+      it 'should evaluate an addition of two numbers' do
         result = subject.evaluate('123 + 456; // => 579')
         expect(result).to be_kind_of(Loxxy::Datatype::Number)
         expect(result == 579).to be_true
+      end
+
+      it 'should evaluate a substraction of two numbers' do
+        result = subject.evaluate('4 - 3; // => 1')
+        expect(result).to be_kind_of(Loxxy::Datatype::Number)
+        expect(result == 1).to be_true
       end
 
       it 'should evaluate string concatenation' do
