@@ -1,3 +1,18 @@
+## [0.0.17] - 2021-01-12
+- The interpreter can evaluate all arithmetic and comparison operations.
+- It implements `==`, `!=` and the unary operations `!`, `-`
+
+## Added
+- Class `AST::LoxUnaryExpr`
+- Method `AST::ASTBuilder#reduce_unary_expr` to support the evaluation of `!` and ``-@`
+- Method `Ast::ASTVisitor#visit_unnary_expr` for visiting unary expressions
+- Method `Backend::Engine#after_unary_expr` evaluating an unary expression
+- In class `Datatype::BuiltinDatatype` the methods `falsey?`, `truthy?`, `!`, `!=`
+- In class `Datatype::Number`the methods `<`, `<=`, ´>´, `>=` and `-@`
+
+## Changed
+- File `README.md` updated.
+
 ## [0.0.16] - 2021-01-11
 - The interpreter can evaluate product and division of two numbers.
 - It also implements equality `==` and inequality `!=` operators
@@ -36,7 +51,7 @@
 - The interpreter can evaluate addition of numbers and string concatenation
 
 ## Added
-- Method `Ast::ASTVisitor::visit_binary_expr` for visiting binary expressions
+- Method `Ast::ASTVisitor#visit_binary_expr` for visiting binary expressions
 - Method `Ast::LoxBinaryExpr#accept` for visitor pattern
 - Method `BackEnd::Engine#after_binary_expr` to trigger execution of binary operator
 - `Boolean` class hierarchy: added methos `true?` and `false?` to ease spec test writing
