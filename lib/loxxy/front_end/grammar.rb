@@ -121,7 +121,7 @@ module Loxxy
       rule('multiplicative_plus' => 'multOp unary').as 'multiplicative_plus_end'
       rule('multOp' => 'SLASH')
       rule('multOp' => 'STAR')
-      rule('unary' => 'unaryOp unary')
+      rule('unary' => 'unaryOp unary').as 'unary_expr'
       rule('unary' => 'call')
       rule('unaryOp' => 'BANG')
       rule('unaryOp' => 'MINUS')

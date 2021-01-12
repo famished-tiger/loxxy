@@ -158,19 +158,12 @@ Of these, the interpreter implements: `false`, `nil`, `print`, `true`
 
 ### Operators and Special Chars
 #### Operators
-The parser recognizes all the __Lox__ operators, delimiters and separators:
+The __loxxy__ interpreter supports all the __Lox__ unary and binary operators:
 - Arithmetic operators: `+`, `-`, `*`, `/`
 - Comparison operators: `>`, `>=`, `<`, `<=`
 - Equality operators: `==`, `!=`
 - Unary negate (change sign): `-`
 - Unary not: `!`
-
-Of these, the interpreter implements: 
-`+` (addition of two numbers or string concatenation)  
-`-` (difference between two numbers)  
-`*` (product of two numbers)  
-`/` (division of two number)  
-`==` and `!=` (in)equality testing of two Lox values  
 
 #### Delimiters
 The parser knows all the __Lox__ grouping delimiters:  
@@ -198,10 +191,11 @@ loxxy supports  all the standard __Lox__ datatypes:
 ### Implemented expressions
 Loxxy implements expressions:
 - Plain literals only; or,
-- Basic arithmetic operations (`+`, `-`, `*`, `/`); or,  
-- Addition, subtraction, product and division of two numbers; or,
+- (In)equality testing between two values; or,   
+- Basic arithmetic operations (`+`, `-`, `*`, `/`, `unary -`); or,  
+- Comparison between two numbers; or,
 - Concatenation of two strings,
-- (In)equality test of two Lox values
+- Negation `!`
 
 ### Implemented statements
 Loxxy implements the following statements:
@@ -209,7 +203,7 @@ Loxxy implements the following statements:
 - Print statement
 
 ```javascript
-// Print statement with nested concatenation
+// Print statement with nested string concatenation
 print "Hello" + ", " + "world!";
 ```
 

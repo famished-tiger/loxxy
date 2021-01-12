@@ -71,6 +71,12 @@ module Loxxy
         end
       end
 
+      # Unary minus (return value with changed sign)
+      # @return [Loxxy::Datatype::Number]
+      def -@
+        self.class.new(-value)
+      end
+
       # Check the equality of a Lox number object with another object
       # @param other [Datatype::BuiltinDatatype, Numeric, Object]
       # @return [Datatype::Boolean]
@@ -85,18 +91,50 @@ module Loxxy
         end
       end
 
-      # Check the inequality of a Lox number object with another object
-      # @param other [Datatype::BuiltinDatatype, Numeric, Object]
+      # Check whether this Lox number has a greater value than given argument.
+      # @param other [Datatype::Number, Numeric]
       # @return [Datatype::Boolean]
-      def !=(other)
+      def >(other)
         case other
         when Number
-          (value != other.value) ? True.instance : False.instance
+          (value > other.value) ? True.instance : False.instance
         when Numeric
-          (value != other) ? True.instance : False.instance
+          (value > other) ? True.instance : False.instance
         else
-          True.instance
+          msg = "'>': Operands must be numbers."
+          raise StandardError, msg
         end
+      end
+
+      # Check whether this Lox number has a greater or equal value
+      # than given argument.
+      # @param other [Datatype::Number, Numeric]
+      # @return [Datatype::Boolean]
+      def >=(other)
+        case other
+        when Number
+          (value >= other.value) ? True.instance : False.instance
+        when Numeric
+          (value >= other) ? True.instance : False.instance
+        else
+          msg = "'>': Operands must be numbers."
+          raise StandardError, msg
+        end
+      end
+
+      # Check whether this Lox number has a lesser value than given argument.
+      # @param other [Datatype::Number, Numeric]
+      # @return [Datatype::Boolean]
+      def <(other)
+        !(self >= other)
+      end
+
+      # Check whether this Lox number has a lesser or equal value
+      # than given argument.
+      # @param other [Datatype::Number, Numeric]
+      # @return [Datatype::Boolean]
+      def <=(other)
+        !(self > other)
       end
 
       protected

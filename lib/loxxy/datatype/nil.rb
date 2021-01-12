@@ -22,12 +22,18 @@ module Loxxy
         is_nil ? True.instance : False.instance
       end
 
-      # Check the inequality with another object.
-      # @param other [Datatype::BuiltinDatatype, NilClass, Object]
-      # @return [Datatype::Boolean]
-      def !=(other)
-        is_nil = other.kind_of?(Nil) || other.kind_of?(NilClass)
-        is_nil ? False.instance : True.instance
+      # Is the value considered falsey in Lox?
+      # Rule: false and nil are falsey and everything else is truthy.
+      # This test used in conditional statements (i.e. if, while)
+      def falsey?
+        true
+      end
+
+      # Is the value considered truthy in Lox?
+      # Rule: false and nil are falsey and everything else is truthy.
+      # This test used in conditional statements (i.e. if, while)
+      def truthy?
+        false
       end
 
       # Method called from Lox to obtain the text representation of nil.

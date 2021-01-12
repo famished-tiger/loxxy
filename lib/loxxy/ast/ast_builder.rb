@@ -15,7 +15,6 @@ module Loxxy
         # @return [Hash{String => String}]
         Name2special = {
           'AND' => 'and',
-          'BANG' => '!',
           'BANG_EQUAL' => '!=',
           'COMMA' =>  ',',
           'DOT' => '.',
@@ -35,6 +34,11 @@ module Loxxy
           'SEMICOLON' => ';',
           'SLASH' =>  '/',
           'STAR' => '*'
+        }.freeze
+
+        Name2unary = {
+          'BANG' => '!',
+          'MINUS' => '-@'
         }.freeze
       end # defined
 
@@ -229,6 +233,13 @@ module Loxxy
       # rule('multiplicative_plus' => 'multOp unary')
       def reduce_multiplicative_plus_end(production, range, tokens, theChildren)
         reduce_binary_plus_end(production, range, tokens, theChildren)
+      end
+
+      # rule('unary' => 'unaryOp unary')
+      def reduce_unary_expr(_production, _range, tokens, theChildren)
+        operator = Name2unary[theChildren[0].symbol.name].to_sym
+        operand = theChildren[1]
+        LoxUnaryExpr.new(tokens[0].position, operator, operand)
       end
 
       # rule('primary' => 'FALSE' | TRUE').as 'literal_expr'

@@ -107,6 +107,63 @@ module Loxxy
         end
       end
 
+      it 'should evaluate a comparison of two numbers' do
+        [
+          ['1 < 2;', true],
+          ['2 < 2;', false],
+          ['2 < 1;', false],
+          ['1 <= 2;', true],
+          ['2 <= 2;', true],
+          ['2 <= 1;', false],
+          ['1 > 2;', false],
+          ['2 > 2;', false],
+          ['2 > 1;', true],
+          ['1 >= 2;', false],
+          ['2 >= 2;', true],
+          ['2 >= 1;', true],
+          ['0 < -0;', false],
+          ['-0 < 0;', false],
+          ['0 > -0;', false],
+          ['-0 > 0;', false],
+          ['0 <= -0;', true],
+          ['-0 <= 0;', true],
+          ['0 >= -0;', true],
+          ['-0 >= 0;', true]
+        ].each do |(source, predicted)|
+          lox = Loxxy::Interpreter.new
+          result = lox.evaluate(source)
+          expect(result.value == predicted).to be_truthy
+        end
+      end
+
+      it 'should evaluate the change sign of a number' do
+        [
+          ['- 3;', -3],
+          ['- - 3;', 3],
+          ['- - - 3;', -3]
+        ].each do |(source, predicted)|
+          lox = Loxxy::Interpreter.new
+          result = lox.evaluate(source)
+          expect(result.value == predicted).to be_truthy
+        end
+      end
+
+      it 'should evaluate the negation of an object' do
+        [
+          ['!true;', false],
+          ['!false;', true],
+          ['!!true;', true],
+          ['!123;', false],
+          ['!0;', false],
+          ['!nil;', true],
+          ['!"";', false]
+        ].each do |(source, predicted)|
+          lox = Loxxy::Interpreter.new
+          result = lox.evaluate(source)
+          expect(result.value == predicted).to be_truthy
+        end
+      end
+
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Hello, world!')

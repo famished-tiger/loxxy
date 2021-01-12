@@ -20,20 +20,26 @@ module Loxxy
         true
       end
 
+      # Is the value considered falsey in Lox?
+      # Rule: false and nil are falsey and everything else is truthy.
+      # This test used in conditional statements (i.e. if, while)
+      def falsey?
+        true
+      end
+
+      # Is the value considered truthy in Lox?
+      # Rule: false and nil are falsey and everything else is truthy.
+      # This test used in conditional statements (i.e. if, while)
+      def truthy?
+        false
+      end
+
       # Check for equality of a Lox False with another Lox object
       # @param other [Datatype::BuiltinDatatype, FalseClass, Object]
       # @return [Datatype::Boolean]
       def ==(other)
         falsey = other.kind_of?(False) || other.kind_of?(FalseClass)
         falsey ? True.instance : False.instance
-      end
-
-      # Check for inequality of a Lox False with another Lox object
-      # @param other [Datatype::BuiltinDatatype, FalseClass, Object]
-      # @return [Datatype::Boolean]
-      def !=(other)
-        falsey = other.kind_of?(False) || other.kind_of?(FalseClass)
-        falsey ? False.instance : True.instance
       end
     end # class
 

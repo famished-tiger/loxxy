@@ -21,20 +21,6 @@ module Loxxy
         end
       end
 
-      # Check the inequality of a Lox String with another Lox object.
-      # @param other [Datatype::LxString, String, Object]
-      # @return [Datatype::Boolean]
-      def !=(other)
-        case other
-        when LXString
-          (value != other.value) ? True.instance : False.instance
-        when String
-          (value != other) ? True.instance : False.instance
-        else
-          True.instance
-        end
-      end
-
       # Perform the concatenation of two Lox stings or
       # one Lox string and a Ruby String
       # @param other [Loxxy::Datatype::LXString, String]

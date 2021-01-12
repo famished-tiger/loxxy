@@ -170,6 +170,9 @@ Naming/BlockParameterName:
 
 Naming/MethodParameterName:
   Enabled: false
+  
+Naming/MethodName:
+  Enabled: false
 
 Naming/VariableName:
   Enabled: false
@@ -247,7 +250,7 @@ Style/IfUnlessModifier:
   Enabled: false
 
 Style/InverseMethods:
-  Enabled: true
+  Enabled: false
 
 Style/MissingRespondToMissing:
   Enabled: false

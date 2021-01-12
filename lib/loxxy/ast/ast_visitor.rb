@@ -51,7 +51,7 @@ module Loxxy
         broadcast(:after_ptree, aParseTree)
       end
 
-      # Visit event. The visitor is about to visit a print statement expression.
+      # Visit event. The visitor is about to visit a print statement.
       # @param aPrintStmt [AST::LOXPrintStmt] the print statement node to visit
       def visit_print_stmt(aPrintStmt)
         broadcast(:before_print_stmt, aPrintStmt)
@@ -59,12 +59,20 @@ module Loxxy
         broadcast(:after_print_stmt, aPrintStmt)
       end
 
-      # Visit event. The visitor is about to visit a print statement expression.
+      # Visit event. The visitor is about to visit a binary expression.
       # @param aBinaryExpr [AST::LOXBinaryExpr] the binary expression node to visit
       def visit_binary_expr(aBinaryExpr)
         broadcast(:before_binary_expr, aBinaryExpr)
         traverse_subnodes(aBinaryExpr)
         broadcast(:after_binary_expr, aBinaryExpr)
+      end
+
+      # Visit event. The visitor is about to visit an unary expression.
+      # @param anUnaryExpr [AST::anUnaryExpr] unary expression node to visit
+      def visit_unary_expr(anUnaryExpr)
+        broadcast(:before_unary_expr, anUnaryExpr)
+        traverse_subnodes(anUnaryExpr)
+        broadcast(:after_unary_expr, anUnaryExpr)
       end
 
       # Visit event. The visitor is visiting the

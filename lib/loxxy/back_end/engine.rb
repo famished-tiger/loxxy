@@ -22,7 +22,7 @@ module Loxxy
         @stack = []
       end
 
-      # Given an abstract syntax parse tree visitor, luanch the visit
+      # Given an abstract syntax parse tree visitor, launch the visit
       # and execute the visit events in the output stream.
       # @param aVisitor [AST::ASTVisitor]
       # @return [Loxxy::Datatype::BuiltinDatatype]
@@ -44,9 +44,19 @@ module Loxxy
         op = aBinaryExpr.operator
         operand2 = stack.pop
         operand1 = stack.pop
-        implemented = %i[+ - * / == !=].include?(op)
-        if implemented && operand1.respond_to?(op)
+        if operand1.respond_to?(op)
           stack.push operand1.send(op, operand2)
+        else
+          msg1 = "`#{op}': Unimplemented operator for a #{operand1.class}."
+          raise StandardError, msg1
+        end
+      end
+
+      def after_unary_expr(anUnaryExpr)
+        op = anUnaryExpr.operator
+        operand = stack.pop
+        if operand.respond_to?(op)
+          stack.push operand.send(op)
         else
           msg1 = "`#{op}': Unimplemented operator for a #{operand1.class}."
           raise StandardError, msg1
