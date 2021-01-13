@@ -28,6 +28,13 @@ module Loxxy
         true # Default implementation
       end
 
+      # Check for inequality of this object with another Lox object
+      # @param other [Datatype::BuiltinDatatype, Object]
+      # @return [Datatype::Boolean]
+      def !=(other)
+        !(self == other)
+      end
+
       # Negation ('not')
       # Returns a boolean with opposite truthiness value.
       # @return [Datatype::Boolean]
@@ -35,11 +42,18 @@ module Loxxy
         falsey? ? True.instance : False.instance
       end
 
-      # Check for inequality of this object with another Lox object
-      # @param other [Datatype::BuiltinDatatype, Object]
-      # @return [Datatype::Boolean]
-      def !=(other)
-        !(self == other)
+      # Returns the first falsey argument (if any),
+      # otherwise returns the last truthy argument.
+      # @param operand2 [Loxxy::Datatype::BuiltinDatatype, Proc]
+      def and(operand2)
+        falsey? ? self : logical_2nd_arg(operand2)
+      end
+
+      # Returns the first truthy argument (if any),
+      # otherwise returns the last falsey argument.
+      # @param operand2 [Loxxy::Datatype::BuiltinDatatype, Proc]
+      def or(operand2)
+        truthy? ? self : logical_2nd_arg(operand2)
       end
 
       # Method called from Lox to obtain the text representation of the boolean.
@@ -52,6 +66,19 @@ module Loxxy
 
       def validated_value(aValue)
         aValue
+      end
+
+      def logical_2nd_arg(operand2)
+        case operand2
+          when false
+            False.instance # Convert to Lox equivalent
+          when nil
+            Nil.instance # Convert to Lox equivalent
+          when true
+            True.instance # Convert to Lox equivalent
+          else
+            operand2
+        end
       end
     end # class
   end # module

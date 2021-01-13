@@ -59,6 +59,20 @@ module Loxxy
         broadcast(:after_print_stmt, aPrintStmt)
       end
 
+      # Visit event. The visitor is about to visit a logical expression.
+      # Since logical expressions may take shorcuts by not evaluating all their
+      # sub-expressiosns, they are responsible for visiting or not their children.
+      # @param aBinaryExpr [AST::LOXBinaryExpr] the logical expression node to visit
+      def visit_logical_expr(aLogicalExpr)
+        broadcast(:before_logical_expr, aLogicalExpr)
+
+        # As logical connectors may take a shortcut only the first argument is visited
+        traverse_given_subnode(aLogicalExpr, 0)
+
+        # The second child could be visited: this action is deferred in handler
+        broadcast(:after_logical_expr, aLogicalExpr, self)
+      end
+
       # Visit event. The visitor is about to visit a binary expression.
       # @param aBinaryExpr [AST::LOXBinaryExpr] the binary expression node to visit
       def visit_binary_expr(aBinaryExpr)
@@ -104,6 +118,20 @@ module Loxxy
         subnodes.each { |a_node| a_node.accept(self) }
 
         broadcast(:after_subnodes, aParentNode, subnodes)
+      end
+
+      # Visit event. The visitor is about to visit one given subnode of a non
+      # terminal node.
+      # @param aParentNode [Ast::LocCompoundExpr] the parent node.
+      # @param index [integer] index of child subnode
+      def traverse_given_subnode(aParentNode, index)
+        subnode = aParentNode.subnodes[index]
+        broadcast(:before_given_subnode, aParentNode, subnode)
+
+        # Now, let's proceed with the visit of that subnode
+        subnode.accept(self)
+
+        broadcast(:after_given_subnode, aParentNode, subnode)
       end
 
       # Send a notification to all subscribers.

@@ -164,6 +164,53 @@ module Loxxy
         end
       end
 
+      it 'should evaluate the "conjunction" of two values' do
+        [
+          # Return the first falsey argument
+          ['false and 1;', false],
+          ['nil and 1;', nil],
+          ['true and 1;', 1],
+          ['1 and 2 and false;', false],
+          ['1 and 2 and nil;', nil],
+
+          # Return the last argument if all are truthy
+          ['1 and true;', true],
+          ['0 and true;', true],
+          ['"false" and 0;', 0],
+          ['1 and 2 and 3;', 3]
+
+          # TODO test short-circuit at first false argument
+        ].each do |(source, predicted)|
+          lox = Loxxy::Interpreter.new
+          result = lox.evaluate(source)
+          expect(result.value == predicted).to be_truthy
+        end
+      end
+
+      it 'should evaluate the "disjunction" of two values' do
+        [
+          # Return the first truthy argument
+          ['1 or true;', 1],
+          ['false or 1;', 1],
+          ['nil or 1;', 1],
+          ['false or false or true;', true],
+          ['1 and 2 and nil;', nil],
+
+          # Return the last argument if all are falsey
+          ['false or false;', false],
+          ['nil or false;', false],
+          ['false or nil;', nil],
+          ['false or false or false;', false],
+          ['false or false or nil;', nil]
+
+          # TODO test short-circuit at first false argument
+        ].each do |(source, predicted)|
+          lox = Loxxy::Interpreter.new
+          result = lox.evaluate(source)
+          expect(result.value == predicted).to be_truthy
+        end
+      end
+
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Hello, world!')

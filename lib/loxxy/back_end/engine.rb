@@ -40,6 +40,38 @@ module Loxxy
         @ostream.print tos.to_str
       end
 
+      def after_logical_expr(aLogicalExpr, visitor)
+        op = aLogicalExpr.operator
+        operand1 = stack.pop # only first operand was evaluated
+        result = nil
+        if ((op == :and) && operand1.falsey?) || ((op == :or) && operand1.truthy?)
+          result = operand1
+        else
+          raw_operand2 = aLogicalExpr.subnodes[1]
+          raw_operand2.accept(visitor) # Visit means operand2 is evaluated
+          operand2 = stack.pop
+          result = logical_2nd_arg(operand2)
+        end
+
+        stack.push result
+      end
+
+      def logical_2nd_arg(operand2)
+        case operand2
+           when false
+             False.instance # Convert to Lox equivalent
+           when nil
+             Nil.instance # Convert to Lox equivalent
+           when true
+             True.instance # Convert to Lox equivalent
+           when Proc
+             # Second operand wasn't yet evaluated...
+             operand2.call
+           else
+             operand2
+        end
+      end
+
       def after_binary_expr(aBinaryExpr)
         op = aBinaryExpr.operator
         operand2 = stack.pop

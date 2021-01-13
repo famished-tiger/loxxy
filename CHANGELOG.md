@@ -1,3 +1,8 @@
+## [0.0.18] - 2021-01-13
+- The interpreter can evaluate `and`, `or`expressions.
+
+
+
 ## [0.0.17] - 2021-01-12
 - The interpreter can evaluate all arithmetic and comparison operations.
 - It implements `==`, `!=` and the unary operations `!`, `-`

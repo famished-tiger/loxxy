@@ -96,6 +96,17 @@ module Loxxy
         node
       end
 
+      def reduce_logical_expr(_production, _range, tokens, theChildren)
+        operand1 = theChildren[0]
+
+        # Second child is array with couples [operator, operand2]
+        theChildren[1].each do |(operator, operand2)|
+          operand1 = LoxLogicalExpr.new(tokens[0].position, operator, operand1, operand2)
+        end
+
+        operand1
+      end
+
       # rule('lhs' => 'nonterm_i nonterm_k_plus')
       def reduce_binary_operator(_production, _range, tokens, theChildren)
         operand1 = theChildren[0]
@@ -149,7 +160,7 @@ module Loxxy
 
       # rule('logic_or' => 'logic_and disjunct_plus')
       def reduce_logic_or_plus(production, range, tokens, theChildren)
-        reduce_binary_operator(production, range, tokens, theChildren)
+        reduce_logical_expr(production, range, tokens, theChildren)
       end
 
       # rule('disjunct_plus' => 'disjunct_plus OR logic_and')
@@ -164,7 +175,7 @@ module Loxxy
 
       # rule('logic_and' => 'equality conjunct_plus')
       def reduce_logic_and_plus(production, range, tokens, theChildren)
-        reduce_binary_operator(production, range, tokens, theChildren)
+        reduce_logical_expr(production, range, tokens, theChildren)
       end
 
       # rule('conjunct_plus' => 'conjunct_plus AND equality')

@@ -128,16 +128,20 @@ program
 ```
 
 ## Suppported Lox language features
-Although the interpreter should parse almost any valid Lox program,
-it currently can evaluate a tiny set of AST node (AST = Abstract Syntax Tree).
+On one hand, the parser covers the complete Lox grammar and should therefore, in principle,
+parse any valid Lox program.
+
+On the other hand, the interpreter is under development and currently it can evaluate only a tiny subset of __Lox__.
+But the situation is changing almost daily, stay tuned...
 
 Here are the language features currently supported by the interpreter:
 
 - [Comments](#comments)
 - [Keywords](#keywords)
-- [Operators and Special Chars](#operators-and-special-chars)
 - [Datatypes](#datatypes)
-- [Statements](#statements)
+- [Statements](#statements)  
+  -[Expressions](#expressions)  
+  -[Print Statement](#print-statement)
 
 ### Comments
 
@@ -148,36 +152,10 @@ Loxxy supports single line C-style comments.
 ```
 
 ### Keywords
-
-The parser knows all the __Lox__ reserved keywords:
+Loxxy implements the following __Lox__ reserved keywords:
 ```lang-none
-and, class, else, false, fun, for, if, nil, or,
-print, return, super, this, true, var, while
+and, false, nil, or, print, true
 ```
-Of these, the interpreter implements: `false`, `nil`, `print`, `true`
-
-### Operators and Special Chars
-#### Operators
-The __loxxy__ interpreter supports all the __Lox__ unary and binary operators:
-- Arithmetic operators: `+`, `-`, `*`, `/`
-- Comparison operators: `>`, `>=`, `<`, `<=`
-- Equality operators: `==`, `!=`
-- Unary negate (change sign): `-`
-- Unary not: `!`
-
-#### Delimiters
-The parser knows all the __Lox__ grouping delimiters:  
-(`, ), `{`, `}`
-
-These aren't yet implemented in the interpreter.
-
-The other characters that have a special meaning in __Lox__ are:
-- `,` Used in parameter list
-- `.` For the dot notation (i.e. calling a method)
-- `;` The semicolon is used to terminates expressions
-- `=` Assignment
-
-The parser recognizes them all but the interpreter accepts the semicolons only.
 
 ### Datatypes
 
@@ -187,24 +165,93 @@ loxxy supports  all the standard __Lox__ datatypes:
 - `String`: Sequence of characters surrounded by `"`. For example: `"Hello!"`
 - `Nil`: Used to define a null value, denoted by the `nil` keyword
 
-## Statements
-### Implemented expressions
-Loxxy implements expressions:
-- Plain literals only; or,
-- (In)equality testing between two values; or,   
-- Basic arithmetic operations (`+`, `-`, `*`, `/`, `unary -`); or,  
-- Comparison between two numbers; or,
-- Concatenation of two strings,
-- Negation `!`
+### Statements
 
-### Implemented statements
-Loxxy implements the following statements:
-- Expressions (see above sub-section)
-- Print statement
+Loxxy supports the following statements:  
+-[Expressions](#expressions)  
+  -[Arithmetic expressions](#arithmetic-expressions)  
+  -[String concatenation](#string-concatenation)  
+  -[Comparison expressions](#comparison-expressions)  
+  -[Logical expressions](#logical-expressions)  
+  -[Grouping expressions](#grouping-expressions)  
+-[Print Statement](#print-statement)
 
-```javascript
-// Print statement with nested string concatenation
-print "Hello" + ", " + "world!";
+#### Expressions
+
+##### Arithmetic expressions
+Loxxy supports the following operators for arithmetic expressions:
+
+- `+`: Adds of two numbers. Both operands must be of the type Number  
+  E.g. `37 + 5; // => 42`  
+  `7 + -3; // => 4`
+- `-`: (Binary) Subtracts right operand from left operand. Both operands must be numbers.  
+  E.g. `47 - 5; // => 42`
+- `-`: (Unary) Negates (= changes the sign) of the given number operand.  
+  E.g. `- -3; // => 3`
+- `*`: Multiplies two numbers  
+  E.g. `2 * 3; // => 6`
+- `/`: Divides two numbers  
+  E.g. `8 / 2; // => 4`
+  `5 / 2; // => 2.5`
+
+##### String concatenation
+- `+`: Concatenates two strings. Both operands must be of the String type.  
+  E.g. `"Hello" + ", " + "world! // => "Hello, world!"`
+
+##### Comparison expressions
+
+- `==`: Returns `true` if left operand is equal to right operand, otherwise `false`  
+  E.g. `false == false; // => true`  
+  `5 + 2 == 3 + 4; // => true`  
+  `"" == ""; // => true`
+- `!=`: Returns `true` if left operand is not equal to right operand, otherwise `false`  
+  E.g. `false != "false"; // => true`  
+  `5 + 2 != 4 + 3; // => false`
+- `<`: Returns `true` if left operand is less than right operand, otherwise `false`. Both operands must be numbers  
+  E.g. `1 < 3; // => true`  
+  `1 < 0; // => false`  
+  `2 < 2; // => false`
+- `<=`: Returns `true` if left operand is equal to right operand, otherwise `false`. Both operands must be numbers  
+  E.g. `1 <= 3; // => true`  
+  `1 <= 0; // => false`  
+  `2 <= 2; // => true`
+- `>`: Returns `true` if left operand is equal to right operand, otherwise `false`. Both operands must be numbers  
+  E.g. `1 > 3; // => false`  
+  `1 > 0; // => true`  
+  `2 > 2; // => false`
+- `>=`: Returns `true` if left operand is equal to right operand, otherwise `false`. Both operands must be numbers  
+  E.g. `1 > 3; // => false`  
+  `1 > 0; // => true`  
+  `2 > 2; // => false`
+
+##### Logical expressions
+
+REMINDER: In __Lox__, `false` and `nil` are considered falsey, everything else is truthy.
+
+- `and`: When both operands are booleans, then returns `true` if both left and right operands are truthy, otherwise `false`.   
+  If at least one operand isn't a boolean then returns first falsey operand else (both operands are truthy) returns the second operand.
+  truthy returns the second operand.  
+  E.g. `false and true; // => false`  
+  `true and nil; // => nil`  
+  `0 and true and ""; // => ""`
+- `or`: When both operands are booleans, then returns `true` if left or right operands are truthy, otherwise `false`.  
+  If at least one operand isn't a boolean then returns first truthy operand else (both operands are truthy) returns the second operand.
+  E.g. `false or true; // => true`  
+  `true or nil; // => nil`  
+  `false or nil; // => nil`  
+  `0 or true or ""; // => 0`
+- `!`: Performs a logical negation on its operand  
+  E.g. `!false; // => true`  
+  `!!true; // => true`  
+  `!0; // => false`
+
+#####  Print Statement
+
+The statement print + expression + ; prints the result of the expression to stdout.
+
+``` javascript
+print "Hello, world!";  // Output: Hello, world!
+
 ```
 
 ## Installation

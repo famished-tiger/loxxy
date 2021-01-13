@@ -262,12 +262,12 @@ LOX_END
       end # context
 
       context 'Parsing logical expressions' do
-        it 'should parse the logical operations betweentwo sub-expression' do
+        it 'should parse the logical operations between two sub-expression' do
           %w[or and].each do |connector|
             input = "5 > 2 #{connector} 3 <= 4;"
             ptree = subject.parse(input)
             expr = ptree.root
-            expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+            expect(expr).to be_kind_of(Ast::LoxLogicalExpr)
             expect(expr.operator).to eq(connector.to_sym)
             expect(expr.operands[0]).to be_kind_of(Ast::LoxBinaryExpr)
             expect(expr.operands[0].operator).to eq(:>)
@@ -284,9 +284,9 @@ LOX_END
           input = '4 > 3 and 1 < 2 or 4 >= 5;'
           ptree = subject.parse(input)
           expr = ptree.root
-          expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr).to be_kind_of(Ast::LoxLogicalExpr)
           expect(expr.operator).to eq(:or) # or has lower precedence than and
-          expect(expr.operands[0]).to be_kind_of(Ast::LoxBinaryExpr)
+          expect(expr.operands[0]).to be_kind_of(Ast::LoxLogicalExpr)
           expect(expr.operands[0].operator).to eq(:and)
           conjuncts = expr.operands[0].operands
           expect(conjuncts[0]).to be_kind_of(Ast::LoxBinaryExpr)
