@@ -89,6 +89,14 @@ module Loxxy
         broadcast(:after_unary_expr, anUnaryExpr)
       end
 
+      # Visit event. The visitor is about to visit a grouping expression.
+      # @param aGroupingExpr [AST::LoxGroupingExpr] grouping expression to visit
+      def visit_grouping_expr(aGroupingExpr)
+        broadcast(:before_grouping_expr, aGroupingExpr)
+        traverse_subnodes(aGroupingExpr)
+        broadcast(:after_grouping_expr, aGroupingExpr)
+      end
+
       # Visit event. The visitor is visiting the
       # given terminal node containing a datatype object.
       # @param aLiteralExpr [AST::LoxLiteralExpr] the leaf node to visit.

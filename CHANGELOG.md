@@ -1,15 +1,28 @@
+## [0.0.18] - 2021-01-14
+- The interpreter supports expressions between parentheses (grouping).
+
+## Added
+- Class `Ast::LoxLogicalExpr`
+- Method `Ast::ASTBuilder#reduce_grouping_expr` as semantic action for grouping expression
+- Method `Ast::ASTVisitor#visit_grouping_expr` for visiting grouping expressions
+- Method `Engine::after_grouping_expr`for the evaluation of grouping expressions
+
 ## [0.0.18] - 2021-01-13
 - The interpreter can evaluate `and`, `or`expressions.
 
-
+## Added
+- Class `Ast::LoxLogicalExpr`
+- Method `Ast::ASTBuilder#reduce_logical_expr` for the semantic action require for `and`, `or`
+- Method `Ast::ASTVisitor#visit_logical_expr` for visiting logical expressions
+- Method `Backend::Engine#after_logical_expr` implements the evaluation of the logical expressions
 
 ## [0.0.17] - 2021-01-12
 - The interpreter can evaluate all arithmetic and comparison operations.
 - It implements `==`, `!=` and the unary operations `!`, `-`
 
 ## Added
-- Class `AST::LoxUnaryExpr`
-- Method `AST::ASTBuilder#reduce_unary_expr` to support the evaluation of `!` and ``-@`
+- Class `Ast::LoxUnaryExpr`
+- Method `Ast::ASTBuilder#reduce_unary_expr` to support the evaluation of `!` and ``-@`
 - Method `Ast::ASTVisitor#visit_unnary_expr` for visiting unary expressions
 - Method `Backend::Engine#after_unary_expr` evaluating an unary expression
 - In class `Datatype::BuiltinDatatype` the methods `falsey?`, `truthy?`, `!`, `!=`

@@ -138,7 +138,7 @@ module Loxxy
       rule('primary' => 'NUMBER').as 'literal_expr'
       rule('primary' => 'STRING').as 'literal_expr'
       rule('primary' => 'IDENTIFIER')
-      rule('primary' => 'LEFT_PAREN expression RIGHT_PAREN')
+      rule('primary' => 'LEFT_PAREN expression RIGHT_PAREN').as 'grouping_expr'
       rule('primary' => 'SUPER DOT IDENTIFIER')
 
       # Utility rules

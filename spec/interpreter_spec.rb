@@ -211,6 +211,18 @@ module Loxxy
         end
       end
 
+      it 'should supprt expressions between parentheses' do
+        [
+          ['3 + 4 * 5;', 23],
+          ['(3 + 4) * 5;', 35],
+          ['(5 - (3 - 1)) + -(1);', 2]
+        ].each do |(source, predicted)|
+          lox = Loxxy::Interpreter.new
+          result = lox.evaluate(source)
+          expect(result.value == predicted).to be_truthy
+        end
+      end
+
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Hello, world!')

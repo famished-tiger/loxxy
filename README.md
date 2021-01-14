@@ -245,6 +245,15 @@ REMINDER: In __Lox__, `false` and `nil` are considered falsey, everything else i
   `!!true; // => true`  
   `!0; // => false`
 
+#####  Grouping expressions
+Use parentheses `(` `)` for a better control in expression/operator precedence.
+
+``` javascript
+print 3 + 4 * 5;  // => 23
+print (3 + 4) * 5; // => 35
+```
+
+
 #####  Print Statement
 
 The statement print + expression + ; prints the result of the expression to stdout.

@@ -134,6 +134,11 @@ module Loxxy
         [[operator, operand2]]
       end
 
+      # Return the AST node corresponding to the second symbol in the rhs
+      def reduce_keep_symbol2(_production, _range, _tokens, theChildren)
+        theChildren[1]
+      end
+
       #####################################
       #  SEMANTIC ACTIONS
       #####################################
@@ -251,6 +256,12 @@ module Loxxy
         operator = Name2unary[theChildren[0].symbol.name].to_sym
         operand = theChildren[1]
         LoxUnaryExpr.new(tokens[0].position, operator, operand)
+      end
+
+      # rule('primary' => 'LEFT_PAREN expression RIGHT_PAREN')
+      def reduce_grouping_expr(_production, _range, tokens, theChildren)
+        subexpr = theChildren[1]
+        LoxGroupingExpr.new(tokens[0].position, subexpr)
       end
 
       # rule('primary' => 'FALSE' | TRUE').as 'literal_expr'

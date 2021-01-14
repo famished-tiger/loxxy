@@ -95,6 +95,10 @@ module Loxxy
         end
       end
 
+      def after_grouping_expr(_groupingExpr)
+        # Do nothing: work was already done by visiting /evaluating the subexpression
+      end
+
       # @param literalExpr [Ast::LoxLiteralExpr]
       def before_literal_expr(literalExpr)
         stack.push(literalExpr.literal)
