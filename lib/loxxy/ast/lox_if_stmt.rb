@@ -7,10 +7,10 @@ module Loxxy
     class LoxIfStmt < LoxCompoundExpr
       # @return [LoxNode] code of then branch
       attr_reader :then_stmt
-      
+
       # @return [LoxNode, NilClass] code of else branch
       attr_reader :else_stmt
-      
+
       # @param aPosition [Rley::Lexical::Position] Position of the entry in the input stream.
       # @param subExpr [Loxxy::Ast::LoxNode]
       def initialize(aPosition, condExpr, thenStmt, elseStmt)
