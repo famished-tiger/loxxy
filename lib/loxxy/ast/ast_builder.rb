@@ -158,6 +158,14 @@ module Loxxy
       return_first_child(range, tokens, theChildren) # Discard the semicolon
       end
 
+      # rule('ifStmt' => 'IF ifCondition statement elsePart_opt')
+      def reduce_if_stmt(_production, _range, tokens, theChildren)
+        condition = theChildren[1]
+        then_stmt = theChildren[2]
+        else_stmt = theChildren[3]
+        LoxIfStmt.new(tokens[0].position, condition, then_stmt, else_stmt)
+      end
+
       # rule('printStmt' => 'PRINT expression SEMICOLON')
       def reduce_print_stmt(_production, _range, tokens, theChildren)
         Ast::LoxPrintStmt.new(tokens[1].position, theChildren[1])

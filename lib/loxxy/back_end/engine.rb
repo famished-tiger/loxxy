@@ -33,7 +33,18 @@ module Loxxy
         stack.empty? ? Datatype::Nil.instance : stack.pop
       end
 
+      ##########################################################################
       # Visit event handling
+      ##########################################################################
+      def after_if_stmt(anIfStmt, aVisitor)
+        # Retrieve the result of the condition evaluation
+        condition = stack.pop
+        if condition.truthy?
+          result = anIfStmt.then_stmt.accept(aVisitor)
+        elsif anIfStmt.else_stmt
+          anIfStmt.else_stmt.accept(aVisitor)
+        end
+      end
 
       def after_print_stmt(_printStmt)
         tos = stack.pop

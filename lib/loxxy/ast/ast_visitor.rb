@@ -51,6 +51,14 @@ module Loxxy
         broadcast(:after_ptree, aParseTree)
       end
 
+      # Visit event. The visitor is about to visit a if statement.
+      # @param anIfStmt [AST::LOXIfStmt] the if statement node to visit
+      def visit_if_stmt(anIfStmt)
+        broadcast(:before_if_stmt, anIfStmt)
+        traverse_subnodes(anIfStmt) # The condition is visited/evaluated here...
+        broadcast(:after_if_stmt, anIfStmt, self)
+      end
+
       # Visit event. The visitor is about to visit a print statement.
       # @param aPrintStmt [AST::LOXPrintStmt] the print statement node to visit
       def visit_print_stmt(aPrintStmt)

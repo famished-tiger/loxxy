@@ -68,9 +68,9 @@ module Loxxy
       rule('forTest' => 'expression_opt SEMICOLON')
       rule('forUpdate' => 'expression_opt')
 
-      rule('ifStmt' => 'IF ifCondition statement elsePart_opt')
-      rule('ifCondition' => 'LEFT_PAREN expression RIGHT_PAREN')
-      rule('elsePart_opt' => 'ELSE statement')
+      rule('ifStmt' => 'IF ifCondition statement elsePart_opt').as 'if_stmt'
+      rule('ifCondition' => 'LEFT_PAREN expression RIGHT_PAREN').as 'keep_symbol2'
+      rule('elsePart_opt' => 'ELSE statement').as 'keep_symbol2'
       rule('elsePart_opt' => [])
 
       rule('printStmt' => 'PRINT expression SEMICOLON').as 'print_stmt'

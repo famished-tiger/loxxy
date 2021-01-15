@@ -223,6 +223,33 @@ module Loxxy
         end
       end
 
+      it 'should evaluate an if statement' do
+        [
+          # Evaluate the 'then' expression if the condition is true.
+          ['if (true) print "then-branch";', 'then-branch'],
+          ['if (false) print "ignored";', ''],
+          # TODO: test with then block body
+          # TODO: test with assignment in if condition
+
+          # Evaluate the 'else' expression if the condition is false.
+          ['if (true) print "then-branch"; else print "else-branch";', 'then-branch'],
+          ['if (false) print "then-branch"; else print "else-branch";', 'else-branch'],
+          ['if (0) print "then-branch"; else print "else-branch";', 'then-branch'],
+          ['if (nil) print "then-branch"; else print "else-branch";', 'else-branch'],
+          # TODO: test with else block body
+
+          # TODO: A dangling else binds to the right-most if.
+          # ['if (true) if (false) print "bad"; else print "good";', 'good'],
+          # ['if (false) if (true) print "bad"; else print "worse";', 'bad']
+        ].each do |(source, predicted)|
+          io = StringIO.new
+          cfg = { ostream: io }
+          lox = Loxxy::Interpreter.new(cfg)
+          result = lox.evaluate(source)
+          expect(io.string).to eq(predicted)
+        end
+      end
+
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Hello, world!')

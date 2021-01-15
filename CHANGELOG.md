@@ -1,4 +1,13 @@
-## [0.0.18] - 2021-01-14
+## [0.0.20] - 2021-01-15
+- The interpreter supports the `if` ... `else` statement.
+
+## Added
+- Class `Ast::LoxItStmt`, AST node specific for `if` `else` statements
+- Method `Ast::ASTBuilder#reduce_if_stmt` as semantic action for if ... else
+- Method `Ast::ASTVisitor#visit_if_stmt` for visiting `LoxIfStmt` nodes
+- Method `Engine::after_if_stmt` implementation of the control flow
+
+## [0.0.19] - 2021-01-14
 - The interpreter supports expressions between parentheses (grouping).
 
 ## Added
@@ -6,6 +15,10 @@
 - Method `Ast::ASTBuilder#reduce_grouping_expr` as semantic action for grouping expression
 - Method `Ast::ASTVisitor#visit_grouping_expr` for visiting grouping expressions
 - Method `Engine::after_grouping_expr`for the evaluation of grouping expressions
+
+## Changed
+- File `grammar.rb` rules for if ... else were given names in order to activate semantic actions.
+- File `README.md` updated with little `if ... else` documentation.
 
 ## [0.0.18] - 2021-01-13
 - The interpreter can evaluate `and`, `or`expressions.
