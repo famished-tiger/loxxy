@@ -2,6 +2,7 @@
 
 # Load all the classes implementing AST nodes
 require_relative '../ast/all_lox_nodes'
+require_relative 'symbol_table'
 
 module Loxxy
   module BackEnd
@@ -12,13 +13,17 @@ module Loxxy
       # @return [Hash] A set of configuration options
       attr_reader :config
 
-      # @return [Array] Data stack used for passing data between statements
+      # @return [BackEnd::SymbolTable]
+      attr_reader :symbol_table
+
+      # @return [Array<Datatype::BuiltinDatatyp>] Stack for the values of expr
       attr_reader :stack
 
       # @param theOptions [Hash]
       def initialize(theOptions)
         @config = theOptions
         @ostream = config.include?(:ostream) ? config[:ostream] : $stdout
+        @symbol_table = SymbolTable.new
         @stack = []
       end
 
@@ -36,6 +41,11 @@ module Loxxy
       ##########################################################################
       # Visit event handling
       ##########################################################################
+      def after_var_stmt(aVarStmt)
+        new_var = Variable.new(aVarStmt.name, aVarStmt.subnodes[0])
+        symbol_table.insert(new_var)
+      end
+
       def after_if_stmt(anIfStmt, aVisitor)
         # Retrieve the result of the condition evaluation
         condition = stack.pop

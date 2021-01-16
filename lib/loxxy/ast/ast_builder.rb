@@ -158,6 +158,17 @@ module Loxxy
       return_first_child(range, tokens, theChildren) # Discard the semicolon
       end
 
+      # rule('varDecl' => 'VAR IDENTIFIER SEMICOLON')
+      def reduce_var_declaration(_production, _range, tokens, theChildren)
+        Ast::LoxVarStmt.new(tokens[1].position, theChildren[1], nil)
+      end
+
+      # rule('varDecl' => 'VAR IDENTIFIER EQUAL expression SEMICOLON')
+      def reduce_var_initialization(_production, _range, tokens, theChildren)
+        Ast::LoxVarStmt.new(tokens[1].position, theChildren[1], theChildren[3])
+      end
+
+
       # rule('ifStmt' => 'IF ifCondition statement elsePart_opt')
       def reduce_if_stmt(_production, _range, tokens, theChildren)
         condition = theChildren[1]

@@ -46,8 +46,8 @@ module Loxxy
 
       rule('funDecl' => 'FUN function')
 
-      rule('varDecl' => 'VAR IDENTIFIER SEMICOLON')
-      rule('varDecl' => 'VAR IDENTIFIER EQUAL expression SEMICOLON')
+      rule('varDecl' => 'VAR IDENTIFIER SEMICOLON').as 'var_declaration'
+      rule('varDecl' => 'VAR IDENTIFIER EQUAL expression SEMICOLON').as 'var_initialization'
 
       # Statements: produce side effects, but don't introduce bindings
       rule('statement' => 'exprStmt')

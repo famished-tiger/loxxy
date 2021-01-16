@@ -51,6 +51,14 @@ module Loxxy
         broadcast(:after_ptree, aParseTree)
       end
 
+      # Visit event. The visitor is about to visit a variable declaration statement.
+      # @param aPrintStmt [AST::LOXVarStmt] the variable declaration node to visit
+      def visit_visit_var_stmt(aVarStmt)
+        broadcast(:before_var_stmt, aVarStmt)
+        traverse_subnodes(aVarStmt)
+        broadcast(:after_var_stmt, aVarStmt)
+      end
+
       # Visit event. The visitor is about to visit a if statement.
       # @param anIfStmt [AST::LOXIfStmt] the if statement node to visit
       def visit_if_stmt(anIfStmt)
