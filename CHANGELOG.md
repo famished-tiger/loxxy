@@ -1,3 +1,16 @@
+## [0.0.21] - 2021-01-1x
+- The interpreter supports the declaration global variables.
+
+## Added
+- Class `BackEnd::Entry`, mixin module for objects put in the symbol table
+- Class `BackEnd::Environment` that keeps track of variables in a given context.
+- Class `BackEnd::SymbolTable` that keeps track of environments.
+- Class `BackEnd::Variable` internal representation of a `Lox` variable
+- Method `Ast::ASTBuilder#reduce_var_declaration` and `Ast::ASTBuilder#reduce_var_declaration`
+- Method `Ast::ASTVisitor#visit_var_stmt` for visiting `LoxVarStmt` nodes
+- Attribute `Engine::symbol_table`for keeping track of variables
+- Method `Engine::after_var_stmt` for the implementation of variable declarations
+
 ## [0.0.20] - 2021-01-15
 - The interpreter supports the `if` ... `else` statement.
 

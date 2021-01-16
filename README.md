@@ -8,7 +8,7 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 
 ### Purpose of this project:
 - To deliver an open source example of a programming language fully implemented in Ruby  
-  (from the scanner, parser, an interpreter).
+  (from the scanner and parser to an interpreter).
 - The implementation should be mature enough to run [LoxLox](https://github.com/benhoyt/loxlox),  
   a Lox interpreter written in Lox.
 
@@ -141,7 +141,9 @@ Here are the language features currently supported by the interpreter:
 - [Datatypes](#datatypes)
 - [Statements](#statements)  
   -[Expressions](#expressions)  
-  -[Print Statement](#print-statement)
+- [Variable declarations](#var-statement)  
+- [If Statement](#if-statement)   
+- [Print Statement](#print-statement)
 
 ### Comments
 
@@ -168,13 +170,15 @@ loxxy supports  all the standard __Lox__ datatypes:
 ### Statements
 
 Loxxy supports the following statements:  
--[Expressions](#expressions)  
+- [Expressions](#expressions)  
   -[Arithmetic expressions](#arithmetic-expressions)  
   -[String concatenation](#string-concatenation)  
   -[Comparison expressions](#comparison-expressions)  
   -[Logical expressions](#logical-expressions)  
   -[Grouping expressions](#grouping-expressions)  
--[If Statement](#if-statement)
+  
+-[Variable declarations](#var-statement)  
+-[If Statement](#if-statement)  
 -[Print Statement](#print-statement)
 
 #### Expressions
@@ -253,6 +257,16 @@ Use parentheses `(` `)` for a better control in expression/operator precedence.
 print 3 + 4 * 5;  // => 23
 print (3 + 4) * 5; // => 35
 ```
+
+#### Variable declarations
+``` javascript
+var iAmAVariable = "my-initial-value";
+var iAmNil; // __Lox__ initializes variables to nil by default;
+```
+
+Warning: current version cannot retrieve the value of a variable.
+Expect this capability to be implemented in the coming days.
+
 
 #### If statement
 
