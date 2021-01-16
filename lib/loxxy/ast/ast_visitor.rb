@@ -53,7 +53,7 @@ module Loxxy
 
       # Visit event. The visitor is about to visit a variable declaration statement.
       # @param aPrintStmt [AST::LOXVarStmt] the variable declaration node to visit
-      def visit_visit_var_stmt(aVarStmt)
+      def visit_var_stmt(aVarStmt)
         broadcast(:before_var_stmt, aVarStmt)
         traverse_subnodes(aVarStmt)
         broadcast(:after_var_stmt, aVarStmt)

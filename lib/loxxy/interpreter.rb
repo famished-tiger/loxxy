@@ -31,7 +31,7 @@ module Loxxy
       ast_tree = parser.parse(lox_input)
       visitor = Ast::ASTVisitor.new(ast_tree)
 
-      # Back-end launches the tree walking & reponds to visit events
+      # Back-end launches the tree walking & responds to visit events
       # by executing the code determined by the visited AST node.
       engine = BackEnd::Engine.new(config)
       engine.execute(visitor)

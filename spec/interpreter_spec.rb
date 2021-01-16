@@ -211,7 +211,7 @@ module Loxxy
         end
       end
 
-      it 'should supprt expressions between parentheses' do
+      it 'should support expressions between parentheses' do
         [
           ['3 + 4 * 5;', 23],
           ['(3 + 4) * 5;', 35],
@@ -248,6 +248,15 @@ module Loxxy
           result = lox.evaluate(source)
           expect(io.string).to eq(predicted)
         end
+      end
+
+      it 'should accept variable declarations' do
+        # Variable with initialization value
+        var_decl = 'var iAmAVariable = "here is my value";'
+        expect { subject.evaluate(var_decl) }.not_to raise_error
+
+        # Variable without initialization value
+        expect { subject.evaluate('var iAmNil;') }.not_to raise_error
       end
 
       it 'should print the hello world message' do
