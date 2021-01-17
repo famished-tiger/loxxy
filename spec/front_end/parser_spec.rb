@@ -64,7 +64,8 @@ module Loxxy
         it 'should parse a false literal' do
           input = 'false;'
           ptree = subject.parse(input)
-          leaf = ptree.root
+          expect(ptree.root).to be_kind_of(Ast::LoxSeqDecl)
+          leaf = ptree.root.subnodes[0]
           expect(leaf).to be_kind_of(Ast::LoxLiteralExpr)
           expect(leaf.literal).to be_equal(Datatype::False.instance)
         end
@@ -72,7 +73,8 @@ module Loxxy
         it 'should parse a true literal' do
           input = 'true;'
           ptree = subject.parse(input)
-          leaf = ptree.root
+          expect(ptree.root).to be_kind_of(Ast::LoxSeqDecl)
+          leaf = ptree.root.subnodes[0]
           expect(leaf).to be_kind_of(Ast::LoxLiteralExpr)
           expect(leaf.literal).to be_equal(Datatype::True.instance)
         end
@@ -81,7 +83,7 @@ module Loxxy
           inputs = %w[1234; 12.34;]
           inputs.each do |source|
             ptree = subject.parse(source)
-            leaf = ptree.root
+            leaf = ptree.root.subnodes[0]
             expect(leaf).to be_kind_of(Ast::LoxLiteralExpr)
             expect(leaf.literal).to be_kind_of(Datatype::Number)
             expect(leaf.literal.value).to eq(source.to_f)
@@ -96,7 +98,7 @@ module Loxxy
           ]
           inputs.each do |source|
             ptree = subject.parse(source)
-            leaf = ptree.root
+            leaf = ptree.root.subnodes[0]
             expect(leaf).to be_kind_of(Ast::LoxLiteralExpr)
             expect(leaf.literal).to be_kind_of(Datatype::LXString)
             expect(leaf.literal.value).to eq(source.gsub(/(^")|(";$)/, ''))
@@ -106,7 +108,7 @@ module Loxxy
         it 'should parse a nil literal' do
           input = 'nil;'
           ptree = subject.parse(input)
-          leaf = ptree.root
+          leaf = ptree.root.subnodes[0]
           expect(leaf).to be_kind_of(Ast::LoxLiteralExpr)
           expect(leaf.literal).to be_equal(Datatype::Nil.instance)
         end
@@ -119,7 +121,7 @@ module Loxxy
             print "Hello, world!";
 LOX_END
           ptree = subject.parse(program)
-          prnt_stmt = ptree.root
+          prnt_stmt = ptree.root.subnodes[0]
           expect(prnt_stmt).to be_kind_of(Ast::LoxPrintStmt)
           expect(prnt_stmt.subnodes[0]).to be_kind_of(Ast::LoxLiteralExpr)
           expect(prnt_stmt.subnodes[0].literal).to be_kind_of(Loxxy::Datatype::LXString)
@@ -131,7 +133,7 @@ LOX_END
         it 'should parse the addition of two number literals' do
           input = '123 + 456;'
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
           expect(expr.operator).to eq(:+)
           expect(expr.operands[0].literal.value).to eq(123)
@@ -141,7 +143,7 @@ LOX_END
         it 'should parse the subtraction of two number literals' do
           input = '4 - 3;'
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
           expect(expr.operator).to eq(:-)
           expect(expr.operands[0].literal.value).to eq(4)
@@ -151,7 +153,7 @@ LOX_END
         it 'should parse multiple additive operations' do
           input = '5 + 2 - 3;'
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
           expect(expr.operator).to eq(:-)
           expect(expr.operands[0]).to be_kind_of(Ast::LoxBinaryExpr)
@@ -164,7 +166,7 @@ LOX_END
         it 'should parse the division of two number literals' do
           input = '8 / 2;'
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
           expect(expr.operator).to eq(:/)
           expect(expr.operands[0].literal.value).to eq(8)
@@ -174,7 +176,7 @@ LOX_END
         it 'should parse the product of two number literals' do
           input = '12.34 * 0.3;'
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
           expect(expr.operator).to eq(:*)
           expect(expr.operands[0].literal.value).to eq(12.34)
@@ -184,7 +186,7 @@ LOX_END
         it 'should parse multiple multiplicative operations' do
           input = '5 * 2 / 3;'
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
           expect(expr.operator).to eq(:/)
           expect(expr.operands[0]).to be_kind_of(Ast::LoxBinaryExpr)
@@ -197,7 +199,7 @@ LOX_END
         it 'should parse combination of terms and factors' do
           input = '5 + 2 / 3;'
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
           expect(expr.operator).to eq(:+)
           expect(expr.operands[0].literal.value).to eq(5)
@@ -212,7 +214,7 @@ LOX_END
         it 'should parse the concatenation of two string literals' do
           input = '"Lo" + "ve";'
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
           expect(expr.operator).to eq(:+)
           expect(expr.operands[0].literal.value).to eq('Lo')
@@ -225,7 +227,7 @@ LOX_END
         %w[> >= < <=].each do |predicate|
           input = "3 #{predicate} 2;"
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
           expect(expr.operator).to eq(predicate.to_sym)
           expect(expr.operands[0].literal.value).to eq(3)
@@ -239,7 +241,7 @@ LOX_END
           %w[!= ==].each do |predicate|
             input = "3 #{predicate} 2;"
             ptree = subject.parse(input)
-            expr = ptree.root
+            expr = ptree.root.subnodes[0]
             expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
             expect(expr.operator).to eq(predicate.to_sym)
             expect(expr.operands[0].literal.value).to eq(3)
@@ -250,7 +252,7 @@ LOX_END
         it 'should parse combination of equality expressions' do
           input = '5 != 2 == false; // A bit contrived example'
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxBinaryExpr)
           expect(expr.operator).to eq(:==)
           expect(expr.operands[0]).to be_kind_of(Ast::LoxBinaryExpr)
@@ -266,7 +268,7 @@ LOX_END
           %w[or and].each do |connector|
             input = "5 > 2 #{connector} 3 <= 4;"
             ptree = subject.parse(input)
-            expr = ptree.root
+            expr = ptree.root.subnodes[0]
             expect(expr).to be_kind_of(Ast::LoxLogicalExpr)
             expect(expr.operator).to eq(connector.to_sym)
             expect(expr.operands[0]).to be_kind_of(Ast::LoxBinaryExpr)
@@ -283,7 +285,7 @@ LOX_END
         it 'should parse a combinations of logical expressions' do
           input = '4 > 3 and 1 < 2 or 4 >= 5;'
           ptree = subject.parse(input)
-          expr = ptree.root
+          expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxLogicalExpr)
           expect(expr.operator).to eq(:or) # or has lower precedence than and
           expect(expr.operands[0]).to be_kind_of(Ast::LoxLogicalExpr)

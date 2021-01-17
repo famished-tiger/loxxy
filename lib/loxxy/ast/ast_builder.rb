@@ -150,7 +150,17 @@ module Loxxy
 
       # rule('program' => 'declaration_plus EOF').as ''
       def reduce_lox_program(_production, range, tokens, theChildren)
-        return_first_child(range, tokens, theChildren) # Discard the semicolon
+        LoxSeqDecl.new(tokens[0].position, theChildren[0])
+      end
+
+      # rule('declaration_plus' => 'declaration_plus declaration').as ''
+      def reduce_declaration_plus_more(_production, range, tokens, theChildren)
+        theChildren[0] << theChildren[1]
+      end
+
+      # rule('declaration_plus' => 'declaration')
+      def reduce_declaration_plus_end(_production, range, tokens, theChildren)
+        [ theChildren[0] ]
       end
 
       # rule('exprStmt' => 'expression SEMICOLON')
@@ -292,6 +302,13 @@ module Loxxy
         literal = first_child.token.value
         LoxLiteralExpr.new(pos, literal)
       end
+
+      # rule('primary' => 'IDENTIFIER')
+      def reduce_variable_expr(_production, _range, tokens, theChildren)
+        var_name = theChildren[0].token.lexeme
+        LoxVariableExpr.new(tokens[0].position, var_name)
+      end#
+
     end # class
   end # module
 end # module

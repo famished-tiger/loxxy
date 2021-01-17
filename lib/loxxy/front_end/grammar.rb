@@ -30,8 +30,8 @@ module Loxxy
       rule('program' => 'declaration_plus EOF').as 'lox_program'
 
       # Declarations: bind an identifier to something
-      rule('declaration_plus' => 'declaration_plus declaration')
-      rule('declaration_plus' => 'declaration')
+      rule('declaration_plus' => 'declaration_plus declaration').as 'declaration_plus_more'
+      rule('declaration_plus' => 'declaration').as 'declaration_plus_end'
       rule('declaration' => 'classDecl')
       rule('declaration' => 'funDecl')
       rule('declaration' => 'varDecl')
@@ -137,7 +137,7 @@ module Loxxy
       rule('primary' => 'THIS')
       rule('primary' => 'NUMBER').as 'literal_expr'
       rule('primary' => 'STRING').as 'literal_expr'
-      rule('primary' => 'IDENTIFIER')
+      rule('primary' => 'IDENTIFIER').as 'variable_expr'
       rule('primary' => 'LEFT_PAREN expression RIGHT_PAREN').as 'grouping_expr'
       rule('primary' => 'SUPER DOT IDENTIFIER')
 

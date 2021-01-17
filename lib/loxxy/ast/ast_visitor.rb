@@ -53,6 +53,14 @@ module Loxxy
 
       # Visit event. The visitor is about to visit a variable declaration statement.
       # @param aPrintStmt [AST::LOXVarStmt] the variable declaration node to visit
+      def visit_seq_decl(aSeqDecls)
+        broadcast(:before_seq_decl, aSeqDecls)
+        traverse_subnodes(aSeqDecls)
+        broadcast(:after_seq_decl, aSeqDecls)
+      end
+
+      # Visit event. The visitor is about to visit a variable declaration statement.
+      # @param aPrintStmt [AST::LOXVarStmt] the variable declaration node to visit
       def visit_var_stmt(aVarStmt)
         broadcast(:before_var_stmt, aVarStmt)
         traverse_subnodes(aVarStmt)
@@ -121,8 +129,15 @@ module Loxxy
         broadcast(:after_literal_expr, aLiteralExpr)
       end
 
+      # Visit event. The visitor is visiting a variable reference node
+      # @param aLiteralExpr [AST::LoxVariableExpr] the variable reference node to visit.
+      def visit_variable_expr(aVariableExpr)
+        broadcast(:before_variable_expr, aVariableExpr)
+        broadcast(:after_variable_expr, aVariableExpr, self)
+      end
+
       # Visit event. The visitor is about to visit the given non terminal node.
-      # @param aNonTerminalNode [Rley::PTre::NonTerminalNode] the node to visit.
+      # @param aNonTerminalNode [Rley::PTree::NonTerminalNode] the node to visit.
       def visit_nonterminal(_non_terminal_node)
         # Loxxy interpreter encountered a CST node (Concrete Syntax Tree)
         # that it cannot handle.

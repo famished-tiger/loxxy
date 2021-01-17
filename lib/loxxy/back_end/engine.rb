@@ -41,6 +41,11 @@ module Loxxy
       ##########################################################################
       # Visit event handling
       ##########################################################################
+
+      def after_seq_decl(aSeqDecls)
+        # Do nothing, subnodes were already evaluated
+      end
+
       def after_var_stmt(aVarStmt)
         new_var = Variable.new(aVarStmt.name, aVarStmt.subnodes[0])
         symbol_table.insert(new_var)
@@ -118,6 +123,13 @@ module Loxxy
 
       def after_grouping_expr(_groupingExpr)
         # Do nothing: work was already done by visiting /evaluating the subexpression
+      end
+
+      def after_variable_expr(aVarExpr, aVisitor)
+        var_name = aVarExpr.name
+        var = symbol_table.lookup(var_name)
+        raise StandardError, "Unknown variable #{var_name}" unless var
+        var.value.accept(aVisitor) # Evaluate the variable value
       end
 
       # @param literalExpr [Ast::LoxLiteralExpr]

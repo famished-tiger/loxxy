@@ -34,6 +34,7 @@ module Loxxy
         let(:var_decl) { Ast::LoxVarStmt.new(sample_pos, 'greeting', greeting) }
         let(:lit_expr) { Ast::LoxLiteralExpr.new(sample_pos, greeting) }
 
+
         it "should react to 'after_var_stmt' event" do
           expect { subject.after_var_stmt(var_decl) }.not_to raise_error
           current_env = subject.symbol_table.current_env

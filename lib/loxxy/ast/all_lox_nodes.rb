@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'lox_variable_expr'
 require_relative 'lox_literal_expr'
 require_relative 'lox_noop_expr'
 require_relative 'lox_grouping_expr'
@@ -9,3 +10,4 @@ require_relative 'lox_logical_expr'
 require_relative 'lox_print_stmt'
 require_relative 'lox_if_stmt'
 require_relative 'lox_var_stmt'
+require_relative 'lox_seq_decl'

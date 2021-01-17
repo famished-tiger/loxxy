@@ -52,7 +52,12 @@ module Loxxy
     end # context
 
     context 'Evaluating Lox code:' do
-      let(:hello_world) { 'print "Hello, world!";' }
+      let(:hello_world) do
+        lox =<<-LOX_END
+        var greeting = "Hello"; // Declaring a variable
+        print greeting + ", " + "world!"; // ... Playing with concatenation
+LOX_END
+      end
 
       it 'should evaluate core data types' do
         result = subject.evaluate('true; // Not false')
@@ -257,6 +262,15 @@ module Loxxy
 
         # Variable without initialization value
         expect { subject.evaluate('var iAmNil;') }.not_to raise_error
+      end
+
+      it 'should accept variable mention' do
+        program = <<-LOX_END
+        var foo = "bar";
+        print foo;
+LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('bar')
       end
 
       it 'should print the hello world message' do
