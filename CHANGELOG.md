@@ -1,4 +1,19 @@
-## [0.0.21] - 2021-01-1x
+## [0.0.22] - 2021-01-17
+- The interpreter can retrieve the value of a variable.
+
+## Added
+- Method `Ast::ASTBuilder#declaration_plus_more` and `Ast::ASTBuilder#declaration_plus_end` to allow multiple expressions/statements
+- Method `Ast::ASTBuilder#reduce_var_expression` creates an `Ast::LoxVariableExpr` node
+- Method `Ast::ASTVisitor#visit_var_expr` for visiting `Ast::LoxVariableExpr` nodes
+- Class `Ast::LoxSeqDecl` a node that represents a sequence of declarations/statements
+- Class `Ast::LoxVarExpr` a node that represents a variable occurrence in an expression
+- Method `Engine::after_variable_expr`: retrieve the value of variable with given name
+
+## Changed
+- Method `Ast::ASTBuilder#reduce_lox_program` to support multiple statements/declarations
+- File `README.md` updated.
+
+## [0.0.21] - 2021-01-16
 - The interpreter supports the declaration global variables.
 
 ## Added
