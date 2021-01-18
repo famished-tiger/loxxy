@@ -149,18 +149,18 @@ module Loxxy
       end
 
       # rule('program' => 'declaration_plus EOF').as ''
-      def reduce_lox_program(_production, range, tokens, theChildren)
+      def reduce_lox_program(_production, _range, tokens, theChildren)
         LoxSeqDecl.new(tokens[0].position, theChildren[0])
       end
 
       # rule('declaration_plus' => 'declaration_plus declaration').as ''
-      def reduce_declaration_plus_more(_production, range, tokens, theChildren)
+      def reduce_declaration_plus_more(_production, _range, _tokens, theChildren)
         theChildren[0] << theChildren[1]
       end
 
       # rule('declaration_plus' => 'declaration')
-      def reduce_declaration_plus_end(_production, range, tokens, theChildren)
-        [ theChildren[0] ]
+      def reduce_declaration_plus_end(_production, _range, _tokens, theChildren)
+        [theChildren[0]]
       end
 
       # rule('exprStmt' => 'expression SEMICOLON')
@@ -179,7 +179,6 @@ module Loxxy
         var_name = theChildren[1].token.lexeme.dup
         Ast::LoxVarStmt.new(tokens[1].position, var_name, theChildren[3])
       end
-
 
       # rule('ifStmt' => 'IF ifCondition statement elsePart_opt')
       def reduce_if_stmt(_production, _range, tokens, theChildren)
@@ -307,8 +306,7 @@ module Loxxy
       def reduce_variable_expr(_production, _range, tokens, theChildren)
         var_name = theChildren[0].token.lexeme
         LoxVariableExpr.new(tokens[0].position, var_name)
-      end#
-
+      end
     end # class
   end # module
 end # module

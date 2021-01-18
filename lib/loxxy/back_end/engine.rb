@@ -55,7 +55,7 @@ module Loxxy
         # Retrieve the result of the condition evaluation
         condition = stack.pop
         if condition.truthy?
-          result = anIfStmt.then_stmt.accept(aVisitor)
+          anIfStmt.then_stmt.accept(aVisitor)
         elsif anIfStmt.else_stmt
           anIfStmt.else_stmt.accept(aVisitor)
         end
@@ -129,6 +129,7 @@ module Loxxy
         var_name = aVarExpr.name
         var = symbol_table.lookup(var_name)
         raise StandardError, "Unknown variable #{var_name}" unless var
+
         var.value.accept(aVisitor) # Evaluate the variable value
       end
 

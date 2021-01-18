@@ -53,10 +53,12 @@ module Loxxy
 
     context 'Evaluating Lox code:' do
       let(:hello_world) do
-        lox =<<-LOX_END
+        lox = <<-LOX_END
         var greeting = "Hello"; // Declaring a variable
         print greeting + ", " + "world!"; // ... Playing with concatenation
 LOX_END
+
+        lox
       end
 
       it 'should evaluate core data types' do
@@ -240,7 +242,7 @@ LOX_END
           ['if (true) print "then-branch"; else print "else-branch";', 'then-branch'],
           ['if (false) print "then-branch"; else print "else-branch";', 'else-branch'],
           ['if (0) print "then-branch"; else print "else-branch";', 'then-branch'],
-          ['if (nil) print "then-branch"; else print "else-branch";', 'else-branch'],
+          ['if (nil) print "then-branch"; else print "else-branch";', 'else-branch']
           # TODO: test with else block body
 
           # TODO: A dangling else binds to the right-most if.
@@ -250,7 +252,7 @@ LOX_END
           io = StringIO.new
           cfg = { ostream: io }
           lox = Loxxy::Interpreter.new(cfg)
-          result = lox.evaluate(source)
+          lox.evaluate(source)
           expect(io.string).to eq(predicted)
         end
       end

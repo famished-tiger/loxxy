@@ -9,7 +9,7 @@ module Loxxy
     # It is a named slot that can be associated with a value at the time.
     class Variable
       include Entry # Add expected behaviour for symbol table entries
-      
+
       # @return [Datatype::BuiltinDatatype] the value assigned to the variable
       attr_accessor :value
 

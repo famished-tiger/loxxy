@@ -46,8 +46,8 @@ module Loxxy
         end
 
         it 'should allow the addition of several labels for same env' do
-          i_name = subject.insert(var('q'))
-          #expect(i_name).to match(/^q_[0-9a-z]*$/)
+          subject.insert(var('q'))
+          # expect(i_name).to match(/^q_[0-9a-z]*$/)
 
           expect { subject.insert(var('x')) }.not_to raise_error
           expect(subject.name2envs['x']).to be_kind_of(Array)

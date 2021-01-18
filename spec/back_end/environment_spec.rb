@@ -9,7 +9,7 @@ module Loxxy
   module BackEnd
     describe Environment do
       let(:foo) { Datatype::LXString.new('foo') }
-      let(:bar) { Datatype::LXString.new('bar') }      
+      let(:bar) { Datatype::LXString.new('bar') }
       let(:mother) { Environment.new }
       subject { Environment.new(mother) }
 

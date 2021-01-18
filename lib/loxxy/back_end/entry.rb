@@ -11,7 +11,7 @@ module Loxxy
 =begin
       # @return [String] Suffix for building the internal name of the entry.
       attr_accessor :suffix
-=end      
+=end
 
       # Initialize the entry with given name
       # @param aName [String] The name of the entry
@@ -35,7 +35,7 @@ module Loxxy
           (suffix.nil? || suffix.empty?) ? label : suffix
         end
       end
-=end      
+=end
     end # module
   end # module
 end # module
