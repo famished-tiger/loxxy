@@ -136,6 +136,13 @@ module Loxxy
         broadcast(:after_variable_expr, aVariableExpr, self)
       end
 
+      # Visit event. The visitor is about to visit the given terminal datatype value.
+      # @param aNonTerminalNode [Ast::BuiltinDattype] the built-in datatype value
+      def visit_builtin(aValue)
+        broadcast(:before_visit_builtin, aValue)
+        broadcast(:after_visit_builtin, aValue)
+      end
+
       # Visit event. The visitor is about to visit the given non terminal node.
       # @param aNonTerminalNode [Rley::PTree::NonTerminalNode] the node to visit.
       def visit_nonterminal(_non_terminal_node)

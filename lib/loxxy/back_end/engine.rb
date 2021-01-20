@@ -137,6 +137,11 @@ module Loxxy
       def before_literal_expr(literalExpr)
         stack.push(literalExpr.literal)
       end
+
+      # @param aNonTerminalNode [Ast::BuiltinDattype] the built-in datatype value
+      def before_visit_builtin(aValue)
+        stack.push(aValue)
+      end
     end # class
   end # module
 end # module

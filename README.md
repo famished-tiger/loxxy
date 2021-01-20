@@ -270,6 +270,7 @@ foo;  // Varible expression (= retrieving its value)
 ``` javascript
 var iAmAVariable = "my-initial-value";
 var iAmNil; // __Lox__ initializes variables to nil by default;
+print iAmNil; // output: nil
 ```
 
 Warning: current version cannot assign a value to an existing variable.  

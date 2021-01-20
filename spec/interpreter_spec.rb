@@ -269,10 +269,19 @@ LOX_END
       it 'should accept variable mention' do
         program = <<-LOX_END
         var foo = "bar";
-        print foo;
+        print foo; // => bar
 LOX_END
         expect { subject.evaluate(program) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('bar')
+      end
+
+      it 'should set uninitialized variables to nil' do
+        program = <<-LOX_END
+        var foo;
+        print foo; // => nil
+LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('nil')
       end
 
       it 'should print the hello world message' do

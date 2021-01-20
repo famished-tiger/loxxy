@@ -62,6 +62,12 @@ module Loxxy
         value.to_s # Default implementation...
       end
 
+      # Part of the 'visitee' role in Visitor design pattern.
+      # @param visitor [Ast::ASTVisitor] the visitor
+      def accept(visitor)
+        visitor.visit_builtin(self)
+      end
+
       protected
 
       def validated_value(aValue)
