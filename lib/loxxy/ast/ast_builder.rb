@@ -193,6 +193,12 @@ module Loxxy
         Ast::LoxPrintStmt.new(tokens[1].position, theChildren[1])
       end
 
+      # rule('assignment' => 'owner_opt IDENTIFIER EQUAL assignment')
+      def reduce_assign_expr(_production, _range, tokens, theChildren)
+        var_name = theChildren[1].token.lexeme.dup
+        Ast::LoxAssignExpr.new(tokens[1].position, var_name, theChildren[3])
+      end
+
       # rule('logic_or' => 'logic_and disjunct_plus')
       def reduce_logic_or_plus(production, range, tokens, theChildren)
         reduce_logical_expr(production, range, tokens, theChildren)

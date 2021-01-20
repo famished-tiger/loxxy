@@ -277,11 +277,26 @@ LOX_END
 
       it 'should set uninitialized variables to nil' do
         program = <<-LOX_END
-        var foo;
-        print foo; // => nil
+        var a;
+        print a; // => nil
 LOX_END
         expect { subject.evaluate(program) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('nil')
+      end
+
+      it 'should accept assignments to a global variable' do
+        program = <<-LOX_END
+          var a = "before";
+          print a; // output: before
+          
+          a = "after";
+          print a; // output: after
+          
+          print a = "arg"; // output: arg
+          print a; // output: arg
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('beforeafterargarg')
       end
 
       it 'should print the hello world message' do

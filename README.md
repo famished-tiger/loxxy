@@ -176,7 +176,7 @@ Loxxy supports the following statements:
   -[Comparison expressions](#comparison-expressions)  
   -[Logical expressions](#logical-expressions)  
   -[Grouping expressions](#grouping-expressions)  
-  -[Variable expressions](#variable-expressions)
+  -[Variable expressions and assignments](#variable-expressions)
   
 -[Variable declarations](#var-statement)  
 -[If Statement](#if-statement)  
@@ -259,12 +259,16 @@ print 3 + 4 * 5;  // => 23
 print (3 + 4) * 5; // => 35
 ```
 
-####  Variable expressions
+####  Variable expressions and assignments
 In __Lox__, a variable expression is nothing than retrieving the value of a variable.
 ``` javascript
 var foo = "bar;" // Variable declaration
-foo;  // Varible expression (= retrieving its value)
+print foo;  // Variable expression (= use its value)
+foo = "baz"; // Variable assignment
+print foo; // Output: baz
 ```
+
+
 
 #### Variable declarations
 ``` javascript
@@ -272,10 +276,6 @@ var iAmAVariable = "my-initial-value";
 var iAmNil; // __Lox__ initializes variables to nil by default;
 print iAmNil; // output: nil
 ```
-
-Warning: current version cannot assign a value to an existing variable.  
-Expect this capability to be implemented in the coming days.
-
 
 #### If statement
 

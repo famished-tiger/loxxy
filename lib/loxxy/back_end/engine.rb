@@ -66,6 +66,15 @@ module Loxxy
         @ostream.print tos.to_str
       end
 
+      def after_assign_expr(anAssignExpr)
+        var_name = anAssignExpr.name
+        variable = symbol_table.lookup(var_name)
+        raise StandardError, "Unknown variable #{var_name}" unless variable
+        value = stack.pop
+        variable.assign(value)
+        stack.push value # An expression produces a value
+      end
+
       def after_logical_expr(aLogicalExpr, visitor)
         op = aLogicalExpr.operator
         operand1 = stack.pop # only first operand was evaluated

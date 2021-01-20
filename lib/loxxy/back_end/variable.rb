@@ -11,13 +11,18 @@ module Loxxy
       include Entry # Add expected behaviour for symbol table entries
 
       # @return [Datatype::BuiltinDatatype] the value assigned to the variable
-      attr_accessor :value
+      attr_reader :value
 
       # Create a variable with given name and initial value
       # @param aName [String] The name of the variable
       # @param aValue [Datatype::BuiltinDatatype] the initial assigned value
       def initialize(aName, aValue = Datatype::Nil.instance)
         init_name(aName)
+        assign(aValue)
+      end
+
+      # @param aValue [Datatype::BuiltinDatatype] the assigned value
+      def assign(aValue)
         @value = aValue
       end
     end # class

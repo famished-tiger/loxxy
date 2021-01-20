@@ -1,3 +1,13 @@
+## [0.0.24] - 2021-01-20
+- The interpreter implements the assignment of variables.
+
+### Added
+- Class `Ast::LoxAssignExpr` a node that represents the assignment of a value to a variable
+- Method `Ast::ASTBuilder#reduce_assign_expr` creates an `Ast::LoxAssignExpr` node
+- Method `Ast::ASTVisitor#visit_assign_expr` for visiting an `Ast::LoxAssignExpr` node
+- Method `BackEnd::Engine#after_assign_expr` implementation of the assignment
+- Method `BackEnd::Variable#assign` to assign a value to a variable 
+
 ## [0.0.23] - 2021-01-20
 - Fix for variables without explicit initialization.
 

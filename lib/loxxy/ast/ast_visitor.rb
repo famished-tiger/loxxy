@@ -83,6 +83,14 @@ module Loxxy
         broadcast(:after_print_stmt, aPrintStmt)
       end
 
+      # Visit event. The visitor is visiting an assignment node
+      # @param aLiteralExpr [AST::LoxAssignExpr] the variable assignment node to visit.
+      def visit_assign_expr(anAssignExpr)
+        broadcast(:before_assign_expr, anAssignExpr)
+        traverse_subnodes(anAssignExpr)
+        broadcast(:after_assign_expr, anAssignExpr)
+      end
+
       # Visit event. The visitor is about to visit a logical expression.
       # Since logical expressions may take shorcuts by not evaluating all their
       # sub-expressiosns, they are responsible for visiting or not their children.
@@ -129,7 +137,7 @@ module Loxxy
         broadcast(:after_literal_expr, aLiteralExpr)
       end
 
-      # Visit event. The visitor is visiting a variable reference node
+      # Visit event. The visitor is visiting a variable usage node
       # @param aLiteralExpr [AST::LoxVariableExpr] the variable reference node to visit.
       def visit_variable_expr(aVariableExpr)
         broadcast(:before_variable_expr, aVariableExpr)

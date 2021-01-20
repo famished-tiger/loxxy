@@ -83,7 +83,7 @@ module Loxxy
       rule('expression_opt' => 'expression')
       rule('expression_opt' => [])
       rule('expression' => 'assignment')
-      rule('assignment' => 'owner_opt IDENTIFIER EQUAL assignment')
+      rule('assignment' => 'owner_opt IDENTIFIER EQUAL assignment').as 'assign_expr'
       rule('assignment' => 'logic_or')
       rule('owner_opt' => 'call DOT')
       rule('owner_opt' => [])
