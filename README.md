@@ -144,6 +144,7 @@ Here are the language features currently supported by the interpreter:
 - [Variable declarations](#var-statement)  
 - [If Statement](#if-statement)   
 - [Print Statement](#print-statement)
+- [Block Statement](#block-statement)
 
 ### Comments
 
@@ -180,7 +181,8 @@ Loxxy supports the following statements:
   
 -[Variable declarations](#var-statement)  
 -[If Statement](#if-statement)  
--[Print Statement](#print-statement)
+-[Print Statement](#print-statement)  
+-[Block Statement](#block-statement)
 
 #### Expressions
 
@@ -268,8 +270,6 @@ foo = "baz"; // Variable assignment
 print foo; // Output: baz
 ```
 
-
-
 #### Variable declarations
 ``` javascript
 var iAmAVariable = "my-initial-value";
@@ -297,20 +297,21 @@ The problem in a nutshell: in a nested if ... else ... statement like this:
 ``` javascript
 'if (true) if (false) print "bad"; else print "good";
 ```
-... there is an ambiguity. Indeed, according to the __Lox__ grammar, the `else` could be bound 
+... there is an ambiguity.  
+Indeed, according to the __Lox__ grammar, the `else` could be bound 
 either to the first `if` or to the second one.
 This ambiguity is usually lifted by applying an ad-hoc rule: an `else` is aways bound to the most 
 recent (rightmost) `if`.  
-Being a generic parsing library, `Rley` doesn't apply any of these supplemental rules.
+Being a generic parsing library, `Rley` doesn't apply any of these supplemental rules.  
 As a consequence,it complains about the found ambiguity and stops the parsing...
 Although `Rley` can cope with ambiguities, this requires the use of an advanced data structure
 called `Shared Packed Parse Forest (SPPF)`.
-SPPF are much more complex to handle than the `common` parse trees present in most compiler or interpreter books.
+SPPF are much more complex to handle than the "common" parse trees present in most compiler or interpreter books.
 Therefore, a future version of `Rley` will incorporate the capability to define disambuiguation rules.  
 
 In the meantime, the `Loxxy` will progress on other __Lox__ features like:
-- Variables,
 - Block structures...
+- Iteration structures (`for` and `while` loops)
 
 
 ####  Print Statement
@@ -320,6 +321,19 @@ The statement print + expression + ; prints the result of the expression to stdo
 ``` javascript
 print "Hello, world!";  // Output: Hello, world!
 
+```
+
+#### Block Statement
+__Lox__ has code blocks.
+``` javascript
+var a = "outer";
+
+{
+  var a = "inner";
+  print a; // output: inner
+}
+
+print a; // output: outer
 ```
 
 ## Installation
@@ -344,7 +358,7 @@ TODO: Write usage instructions here
 
 ## Other Lox implementations in Ruby
 
-For Ruby, there is the [lox](https://github.com/rdodson41/ruby-lox) gem.
+For Ruby, there is the [lox](https://github.com/rdodson41/ruby-lox) gem.  
 There are other Ruby-based projects as well:  
 - [SlowLox](https://github.com/ArminKleinert/SlowLox), described as a "1-to-1 conversion of JLox to Ruby"
 - [rulox](https://github.com/LevitatingBusinessMan/rulox)

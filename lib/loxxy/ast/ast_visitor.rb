@@ -83,6 +83,14 @@ module Loxxy
         broadcast(:after_print_stmt, aPrintStmt)
       end
 
+      # Visit event. The visitor is about to visit a block statement.
+      # @param aBlockStmt [AST::LOXBlockStmt] the print statement node to visit
+      def visit_block_stmt(aBlockStmt)
+        broadcast(:before_block_stmt, aBlockStmt)
+        traverse_subnodes(aBlockStmt)
+        broadcast(:after_block_stmt, aBlockStmt)
+      end
+
       # Visit event. The visitor is visiting an assignment node
       # @param aLiteralExpr [AST::LoxAssignExpr] the variable assignment node to visit.
       def visit_assign_expr(anAssignExpr)

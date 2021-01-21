@@ -1,3 +1,16 @@
+## [0.0.25] - 2021-01-21
+- The interpreter implements block of code.
+
+### Added
+- Class `Ast::LoxBlockStmt` a node that represents a block of code
+- Method `Ast::ASTBuilder#reduce_block_stmt` creates an `Ast::LoxBlockStmt` node
+- Method `Ast::ASTVisitor#visit_block_stmt` for visiting an `Ast::LoxBlockStmt` node
+- Method `BackEnd::Engine#before_block_stmt` creates an new enclosed Environment
+- Method `BackEnd::Engine#after_block_stmt` close enclosed Environment and make parent Environment the current one
+
+### Changed
+- File `README.md` updated.
+
 ## [0.0.24] - 2021-01-20
 - The interpreter implements the assignment of variables.
 

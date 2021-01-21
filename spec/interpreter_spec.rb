@@ -299,6 +299,36 @@ LOX_END
         expect(sample_cfg[:ostream].string).to eq('beforeafterargarg')
       end
 
+      it 'should support variables local to a block' do
+        program = <<-LOX_END
+        {
+          var a = "first";
+          print a;
+        }
+        {
+          var a = "second";
+          print a;
+        }
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('firstsecond')
+      end
+
+      it 'should support the shadowing of variables in a block' do
+        program = <<-LOX_END
+        var a = "outer";
+
+        {
+          var a = "inner";
+          print a; // output: inner
+        }
+
+        print a; // output: outer
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('innerouter')
+      end
+
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Hello, world!')

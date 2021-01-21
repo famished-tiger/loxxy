@@ -9,7 +9,6 @@ module Loxxy
       # @param operand [Loxxy::Ast::LoxSeqDecl]
       def initialize(aPosition, decls)
         super(aPosition, [decls])
-        @operator = anOperator
       end
 
       # Part of the 'visitee' role in Visitor design pattern.

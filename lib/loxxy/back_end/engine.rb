@@ -66,6 +66,15 @@ module Loxxy
         @ostream.print tos.to_str
       end
 
+      def before_block_stmt(_aBlockStmt)
+        new_env = Environment.new
+        symbol_table.enter_environment(new_env)
+      end
+
+      def after_block_stmt(_aBlockStmt)
+        symbol_table.leave_environment
+      end
+
       def after_assign_expr(anAssignExpr)
         var_name = anAssignExpr.name
         variable = symbol_table.lookup(var_name)
