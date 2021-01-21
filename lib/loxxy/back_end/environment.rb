@@ -9,9 +9,9 @@ module Loxxy
     # of a relation or a relation definition.
     # It contains a map of names to the objects they name (e.g. logical var)
     class Environment
-      # The parent (enclosing) environment.
+      # The  enclosing (parent) environment.
       # @return [Environment, NilClass]
-      attr_accessor :parent
+      attr_accessor :enclosing
 
       # Mapping from user-defined name to related definition
       #  (say, a variable object)
@@ -21,7 +21,7 @@ module Loxxy
       # Construct a environment instance.
       # @param aParent [Environment, NilClass] Parent environment to this one.
       def initialize(aParent = nil)
-        @parent = aParent
+        @enclosing = aParent
         @defns = {}
       end
 

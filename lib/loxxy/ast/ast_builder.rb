@@ -193,6 +193,12 @@ module Loxxy
         Ast::LoxPrintStmt.new(tokens[1].position, theChildren[1])
       end
 
+      # rule('block' => 'LEFT_BRACE declaration_plus RIGHT_BRACE')
+      def reduce_block_stmt(_production, _range, tokens, theChildren)
+        decls = LoxSeqDecl.new(tokens[1].position, theChildren[1])
+        Ast::LoxBlockStmt.new(tokens[1].position, decls)
+      end
+
       # rule('assignment' => 'owner_opt IDENTIFIER EQUAL assignment')
       def reduce_assign_expr(_production, _range, tokens, theChildren)
         var_name = theChildren[1].token.lexeme.dup

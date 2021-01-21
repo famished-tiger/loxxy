@@ -60,7 +60,7 @@ module Loxxy
           new_env = BackEnd::Environment.new
           expect { subject.enter_environment(new_env) }.not_to raise_error
           expect(subject.current_env).to eq(new_env)
-          expect(subject.current_env.parent).to eq(subject.root)
+          expect(subject.current_env.enclosing).to eq(subject.root)
           expect(subject.name2envs['q']).to eq([subject.root])
         end
 

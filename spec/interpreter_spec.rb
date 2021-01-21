@@ -288,10 +288,10 @@ LOX_END
         program = <<-LOX_END
           var a = "before";
           print a; // output: before
-          
+
           a = "after";
           print a; // output: after
-          
+
           print a = "arg"; // output: arg
           print a; // output: arg
         LOX_END

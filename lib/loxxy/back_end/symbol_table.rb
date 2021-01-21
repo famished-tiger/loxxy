@@ -44,7 +44,7 @@ module Loxxy
       # to be a child of current environment and to be itself the new current environment.
       # @param anEnv [BackEnd::Environment] the Environment that
       def enter_environment(anEnv)
-        anEnv.parent = current_env
+        anEnv.enclosing = current_env
         @current_env = anEnv
       end
 
@@ -60,7 +60,7 @@ module Loxxy
         end
         raise StandardError, 'Cannot remove root environment.' if current_env == root
 
-        @current_env = current_env.parent
+        @current_env = current_env.enclosing
       end
 
       # Add an entry with given name to current environment.
@@ -114,7 +114,7 @@ module Loxxy
         while skope
           vars_of_environment = skope.defns.select { |_, item| item.kind_of?(Variable) }
           vars = vars_of_environment.values.concat(vars)
-          skope = skope.parent
+          skope = skope.enclosing
         end
 
         vars

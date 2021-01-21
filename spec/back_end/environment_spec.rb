@@ -32,7 +32,7 @@ module Loxxy
         end
 
         it 'should know its parent (if any)' do
-          expect(subject.parent).to eq(mother)
+          expect(subject.enclosing).to eq(mother)
         end
       end # context
 
