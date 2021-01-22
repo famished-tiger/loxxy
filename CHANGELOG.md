@@ -1,5 +1,17 @@
+## [0.0.26] - 2021-01-22
+- The interpreter implements `while` loops.
+
+### Added
+- Class `Ast::LoxWhileStmt` a node that represents a while statement
+- Method `Ast::ASTBuilder#reduce_while_stmt` creates an `Ast::LoxWhileStmt` node
+- Method `Ast::ASTVisitor#visit_while_stmt` for visiting an `Ast::LoxWhileStmt` node
+- Method `BackEnd::Engine#after_while_stmt` implements the while looping structure
+
+### Changed
+- File `README.md` updated.
+
 ## [0.0.25] - 2021-01-21
-- The interpreter implements block of code.
+- The interpreter implements blocks of code.
 
 ### Added
 - Class `Ast::LoxBlockStmt` a node that represents a block of code
