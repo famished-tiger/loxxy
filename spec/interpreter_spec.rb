@@ -329,6 +329,35 @@ LOX_END
         expect(sample_cfg[:ostream].string).to eq('innerouter')
       end
 
+      it 'should implement single statement while loops' do
+        program = <<-LOX_END
+          // Single-expression body.
+          var c = 0;
+          while (c < 3) print c = c + 1;
+          // output: 1
+          // output: 2
+          // output: 3
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('123')
+      end
+
+      it 'should implement block body while loops' do
+        program = <<-LOX_END
+          // Block body.
+          var a = 0;
+          while (a < 3) {
+            print a;
+            a = a + 1;
+          }
+          // output: 0
+          // output: 1
+          // output: 2
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('012')
+      end
+
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Hello, world!')

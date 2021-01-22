@@ -75,7 +75,7 @@ module Loxxy
 
       rule('printStmt' => 'PRINT expression SEMICOLON').as 'print_stmt'
       rule('returnStmt' => 'RETURN expression_opt SEMICOLON')
-      rule('whileStmt' => 'WHILE LEFT_PAREN expression RIGHT_PAREN statement')
+      rule('whileStmt' => 'WHILE LEFT_PAREN expression RIGHT_PAREN statement').as 'while_stmt'
       rule('block' => 'LEFT_BRACE declaration_plus RIGHT_BRACE').as 'block_stmt'
       rule('block' => 'LEFT_BRACE RIGHT_BRACE')
 

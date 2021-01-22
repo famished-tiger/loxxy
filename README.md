@@ -131,7 +131,7 @@ program
 On one hand, the parser covers the complete Lox grammar and should therefore, in principle,
 parse any valid Lox program.
 
-On the other hand, the interpreter is under development and currently it can evaluate only a tiny subset of __Lox__.
+On the other hand, the interpreter is under development and currently it can evaluate only a subset of __Lox__.
 But the situation is changing almost daily, stay tuned...
 
 Here are the language features currently supported by the interpreter:
@@ -144,6 +144,7 @@ Here are the language features currently supported by the interpreter:
 - [Variable declarations](#var-statement)  
 - [If Statement](#if-statement)   
 - [Print Statement](#print-statement)
+- [While Statement](#while-statement)  
 - [Block Statement](#block-statement)
 
 ### Comments
@@ -182,6 +183,7 @@ Loxxy supports the following statements:
 -[Variable declarations](#var-statement)  
 -[If Statement](#if-statement)  
 -[Print Statement](#print-statement)  
+-[While Statement](#while-statement)
 -[Block Statement](#block-statement)
 
 #### Expressions
@@ -321,6 +323,16 @@ The statement print + expression + ; prints the result of the expression to stdo
 ``` javascript
 print "Hello, world!";  // Output: Hello, world!
 
+```
+
+####  While Statement
+
+``` javascript
+  var a = 1;
+  while (a < 10) {
+    print a;
+    a = a + 1;
+  } // Output: 123456789
 ```
 
 #### Block Statement

@@ -83,6 +83,14 @@ module Loxxy
         broadcast(:after_print_stmt, aPrintStmt)
       end
 
+      # Visit event. The visitor is about to visit a while statement node.
+      # @param aWhileStmt [AST::LOXWhileStmt] the while statement node to visit
+      def visit_while_stmt(aWhileStmt)
+        broadcast(:before_while_stmt, aWhileStmt)
+        traverse_subnodes(aWhileStmt) # The condition is visited/evaluated here...
+        broadcast(:after_while_stmt, aWhileStmt, self)
+      end
+
       # Visit event. The visitor is about to visit a block statement.
       # @param aBlockStmt [AST::LOXBlockStmt] the print statement node to visit
       def visit_block_stmt(aBlockStmt)

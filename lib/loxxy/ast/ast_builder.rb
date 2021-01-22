@@ -193,6 +193,11 @@ module Loxxy
         Ast::LoxPrintStmt.new(tokens[1].position, theChildren[1])
       end
 
+      # rule('whileStmt' => 'WHILE LEFT_PAREN expression RIGHT_PAREN statement').as ''
+      def reduce_while_stmt(_production, _range, tokens, theChildren)
+        Ast::LoxWhileStmt.new(tokens[1].position, theChildren[2], theChildren[4])
+      end
+
       # rule('block' => 'LEFT_BRACE declaration_plus RIGHT_BRACE')
       def reduce_block_stmt(_production, _range, tokens, theChildren)
         decls = LoxSeqDecl.new(tokens[1].position, theChildren[1])

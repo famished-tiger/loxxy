@@ -66,6 +66,16 @@ module Loxxy
         @ostream.print tos.to_str
       end
 
+      def after_while_stmt(aWhileStmt, aVisitor)
+        loop do
+          condition = stack.pop
+          break unless condition.truthy?
+
+          aWhileStmt.body.accept(aVisitor)
+          aWhileStmt.condition.accept(aVisitor)
+        end
+      end
+
       def before_block_stmt(_aBlockStmt)
         new_env = Environment.new
         symbol_table.enter_environment(new_env)
