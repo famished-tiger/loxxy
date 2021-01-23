@@ -67,6 +67,14 @@ module Loxxy
         broadcast(:after_var_stmt, aVarStmt)
       end
 
+      # Visit event. The visitor is about to visit a for statement.
+      # @param aForStmt [AST::LOXForStmt] the for statement node to visit
+      def visit_for_stmt(aForStmt)
+        broadcast(:before_for_stmt, aForStmt)
+        traverse_subnodes(aForStmt) # The condition is visited/evaluated here...
+        broadcast(:after_for_stmt, aForStmt, self)
+      end
+
       # Visit event. The visitor is about to visit a if statement.
       # @param anIfStmt [AST::LOXIfStmt] the if statement node to visit
       def visit_if_stmt(anIfStmt)

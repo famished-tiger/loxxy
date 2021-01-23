@@ -51,6 +51,23 @@ module Loxxy
         symbol_table.insert(new_var)
       end
 
+      def before_for_stmt(aForStmt)
+        before_block_stmt(aForStmt)
+      end
+
+      def after_for_stmt(aForStmt, aVisitor)
+        loop do
+          aForStmt.test_expr.accept(aVisitor)
+          condition = stack.pop
+          break unless condition.truthy?
+          aForStmt.body.accept(aVisitor)
+          aForStmt.update_expr.accept(aVisitor)
+          stack.pop
+        end
+        after_block_stmt(aForStmt)
+      end
+
+
       def after_if_stmt(anIfStmt, aVisitor)
         # Retrieve the result of the condition evaluation
         condition = stack.pop

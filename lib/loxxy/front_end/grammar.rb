@@ -60,8 +60,8 @@ module Loxxy
 
       rule('exprStmt' => 'expression SEMICOLON').as 'exprStmt'
 
-      rule('forStmt' => 'FOR LEFT_PAREN forControl RIGHT_PAREN statement')
-      rule('forControl' => 'forInitialization forTest forUpdate')
+      rule('forStmt' => 'FOR LEFT_PAREN forControl RIGHT_PAREN statement').as 'for_stmt'
+      rule('forControl' => 'forInitialization forTest forUpdate').as 'for_control'
       rule('forInitialization' => 'varDecl')
       rule('forInitialization' => 'exprStmt')
       rule('forInitialization' => 'SEMICOLON')

@@ -180,6 +180,19 @@ module Loxxy
         Ast::LoxVarStmt.new(tokens[1].position, var_name, theChildren[3])
       end
 
+      # rule('forStmt' => 'FOR LEFT_PAREN forControl RIGHT_PAREN statement')
+      def reduce_for_stmt(_production, _range, tokens, theChildren)
+        for_stmt = theChildren[2]
+        for_stmt.body = theChildren[4]
+        for_stmt
+      end
+
+      # rule('forControl' => 'forInitialization forTest forUpdate')
+      def reduce_for_controlreduce(_production, _range, tokens, theChildren)
+        (init, test, update) = theChildren
+        Ast::LoxForStmt.new(tokens[0].position, init, test, update)
+      end
+
       # rule('ifStmt' => 'IF ifCondition statement elsePart_opt')
       def reduce_if_stmt(_production, _range, tokens, theChildren)
         condition = theChildren[1]
