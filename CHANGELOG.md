@@ -1,8 +1,22 @@
+## [0.0.27] - 2021-01-24
+- The interpreter implements `while` loops.
+
+### Added
+- Class `Ast::LoxForStmt` a node that represents a `for` statement
+- Method `Ast::ASTBuilder#reduce_for_stmt`
+- Method `Ast::ASTBuilder#reduce_for_control` creates an `Ast::LoxForStmt` node
+- Method `Ast::ASTVisitor#visit_for_stmt` for visiting an `Ast::LoxWhileStmt` node
+- Method `BackEnd::Engine#before_for_stmt` builds a new environment for the loop variable
+- Method `BackEnd::Engine#after_for_stmt` implements most of the `for` control flow
+
+### Changed
+- File `README.md` updated.
+
 ## [0.0.26] - 2021-01-22
 - The interpreter implements `while` loops.
 
 ### Added
-- Class `Ast::LoxWhileStmt` a node that represents a while statement
+- Class `Ast::LoxWhileStmt` a node that represents a `while` statement
 - Method `Ast::ASTBuilder#reduce_while_stmt` creates an `Ast::LoxWhileStmt` node
 - Method `Ast::ASTVisitor#visit_while_stmt` for visiting an `Ast::LoxWhileStmt` node
 - Method `BackEnd::Engine#after_while_stmt` implements the while looping structure
