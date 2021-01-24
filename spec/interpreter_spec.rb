@@ -358,6 +358,44 @@ LOX_END
         expect(sample_cfg[:ostream].string).to eq('012')
       end
 
+      it 'should implement single statement for loops' do
+        program = <<-LOX_END
+          // Single-expression body.
+          for (var c = 0; c < 3;) print c = c + 1;
+          // output: 1
+          // output: 2
+          // output: 3
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('123')
+      end
+
+      it 'should implement for loops with block body' do
+        program = <<-LOX_END
+          // Block body.
+          for (var a = 0; a < 3; a = a + 1) {
+            print a;
+          }
+          // output: 0
+          // output: 1
+          // output: 2
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('012')
+      end
+
+      it 'should implement for loops without initialization' do
+        program = <<-LOX_END
+          var i = 0;
+          // No variable in initialization.
+          for (; i < 2; i = i + 1) print i;
+          // output: 0
+          // output: 1
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('01')
+      end
+
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Hello, world!')

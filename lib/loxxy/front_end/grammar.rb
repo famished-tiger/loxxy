@@ -64,8 +64,8 @@ module Loxxy
       rule('forControl' => 'forInitialization forTest forUpdate').as 'for_control'
       rule('forInitialization' => 'varDecl')
       rule('forInitialization' => 'exprStmt')
-      rule('forInitialization' => 'SEMICOLON')
-      rule('forTest' => 'expression_opt SEMICOLON')
+      rule('forInitialization' => 'SEMICOLON').as 'empty_for_initialization'
+      rule('forTest' => 'expression_opt SEMICOLON').as 'for_test'
       rule('forUpdate' => 'expression_opt')
 
       rule('ifStmt' => 'IF ifCondition statement elsePart_opt').as 'if_stmt'

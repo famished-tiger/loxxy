@@ -14,7 +14,7 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 
 ### Current status
 The project is still in inception and the interpreter is being implemented...  
-Currently it can execute a tiny subset of __Lox__ language.
+Currently it can execute a subset of __Lox__ language.
 
 But the __loxxy__ gem hosts also a parser class `RawPaser` that can parse, in principle, any valid Lox input.
 
@@ -141,7 +141,8 @@ Here are the language features currently supported by the interpreter:
 - [Datatypes](#datatypes)
 - [Statements](#statements)  
   -[Expressions](#expressions)  
-- [Variable declarations](#var-statement)  
+- [Variable declarations](#var-statement) 
+- [For statement](#for-statement)  
 - [If Statement](#if-statement)   
 - [Print Statement](#print-statement)
 - [While Statement](#while-statement)  
@@ -277,6 +278,15 @@ print foo; // Output: baz
 var iAmAVariable = "my-initial-value";
 var iAmNil; // __Lox__ initializes variables to nil by default;
 print iAmNil; // output: nil
+```
+
+#### For statement
+
+Similar to the `for` statement in `C` language
+``` javascript
+for (var a = 1; a < 10; a = a + 1) {
+  print a; // Output: 123456789
+}
 ```
 
 #### If statement

@@ -181,16 +181,26 @@ module Loxxy
       end
 
       # rule('forStmt' => 'FOR LEFT_PAREN forControl RIGHT_PAREN statement')
-      def reduce_for_stmt(_production, _range, tokens, theChildren)
+      def reduce_for_stmt(_production, _range, _tokens, theChildren)
         for_stmt = theChildren[2]
-        for_stmt.body = theChildren[4]
+        for_stmt.body_stmt = theChildren[4]
         for_stmt
       end
 
       # rule('forControl' => 'forInitialization forTest forUpdate')
-      def reduce_for_controlreduce(_production, _range, tokens, theChildren)
+      def reduce_for_control(_production, _range, tokens, theChildren)
         (init, test, update) = theChildren
         Ast::LoxForStmt.new(tokens[0].position, init, test, update)
+      end
+
+      # rule('forInitialization' => 'SEMICOLON')
+      def reduce_empty_for_initialization(_production, _range, _tokens, _theChildren)
+        nil
+      end
+
+      # rule('forTest' => 'expression_opt SEMICOLON')
+      def reduce_for_test(_production, range, tokens, theChildren)
+        return_first_child(range, tokens, theChildren)
       end
 
       # rule('ifStmt' => 'IF ifCondition statement elsePart_opt')
