@@ -263,11 +263,6 @@ module Loxxy
         reduce_binary_plus_end(production, range, tokens, theChildren)
       end
 
-      # rule('equality' => 'comparison equalityTest_plus')
-      def reduce_equality_plus(production, range, tokens, theChildren)
-        reduce_binary_operator(production, range, tokens, theChildren)
-      end
-
       # rule('equalityTest_plus' => 'equalityTest_plus equalityTest comparison')
       def reduce_equality_t_plus_more(production, range, tokens, theChildren)
         reduce_binary_plus_more(production, range, tokens, theChildren)
@@ -278,22 +273,12 @@ module Loxxy
         reduce_binary_plus_end(production, range, tokens, theChildren)
       end
 
-      # rule('comparison' => 'term comparisonTest_plus')
-      def reduce_comparison_plus(production, range, tokens, theChildren)
-        reduce_binary_operator(production, range, tokens, theChildren)
-      end
-
       # rule('comparisonTest_plus' => 'comparisonTest_plus comparisonTest term').as 'comparison_t_plus_more'
       # TODO: is it meaningful to implement this rule?
 
       # rule('comparisonTest_plus' => 'comparisonTest term')
       def reduce_comparison_t_plus_end(production, range, tokens, theChildren)
         reduce_binary_plus_end(production, range, tokens, theChildren)
-      end
-
-      # rule('term' => 'factor additive_plus')
-      def reduce_term_additive(production, range, tokens, theChildren)
-        reduce_binary_operator(production, range, tokens, theChildren)
       end
 
       # rule('additive_star' => 'additive_star additionOp factor').as 'additionOp_expr'
@@ -304,11 +289,6 @@ module Loxxy
       # rule('additive_plus' => 'additionOp factor')
       def reduce_additive_plus_end(production, range, tokens, theChildren)
         reduce_binary_plus_end(production, range, tokens, theChildren)
-      end
-
-      # rule('factor' => 'multiplicative_plus')
-      def reduce_factor_multiplicative(production, range, tokens, theChildren)
-        reduce_binary_operator(production, range, tokens, theChildren)
       end
 
       # rule('multiplicative_plus' => 'multiplicative_plus multOp unary')
