@@ -258,48 +258,13 @@ module Loxxy
         reduce_binary_plus_more(production, range, tokens, theChildren)
       end
 
-      # rule('conjunct_plus' => 'AND equality')
-      def reduce_logic_and_plus_end(production, range, tokens, theChildren)
-        reduce_binary_plus_end(production, range, tokens, theChildren)
-      end
-
       # rule('equalityTest_plus' => 'equalityTest_plus equalityTest comparison')
-      def reduce_equality_t_plus_more(production, range, tokens, theChildren)
-        reduce_binary_plus_more(production, range, tokens, theChildren)
-      end
-
-      # rule('equalityTest_star' => 'equalityTest comparison')
-      def reduce_equality_t_plus_end(production, range, tokens, theChildren)
-        reduce_binary_plus_end(production, range, tokens, theChildren)
-      end
+      # def reduce_equality_t_plus_more(production, range, tokens, theChildren)
+        # reduce_binary_plus_more(production, range, tokens, theChildren)
+      # end
 
       # rule('comparisonTest_plus' => 'comparisonTest_plus comparisonTest term').as 'comparison_t_plus_more'
       # TODO: is it meaningful to implement this rule?
-
-      # rule('comparisonTest_plus' => 'comparisonTest term')
-      def reduce_comparison_t_plus_end(production, range, tokens, theChildren)
-        reduce_binary_plus_end(production, range, tokens, theChildren)
-      end
-
-      # rule('additive_star' => 'additive_star additionOp factor').as 'additionOp_expr'
-      def reduce_additive_plus_more(production, range, tokens, theChildren)
-        reduce_binary_plus_more(production, range, tokens, theChildren)
-      end
-
-      # rule('additive_plus' => 'additionOp factor')
-      def reduce_additive_plus_end(production, range, tokens, theChildren)
-        reduce_binary_plus_end(production, range, tokens, theChildren)
-      end
-
-      # rule('multiplicative_plus' => 'multiplicative_plus multOp unary')
-      def reduce_multiplicative_plus_more(production, range, tokens, theChildren)
-        reduce_binary_plus_more(production, range, tokens, theChildren)
-      end
-
-      # rule('multiplicative_plus' => 'multOp unary')
-      def reduce_multiplicative_plus_end(production, range, tokens, theChildren)
-        reduce_binary_plus_end(production, range, tokens, theChildren)
-      end
 
       # rule('unary' => 'unaryOp unary')
       def reduce_unary_expr(_production, _range, tokens, theChildren)
