@@ -88,11 +88,11 @@ module Loxxy
       rule('owner_opt' => 'call DOT')
       rule('owner_opt' => [])
       rule('logic_or' => 'logic_and')
-      rule('logic_or' => 'logic_and disjunct_plus').as 'logic_or_plus'
-      rule('disjunct_plus' => 'disjunct_plus OR logic_and').as 'logic_or_plus_more'
-      rule('disjunct_plus' => 'OR logic_and').as 'logic_or_plus_end'
+      rule('logic_or' => 'logic_and disjunct_plus').as 'logical_expr'
+      rule('disjunct_plus' => 'disjunct_plus OR logic_and').as 'binary_plus_more'
+      rule('disjunct_plus' => 'OR logic_and').as 'binary_plus_end'
       rule('logic_and' => 'equality')
-      rule('logic_and' => 'equality conjunct_plus').as 'logic_and_plus'
+      rule('logic_and' => 'equality conjunct_plus').as 'logical_expr'
       rule('conjunct_plus' => 'conjunct_plus AND equality').as 'binary_plus_more'
       rule('conjunct_plus' => 'AND equality').as 'binary_plus_end'
       rule('equality' => 'comparison')

@@ -233,35 +233,6 @@ module Loxxy
         Ast::LoxAssignExpr.new(tokens[1].position, var_name, theChildren[3])
       end
 
-      # rule('logic_or' => 'logic_and disjunct_plus')
-      def reduce_logic_or_plus(production, range, tokens, theChildren)
-        reduce_logical_expr(production, range, tokens, theChildren)
-      end
-
-      # rule('disjunct_plus' => 'disjunct_plus OR logic_and')
-      def reduce_logic_or_plus_more(production, range, tokens, theChildren)
-        reduce_binary_plus_more(production, range, tokens, theChildren)
-      end
-
-      # rule('disjunct_plus' => 'OR logic_and')
-      def reduce_logic_or_plus_end(production, range, tokens, theChildren)
-        reduce_binary_plus_end(production, range, tokens, theChildren)
-      end
-
-      # rule('logic_and' => 'equality conjunct_plus')
-      def reduce_logic_and_plus(production, range, tokens, theChildren)
-        reduce_logical_expr(production, range, tokens, theChildren)
-      end
-
-      # rule('conjunct_plus' => 'conjunct_plus AND equality')
-      def reduce_logic_and_plus_more(production, range, tokens, theChildren)
-        reduce_binary_plus_more(production, range, tokens, theChildren)
-      end
-
-      # rule('equalityTest_plus' => 'equalityTest_plus equalityTest comparison')
-      # def reduce_equality_t_plus_more(production, range, tokens, theChildren)
-        # reduce_binary_plus_more(production, range, tokens, theChildren)
-      # end
 
       # rule('comparisonTest_plus' => 'comparisonTest_plus comparisonTest term').as 'comparison_t_plus_more'
       # TODO: is it meaningful to implement this rule?
