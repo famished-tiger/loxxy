@@ -14,9 +14,13 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 
 ### Current status
 The project is still in inception and the interpreter is being implemented...  
-Currently it can execute a subset of __Lox__ language.
+Currently it can execute all allowed __Lox__ expressions and statement except:
+- Functions and closures,  
+- Classes and objects.
 
-But the __loxxy__ gem hosts also a parser class `RawPaser` that can parse, in principle, any valid Lox input.
+These will be implemented soon.
+
+
 
 ## What's the fuss about Lox?
 ... Nothing...  
