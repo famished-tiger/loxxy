@@ -21,6 +21,7 @@ module Loxxy
         end
       end
 
+      # rubocop: disable Lint/FloatComparison
       context 'Provided services:' do
         it 'should compare with other Lox numbers' do
           result = subject == Number.new(sample_value)
@@ -51,7 +52,8 @@ module Loxxy
           subtraction = subject - Number.new(10)
           expect(subtraction == -22.34).to be_true
         end
-      end
+      end # context
+      # rubocop: enable Lint/FloatComparison
     end # describe
   end # module
 end # module

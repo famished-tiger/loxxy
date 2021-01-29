@@ -208,6 +208,7 @@ LOX_END
           expect(eof_token.terminal).to eq('EOF')
         end
 
+        # rubocop: disable Lint/PercentStringArray
         it 'should skip end of line comments' do
           input = <<-LOX_END
             // first comment
@@ -223,6 +224,7 @@ LOX_END
           ]
           match_expectations(subject, expectations)
         end
+        # rubocop: enable Lint/PercentStringArray
 
         it 'should cope with single slash (divide) expression' do
           subject.start_with('8 / 2')

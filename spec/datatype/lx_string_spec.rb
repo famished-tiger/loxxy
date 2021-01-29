@@ -26,6 +26,7 @@ module Loxxy
           expect(subject.to_str).to eq(sample_text)
         end
 
+        # rubocop: disable Lint/BinaryOperatorWithIdenticalOperands
         it 'compares with another Lox string' do
           result = subject == LXString.new(sample_text.dup)
           expect(result).to be_true
@@ -40,6 +41,7 @@ module Loxxy
           result = LXString.new('') == LXString.new('')
           expect(result).to be_true
         end
+        # rubocop: enable Lint/BinaryOperatorWithIdenticalOperands
 
         it 'compares with a Ruby string' do
           result = subject == sample_text.dup
