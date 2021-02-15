@@ -25,6 +25,8 @@ module Loxxy
         @ostream = config.include?(:ostream) ? config[:ostream] : $stdout
         @symbol_table = SymbolTable.new
         @stack = []
+
+        init_globals
       end
 
       # Given an abstract syntax parse tree visitor, launch the visit
@@ -167,6 +169,17 @@ module Loxxy
         end
       end
 
+      def after_call_expr(aCallExpr, aVisitor)
+        # Evaluate callee part
+        aCallExpr.callee.accept(aVisitor)
+        callee = stack.pop
+        # TODO: reverse order?
+        aCallExpr.arguments.each do |arg|
+          arg.evaluate(aVisitor)
+        end
+        stack.push callee.call # Pass arguments
+      end
+
       def after_grouping_expr(_groupingExpr)
         # Do nothing: work was already done by visiting /evaluating the subexpression
       end
@@ -187,6 +200,32 @@ module Loxxy
       # @param aNonTerminalNode [Ast::BuiltinDattype] the built-in datatype value
       def before_visit_builtin(aValue)
         stack.push(aValue)
+      end
+
+      private
+
+      NativeFunction = Struct.new(:callable, :interp) do
+        def accept(_visitor)
+          interp.stack.push callable
+        end
+      end
+
+      def init_globals
+        add_native_fun('clock', native_clock)
+      end
+
+      def add_native_fun(aName, aProc)
+        native_fun = Variable.new(aName, NativeFunction.new(aProc, self))
+        symbol_table.insert(native_fun)
+      end
+
+      # Ruby-native function that returns (as float) the number of seconds since
+      # a given time reference.
+      def native_clock
+        proc do
+          now = Time.now.to_f
+          Datatype::Number.new(now)
+        end
       end
     end # class
   end # module

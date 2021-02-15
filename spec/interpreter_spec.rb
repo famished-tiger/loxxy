@@ -384,17 +384,15 @@ LOX_END
         expect(sample_cfg[:ostream].string).to eq('012')
       end
 
-      it 'should implement for loops without initialization' do
+      it 'should implement nullary function calls' do
         program = <<-LOX_END
-          var i = 0;
-          // No variable in initialization.
-          for (; i < 2; i = i + 1) print i;
-          // output: 0
-          // output: 1
+          print clock(); // Lox expect the 'clock' predefined native function
         LOX_END
         expect { subject.evaluate(program) }.not_to raise_error
-        expect(sample_cfg[:ostream].string).to eq('01')
+        tick = sample_cfg[:ostream].string
+        expect(Time.now.to_f - tick.to_f).to be < 0.1
       end
+
 
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error

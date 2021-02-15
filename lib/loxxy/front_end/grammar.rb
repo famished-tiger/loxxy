@@ -126,10 +126,10 @@ module Loxxy
       rule('unaryOp' => 'BANG')
       rule('unaryOp' => 'MINUS')
       rule('call' => 'primary')
-      rule('call' => 'primary refinement_plus')
-      rule('refinement_plus' => 'refinement_plus refinement')
-      rule('refinement_plus' => 'refinement')
-      rule('refinement' => 'LEFT_PAREN arguments_opt RIGHT_PAREN')
+      rule('call' => 'primary refinement_plus').as 'call_expr'
+      rule('refinement_plus' => 'refinement_plus refinement') # .as 'refinement_plus_more'
+      rule('refinement_plus' => 'refinement').as 'refinement_plus_end'
+      rule('refinement' => 'LEFT_PAREN arguments_opt RIGHT_PAREN').as 'call_arglist'
       rule('refinement' => 'DOT IDENTIFIER')
       rule('primary' => 'TRUE').as 'literal_expr'
       rule('primary' => 'FALSE').as 'literal_expr'
@@ -149,8 +149,8 @@ module Loxxy
       rule('parameters' => 'IDENTIFIER')
       rule('arguments_opt' => 'arguments')
       rule('arguments_opt' => [])
-      rule('arguments' => 'arguments COMMA expression')
-      rule('arguments' => 'expression')
+      rule('arguments' => 'arguments COMMA expression').as 'arguments_plus_more'
+      rule('arguments' => 'expression').as 'arguments_plus_end'
     end
 
     unless defined?(Grammar)

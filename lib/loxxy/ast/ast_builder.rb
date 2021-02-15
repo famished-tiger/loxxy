@@ -233,7 +233,6 @@ module Loxxy
         Ast::LoxAssignExpr.new(tokens[1].position, var_name, theChildren[3])
       end
 
-
       # rule('comparisonTest_plus' => 'comparisonTest_plus comparisonTest term').as 'comparison_t_plus_more'
       # TODO: is it meaningful to implement this rule?
 
@@ -242,6 +241,27 @@ module Loxxy
         operator = Name2unary[theChildren[0].symbol.name].to_sym
         operand = theChildren[1]
         LoxUnaryExpr.new(tokens[0].position, operator, operand)
+      end
+
+      # rule('call' => 'primary refinement_plus').as 'call_expr'
+      def reduce_call_expr(_production, _range, _tokens, theChildren)
+        theChildren[1].callee = theChildren[0]
+        theChildren[1]
+      end
+
+      # rule('refinement_plus' => 'refinement').
+      def reduce_refinement_plus_end(_production, _range, _tokens, theChildren)
+        theChildren[0]
+      end
+
+      # rule('refinement' => 'LEFT_PAREN arguments_opt RIGHT_PAREN')
+      def reduce_call_arglist(_production, _range, tokens, theChildren)
+        args = theChildren[1] || []
+        if args.size > 255
+          raise StandardError, "Can't have more than 255 arguments."
+        end
+
+        LoxCallExpr.new(tokens[0].position, args)
       end
 
       # rule('primary' => 'LEFT_PAREN expression RIGHT_PAREN')
@@ -262,6 +282,16 @@ module Loxxy
       def reduce_variable_expr(_production, _range, tokens, theChildren)
         var_name = theChildren[0].token.lexeme
         LoxVariableExpr.new(tokens[0].position, var_name)
+      end
+
+      # rule('arguments' => 'arguments COMMA expression')
+      def reduce_arguments_plus_more(_production, _range, _tokens, theChildren)
+        theChildren[0] << theChildren[2]
+      end
+
+      # rule('arguments' => 'expression')
+      def reduce_arguments_plus_end(_production, _range, _tokens, theChildren)
+        theChildren
       end
     end # class
   end # module

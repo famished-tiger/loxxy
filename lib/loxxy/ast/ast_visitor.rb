@@ -145,6 +145,14 @@ module Loxxy
         broadcast(:after_unary_expr, anUnaryExpr)
       end
 
+      # Visit event. The visitor is about to visit a call expression.
+      # @param aCallExpr [AST::LoxCallExpr] call expression to visit
+      def visit_call_expr(aCallExpr)
+        broadcast(:before_call_expr, aCallExpr)
+        traverse_subnodes(aCallExpr)
+        broadcast(:after_call_expr, aCallExpr, self)
+      end
+
       # Visit event. The visitor is about to visit a grouping expression.
       # @param aGroupingExpr [AST::LoxGroupingExpr] grouping expression to visit
       def visit_grouping_expr(aGroupingExpr)
@@ -177,10 +185,12 @@ module Loxxy
 
       # Visit event. The visitor is about to visit the given non terminal node.
       # @param aNonTerminalNode [Rley::PTree::NonTerminalNode] the node to visit.
-      def visit_nonterminal(_non_terminal_node)
+      def visit_nonterminal(non_terminal_node)
         # Loxxy interpreter encountered a CST node (Concrete Syntax Tree)
         # that it cannot handle.
-        raise NotImplementedError, 'Loxxy cannot execute this code yet.'
+        symb = non_terminal_node.symbol.name
+        msg = "Loxxy cannot execute this code yet for non-terminal symbol '#{symb}'."
+        raise NotImplementedError, msg
       end
 
       private

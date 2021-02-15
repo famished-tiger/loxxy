@@ -3,6 +3,7 @@
 require_relative 'lox_variable_expr'
 require_relative 'lox_literal_expr'
 require_relative 'lox_noop_expr'
+require_relative 'lox_call_expr'
 require_relative 'lox_grouping_expr'
 require_relative 'lox_unary_expr'
 require_relative 'lox_binary_expr'
