@@ -1,3 +1,16 @@
+## [0.0.28] - 2021-02-15
+- The interpreter implements function calls (to a native function).
+
+### Added
+- Class `Ast::LoxCallExpr` a node that represents a function call expression
+- Method `Ast::ASTBuilder#reduce_call_expr`
+- Method `Ast::ASTBuilder#reduce_refinement_plus_end`
+- Method `Ast::ASTBuilder#reduce_call_arglist` creates a `LoxCallExpr` node
+- Method `Ast::ASTBuilder#reduce_arguments_plus_more` builds the function argument array
+- Method `Ast::ASTVisitor#visit_call_expr` for visiting an `Ast::LoxCallExpr` node
+- Method `BackEnd::Engine#after_call_expr`implements the evaluation of a function call.
+- Method `BackEnd::Engine#after_for_stmt` implements most of the `for` control flow
+
 ## [0.0.27] - 2021-01-24
 - The interpreter implements `while` loops.
 
