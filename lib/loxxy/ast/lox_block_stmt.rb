@@ -6,7 +6,7 @@ module Loxxy
   module Ast
     class LoxBlockStmt < LoxCompoundExpr
       # @param aPosition [Rley::Lexical::Position] Position of the entry in the input stream.
-      # @param operand [Loxxy::Ast::LoxSeqDecl]
+      # @param decls [Loxxy::Ast::LoxSeqDecl]
       def initialize(aPosition, decls)
         super(aPosition, [decls])
       end

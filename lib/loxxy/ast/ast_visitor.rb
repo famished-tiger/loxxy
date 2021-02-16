@@ -12,7 +12,7 @@ module Loxxy
       # attr_reader(:runtime)
 
       # Build a visitor for the given top.
-      # @param aRoot [AST::LoxNode] the parse tree to visit.
+      # @param aTop [AST::LoxNode] the parse tree to visit.
       def initialize(aTop)
         raise StandardError if aTop.nil?
 
@@ -52,7 +52,7 @@ module Loxxy
       end
 
       # Visit event. The visitor is about to visit a variable declaration statement.
-      # @param aPrintStmt [AST::LOXVarStmt] the variable declaration node to visit
+      # @param aSeqDecls [AST::LOXSeqDecl] the variable declaration node to visit
       def visit_seq_decl(aSeqDecls)
         broadcast(:before_seq_decl, aSeqDecls)
         traverse_subnodes(aSeqDecls)
@@ -60,7 +60,7 @@ module Loxxy
       end
 
       # Visit event. The visitor is about to visit a variable declaration statement.
-      # @param aPrintStmt [AST::LOXVarStmt] the variable declaration node to visit
+      # @param aVarStmt [AST::LOXVarStmt] the variable declaration node to visit
       def visit_var_stmt(aVarStmt)
         broadcast(:before_var_stmt, aVarStmt)
         traverse_subnodes(aVarStmt)
@@ -108,7 +108,7 @@ module Loxxy
       end
 
       # Visit event. The visitor is visiting an assignment node
-      # @param aLiteralExpr [AST::LoxAssignExpr] the variable assignment node to visit.
+      # @param anAssignExpr [AST::LoxAssignExpr] the variable assignment node to visit.
       def visit_assign_expr(anAssignExpr)
         broadcast(:before_assign_expr, anAssignExpr)
         traverse_subnodes(anAssignExpr)
@@ -118,7 +118,7 @@ module Loxxy
       # Visit event. The visitor is about to visit a logical expression.
       # Since logical expressions may take shorcuts by not evaluating all their
       # sub-expressiosns, they are responsible for visiting or not their children.
-      # @param aBinaryExpr [AST::LOXBinaryExpr] the logical expression node to visit
+      # @param aLogicalExpr [AST::LOXLogicalExpr] the logical expression node to visit
       def visit_logical_expr(aLogicalExpr)
         broadcast(:before_logical_expr, aLogicalExpr)
 
@@ -170,14 +170,14 @@ module Loxxy
       end
 
       # Visit event. The visitor is visiting a variable usage node
-      # @param aLiteralExpr [AST::LoxVariableExpr] the variable reference node to visit.
+      # @param aVariableExpr [AST::LoxVariableExpr] the variable reference node to visit.
       def visit_variable_expr(aVariableExpr)
         broadcast(:before_variable_expr, aVariableExpr)
         broadcast(:after_variable_expr, aVariableExpr, self)
       end
 
       # Visit event. The visitor is about to visit the given terminal datatype value.
-      # @param aNonTerminalNode [Ast::BuiltinDattype] the built-in datatype value
+      # @param aValue [Ast::BuiltinDattype] the built-in datatype value
       def visit_builtin(aValue)
         broadcast(:before_visit_builtin, aValue)
         broadcast(:after_visit_builtin, aValue)
@@ -185,10 +185,10 @@ module Loxxy
 
       # Visit event. The visitor is about to visit the given non terminal node.
       # @param aNonTerminalNode [Rley::PTree::NonTerminalNode] the node to visit.
-      def visit_nonterminal(non_terminal_node)
+      def visit_nonterminal(aNonTerminalNode)
         # Loxxy interpreter encountered a CST node (Concrete Syntax Tree)
         # that it cannot handle.
-        symb = non_terminal_node.symbol.name
+        symb = aNonTerminalNode.symbol.name
         msg = "Loxxy cannot execute this code yet for non-terminal symbol '#{symb}'."
         raise NotImplementedError, msg
       end

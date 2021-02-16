@@ -11,7 +11,7 @@ module Loxxy
 
       # Constructor.
       # @param aValue [Datatype::BuiltinDatatype] the Lox data value
-      # @param theLexeme [String] the lexeme (= piece of text from input)
+      # @param aLexeme [String] the lexeme (= piece of text from input)
       # @param aTerminal [Rley::Syntax::Terminal, String]
       #   The terminal symbol corresponding to the lexeme.
       # @param aPosition [Rley::Lexical::Position] The position of lexeme

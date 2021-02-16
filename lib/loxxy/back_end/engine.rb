@@ -197,7 +197,7 @@ module Loxxy
         stack.push(literalExpr.literal)
       end
 
-      # @param aNonTerminalNode [Ast::BuiltinDattype] the built-in datatype value
+      # @param aValue [Ast::BuiltinDattype] the built-in datatype value
       def before_visit_builtin(aValue)
         stack.push(aValue)
       end

@@ -12,7 +12,9 @@ module Loxxy
       attr_reader :else_stmt
 
       # @param aPosition [Rley::Lexical::Position] Position of the entry in the input stream.
-      # @param subExpr [Loxxy::Ast::LoxNode]
+      # @param condExpr [Loxxy::Ast::LoxNode]
+      # @param thenStmt [Loxxy::Ast::LoxNode]
+      # @param elseStmt [Loxxy::Ast::LoxNode]
       def initialize(aPosition, condExpr, thenStmt, elseStmt)
         super(aPosition, [condExpr])
         @then_stmt = thenStmt

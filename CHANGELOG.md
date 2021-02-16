@@ -1,3 +1,9 @@
+## [0.0.28] - 2021-02-XX
+- 
+
+### Fixed
+- Fixed inconsistencies in documentation comments.
+
 ## [0.0.28] - 2021-02-15
 - The interpreter implements function calls (to a native function).
 

@@ -18,7 +18,6 @@ module Loxxy
       # @param initialization [Loxxy::Ast::LoxNode]
       # @param testExpr [Loxxy::Ast::LoxNode]
       # @param updateExpr [Loxxy::Ast::LoxNode]
-      # @param body [Loxxy::Ast::LoxNode]
       def initialize(aPosition, initialization, testExpr, updateExpr)
         child = initialization ? [initialization] : []
         super(aPosition, child)
