@@ -213,7 +213,7 @@ module Loxxy
         stack.push(aValue)
       end
 
-      def after_fun_stmt(aFunStmt, aVisitor)
+      def after_fun_stmt(aFunStmt, _visitor)
         function = Function.new(aFunStmt.name, aFunStmt.params, aFunStmt.body, stack)
         new_var = Variable.new(aFunStmt.name, function)
         symbol_table.insert(new_var)

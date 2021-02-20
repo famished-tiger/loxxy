@@ -4,6 +4,7 @@ require_relative 'lox_compound_expr'
 
 module Loxxy
   module Ast
+    # rubocop: disable Style/AccessorGrouping
     class LoxFunStmt < LoxCompoundExpr
       attr_reader :name
       attr_reader :params
@@ -28,5 +29,6 @@ module Loxxy
 
       alias operands subnodes
     end # class
+    # rubocop: enable Style/AccessorGrouping
   end # module
 end # module

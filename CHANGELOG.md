@@ -1,3 +1,8 @@
+## [0.1.01] - 2021-02-20
+### Fixed
+- Fixed most offences for Rubocop.
+
+
 ## [0.1.00] - 2021-02-20
 - Version number bumped, `Loxxy` supports function definitions
 

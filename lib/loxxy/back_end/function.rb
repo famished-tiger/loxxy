@@ -4,18 +4,16 @@ require_relative '../datatype/all_datatypes'
 
 module Loxxy
   module BackEnd
+    # rubocop: disable Style/AccessorGrouping
     # Representation of a Lox function.
     # It is a named slot that can be associated with a value at the time.
     class Function
-
       # @return [String]
       attr_reader :name
 
       # @return [Array<>] the parameters
       attr_reader :parameters
-      
       attr_reader :body
-
       attr_reader :stack
 
       # Create a variable with given name and initial value
@@ -41,5 +39,6 @@ module Loxxy
         "<fn #{name}>"
       end
     end # class
+    # rubocop: enable Style/AccessorGrouping
   end # module
 end # module

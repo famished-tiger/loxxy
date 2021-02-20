@@ -233,7 +233,7 @@ module Loxxy
       end
 
       # rule('block' => 'LEFT_BRACE RIGHT_BRACE').as 'block_empty'
-      def reduce_block_empty(_production, _range, tokens, theChildren)
+      def reduce_block_empty(_production, _range, tokens, _children)
         Ast::LoxBlockStmt.new(tokens[0].position, nil)
       end
 
@@ -298,7 +298,7 @@ module Loxxy
       def reduce_function(_production, _range, _tokens, theChildren)
         first_child = theChildren.first
         pos = first_child.token.position
-        fun_stmt = LoxFunStmt.new(pos, first_child.token.lexeme, theChildren[2], theChildren[4])
+        LoxFunStmt.new(pos, first_child.token.lexeme, theChildren[2], theChildren[4])
       end
 
       # rule('parameters' => 'parameters COMMA IDENTIFIER')

@@ -9,6 +9,7 @@ require_relative '../lib/loxxy/interpreter'
 module Loxxy
   # This spec contains the bare bones test for the Interpreter class.
   # The execution of Lox code is tested elsewhere.
+  # rubocop: disable Metrics/BlockLength
   describe Interpreter do
     let(:sample_cfg) do
       { ostream: StringIO.new }
@@ -429,4 +430,5 @@ LOX_END
       end
     end # context
   end # describe
+  # rubocop: enable Metrics/BlockLength
 end # module
