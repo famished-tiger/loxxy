@@ -1,5 +1,21 @@
-## [0.0.28] - 2021-02-XX
-- 
+## [0.1.00] - 2021-02-20
+- Version number bumped, `Loxxy` supports function definitions
+
+### Added
+- Class `Ast::LoxFunStmt` a node that represents a function declaration
+- Method `Ast::ASTBuilder#reduce_fun_decl`
+- Method `Ast::ASTBuilder#reduce_function` creates a `LoxFunStmt` instance
+- Method `Ast::ASTBuilder#reduce_parameters_plus_more` for dealing with function parameters
+- Method `Ast::ASTBuilder#reduce_parameters_plus_end`
+- Method `Ast::ASTVisitor#visit_fun_stmt` for visiting an `Ast::LoxFunStmt` node
+- Method `Ast::LoxBlockStmt#empty?` returns true if the code block is empty
+- Method `BackEnd::Engine#after_fun_stmt`
+- Method `Backend::NativeFunction#call` 
+- Method `Backend::NativeFunction#to_str` 
+- Method `Backend::Function` implementation of a function object.
+
+### Changed
+- Method `BackEnd::Engine#after_call_expr`
 
 ### Fixed
 - Fixed inconsistencies in documentation comments.

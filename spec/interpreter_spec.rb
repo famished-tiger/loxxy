@@ -386,13 +386,42 @@ LOX_END
 
       it 'should implement nullary function calls' do
         program = <<-LOX_END
-          print clock(); // Lox expect the 'clock' predefined native function
+          print clock(); // Lox expects the 'clock' predefined native function
         LOX_END
         expect { subject.evaluate(program) }.not_to raise_error
         tick = sample_cfg[:ostream].string
         expect(Time.now.to_f - tick.to_f).to be < 0.1
       end
 
+      it 'should implement function definition' do
+        program = <<-LOX_END
+          fun printSum(a, b) {
+             print a + b;
+          }
+          printSum(1, 2);
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('3')
+      end
+
+      it 'should support functions with empty body' do
+        program = <<-LOX_END
+          fun f() {}
+          print f();
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('nil')
+      end
+
+      it 'should provide print representation of functions' do
+        program = <<-LOX_END
+          fun foo() {}
+          print foo; // output: <fn foo>
+          print clock; // output: <native fn>
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('<fn foo><native fn>')
+      end
 
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error

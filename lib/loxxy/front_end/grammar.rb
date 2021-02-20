@@ -44,7 +44,7 @@ module Loxxy
       rule('function_star' => 'function_star function')
       rule('function_star' => [])
 
-      rule('funDecl' => 'FUN function')
+      rule('funDecl' => 'FUN function').as 'fun_decl'
 
       rule('varDecl' => 'VAR IDENTIFIER SEMICOLON').as 'var_declaration'
       rule('varDecl' => 'VAR IDENTIFIER EQUAL expression SEMICOLON').as 'var_initialization'
@@ -77,7 +77,7 @@ module Loxxy
       rule('returnStmt' => 'RETURN expression_opt SEMICOLON')
       rule('whileStmt' => 'WHILE LEFT_PAREN expression RIGHT_PAREN statement').as 'while_stmt'
       rule('block' => 'LEFT_BRACE declaration_plus RIGHT_BRACE').as 'block_stmt'
-      rule('block' => 'LEFT_BRACE RIGHT_BRACE')
+      rule('block' => 'LEFT_BRACE RIGHT_BRACE').as 'block_empty'
 
       # Expressions: produce values
       rule('expression_opt' => 'expression')
@@ -142,11 +142,11 @@ module Loxxy
       rule('primary' => 'SUPER DOT IDENTIFIER')
 
       # Utility rules
-      rule('function' => 'IDENTIFIER LEFT_PAREN params_opt RIGHT_PAREN block')
+      rule('function' => 'IDENTIFIER LEFT_PAREN params_opt RIGHT_PAREN block').as 'function'
       rule('params_opt' => 'parameters')
       rule('params_opt' => [])
-      rule('parameters' => 'parameters COMMA IDENTIFIER')
-      rule('parameters' => 'IDENTIFIER')
+      rule('parameters' => 'parameters COMMA IDENTIFIER').as 'parameters_plus_more'
+      rule('parameters' => 'IDENTIFIER').as 'parameters_plus_end'
       rule('arguments_opt' => 'arguments')
       rule('arguments_opt' => [])
       rule('arguments' => 'arguments COMMA expression').as 'arguments_plus_more'

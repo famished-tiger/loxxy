@@ -2,6 +2,7 @@
 
 # Load all the classes implementing AST nodes
 require_relative '../ast/all_lox_nodes'
+require_relative 'function'
 require_relative 'symbol_table'
 
 module Loxxy
@@ -173,11 +174,21 @@ module Loxxy
         # Evaluate callee part
         aCallExpr.callee.accept(aVisitor)
         callee = stack.pop
-        # TODO: reverse order?
-        aCallExpr.arguments.each do |arg|
-          arg.evaluate(aVisitor)
+        aCallExpr.arguments.reverse_each { |arg| arg.accept(aVisitor) }
+
+        if callee.kind_of?(NativeFunction)
+          stack.push callee.call # Pass arguments
+        else
+          new_env = Environment.new(symbol_table.current_env)
+          symbol_table.enter_environment(new_env)
+          callee.parameters&.each do |param_name|
+            local = Variable.new(param_name, stack.pop)
+            symbol_table.insert(local)
+          end
+          stack.push callee.call(aVisitor)
+
+          symbol_table.leave_environment
         end
-        stack.push callee.call # Pass arguments
       end
 
       def after_grouping_expr(_groupingExpr)
@@ -202,11 +213,25 @@ module Loxxy
         stack.push(aValue)
       end
 
+      def after_fun_stmt(aFunStmt, aVisitor)
+        function = Function.new(aFunStmt.name, aFunStmt.params, aFunStmt.body, stack)
+        new_var = Variable.new(aFunStmt.name, function)
+        symbol_table.insert(new_var)
+      end
+
       private
 
       NativeFunction = Struct.new(:callable, :interp) do
         def accept(_visitor)
-          interp.stack.push callable
+          interp.stack.push self
+        end
+
+        def call
+          callable.call
+        end
+
+        def to_str
+          '<native fn>'
         end
       end
 

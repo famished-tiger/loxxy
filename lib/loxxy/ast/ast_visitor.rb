@@ -103,7 +103,7 @@ module Loxxy
       # @param aBlockStmt [AST::LOXBlockStmt] the print statement node to visit
       def visit_block_stmt(aBlockStmt)
         broadcast(:before_block_stmt, aBlockStmt)
-        traverse_subnodes(aBlockStmt)
+        traverse_subnodes(aBlockStmt) unless aBlockStmt.empty?
         broadcast(:after_block_stmt, aBlockStmt)
       end
 
@@ -181,6 +181,14 @@ module Loxxy
       def visit_builtin(aValue)
         broadcast(:before_visit_builtin, aValue)
         broadcast(:after_visit_builtin, aValue)
+      end
+
+      # Visit event. The visitor is about to visit a function statement node.
+      # @param aFunStmt [AST::LoxFunStmt] function declaration to visit
+      def visit_fun_stmt(aFunStmt)
+        broadcast(:before_fun_stmt, aFunStmt)
+        traverse_subnodes(aFunStmt)
+        broadcast(:after_fun_stmt, aFunStmt, self)
       end
 
       # Visit event. The visitor is about to visit the given non terminal node.

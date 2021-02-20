@@ -163,6 +163,11 @@ module Loxxy
         [theChildren[0]]
       end
 
+      # rule('funDecl' => 'FUN function')
+      def reduce_fun_decl(_production, _range, _tokens, theChildren)
+        theChildren[1]
+      end
+
       # rule('exprStmt' => 'expression SEMICOLON')
       def reduce_exprStmt(_production, range, tokens, theChildren)
       return_first_child(range, tokens, theChildren) # Discard the semicolon
@@ -227,6 +232,11 @@ module Loxxy
         Ast::LoxBlockStmt.new(tokens[1].position, decls)
       end
 
+      # rule('block' => 'LEFT_BRACE RIGHT_BRACE').as 'block_empty'
+      def reduce_block_empty(_production, _range, tokens, theChildren)
+        Ast::LoxBlockStmt.new(tokens[0].position, nil)
+      end
+
       # rule('assignment' => 'owner_opt IDENTIFIER EQUAL assignment')
       def reduce_assign_expr(_production, _range, tokens, theChildren)
         var_name = theChildren[1].token.lexeme.dup
@@ -282,6 +292,23 @@ module Loxxy
       def reduce_variable_expr(_production, _range, tokens, theChildren)
         var_name = theChildren[0].token.lexeme
         LoxVariableExpr.new(tokens[0].position, var_name)
+      end
+
+      # rule('function' => 'IDENTIFIER LEFT_PAREN params_opt RIGHT_PAREN block').as 'function'
+      def reduce_function(_production, _range, _tokens, theChildren)
+        first_child = theChildren.first
+        pos = first_child.token.position
+        fun_stmt = LoxFunStmt.new(pos, first_child.token.lexeme, theChildren[2], theChildren[4])
+      end
+
+      # rule('parameters' => 'parameters COMMA IDENTIFIER')
+      def reduce_parameters_plus_more(_production, _range, _tokens, theChildren)
+        theChildren[0] << theChildren[2].token.lexeme
+      end
+
+      # rule('parameters' => 'IDENTIFIER')
+      def reduce_parameters_plus_end(_production, _range, _tokens, theChildren)
+        [theChildren[0].token.lexeme]
       end
 
       # rule('arguments' => 'arguments COMMA expression')

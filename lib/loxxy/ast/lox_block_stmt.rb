@@ -11,6 +11,10 @@ module Loxxy
         super(aPosition, [decls])
       end
 
+      def empty?
+        subnodes.size == 1 && subnodes[0].nil?
+      end
+
       # Part of the 'visitee' role in Visitor design pattern.
       # @param visitor [Ast::ASTVisitor] the visitor
       def accept(visitor)
