@@ -14,12 +14,11 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 
 ### Current status
 The project is still in inception and the interpreter is being implemented...  
-Currently it can execute all allowed __Lox__ expressions and statement except:
-- Functions and closures,  
+Currently it can execute all allowed __Lox__ expressions and statements except:
+- Closures,  
 - Classes and objects.
 
 These will be implemented soon.
-
 
 
 ## What's the fuss about Lox?
@@ -36,11 +35,11 @@ Although __Lox__ is fairly simple, it is far from a toy language:
 - Functions and closures
 - Object-orientation (classes, methods, inheritance).
 
-In other words, __Lox__ contains interesting features expected from most general-purpose 
+In other words, __Lox__ contains interesting features found in most general-purpose 
 languages.
 
 ### What's missing in Lox?
-__Lox__ was constrained by design and therefore was not aimed to be a language used in real-world applications.
+__Lox__ was constrained by design and was therefore not aimed to be a language used in real-world applications.
 Here are some missing parts to make it a _practical_ language:
 - Collections (arrays, maps, ...)
 - Modules (importing stuff from other packages/files)
@@ -69,6 +68,23 @@ LOX_END
 lox = Loxxy::Interpreter.new
 lox.evaluate(lox_program) # Output: Hello, world!
 ```
+
+## A function definition example
+```ruby
+require 'loxxy'
+
+lox_program = <<LOX_END
+  fun add4(n) {
+    n + 4;
+  }
+
+  print add4(6); // Output: 10
+LOX_END
+
+lox = Loxxy::Interpreter.new
+lox.evaluate(lox_program) # Output 10
+```
+
 
 ## Retrieving the result from a Lox program
 The __Loxxy__ interpreter returns the value of the last evaluated expression. 
@@ -151,6 +167,7 @@ Here are the language features currently supported by the interpreter:
 - [Print Statement](#print-statement)
 - [While Statement](#while-statement)  
 - [Block Statement](#block-statement)
+- [Function declaration](#func-statement)
 
 ### Comments
 
@@ -177,19 +194,21 @@ loxxy supports  all the standard __Lox__ datatypes:
 ### Statements
 
 Loxxy supports the following statements:  
-- [Expressions](#expressions)  
+- [Expressions](#expressions)
   -[Arithmetic expressions](#arithmetic-expressions)  
   -[String concatenation](#string-concatenation)  
   -[Comparison expressions](#comparison-expressions)  
   -[Logical expressions](#logical-expressions)  
   -[Grouping expressions](#grouping-expressions)  
-  -[Variable expressions and assignments](#variable-expressions)
-  
+  -[Variable expressions and assignments](#variable-expressions)  
+  -[Function call](#function-call)
+
 -[Variable declarations](#var-statement)  
 -[If Statement](#if-statement)  
 -[Print Statement](#print-statement)  
--[While Statement](#while-statement)
--[Block Statement](#block-statement)
+-[While Statement](#while-statement)  
+-[Block Statement](#block-statement)  
+-[Function Declaration](#function-declaration)
 
 #### Expressions
 
@@ -284,6 +303,15 @@ var iAmNil; // __Lox__ initializes variables to nil by default;
 print iAmNil; // output: nil
 ```
 
+#### Function call
+``` javascript
+// Calling a function without argument
+print clock();
+
+// Assumption: there exists a function `add` that takes two arguments
+print add(2, 3);
+```
+
 #### For statement
 
 Similar to the `for` statement in `C` language
@@ -360,6 +388,19 @@ var a = "outer";
 }
 
 print a; // output: outer
+```
+
+#### Function Declaration
+The keyword `fun` is used to begin a function declaration.
+In __Lox__ a function has a name and a body (which may be empty).
+
+``` javascript
+fun add4(n) // `add4` will be the name of the function
+{
+  n + 4;
+}
+
+print add4(6); // output: 10
 ```
 
 ## Installation

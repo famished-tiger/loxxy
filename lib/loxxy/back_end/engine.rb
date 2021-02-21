@@ -83,7 +83,7 @@ module Loxxy
 
       def after_print_stmt(_printStmt)
         tos = stack.pop
-        @ostream.print tos.to_str
+        @ostream.print tos ? tos.to_str : 'nil'
       end
 
       def after_while_stmt(aWhileStmt, aVisitor)
@@ -185,7 +185,7 @@ module Loxxy
             local = Variable.new(param_name, stack.pop)
             symbol_table.insert(local)
           end
-          stack.push callee.call(aVisitor)
+          callee.call(aVisitor)
 
           symbol_table.leave_environment
         end

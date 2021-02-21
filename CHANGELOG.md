@@ -1,3 +1,13 @@
+## [0.1.02] - 2021-02-21
+- Function definition and call documented in `README.md`
+
+### Changed
+- File `README.md` updated todescribe function definition and function call.
+
+### Fixed
+- Method `BackEnd::Engine#after_print_stmt` now handles of empty stack or nil data.
+- Method `BackEnd::Engine#after_call_expr` was pushing one spurious item onto data stack.
+
 ## [0.1.01] - 2021-02-20
 ### Fixed
 - Fixed most offences for Rubocop.
