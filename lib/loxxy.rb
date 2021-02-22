@@ -6,8 +6,6 @@ require_relative 'loxxy/front_end/raw_parser'
 
 # Namespace for all classes and constants of __loxxy__ gem.
 module Loxxy
-  class Error < StandardError; end
-
   # Shorthand method. Returns the sole object that represents
   # a Lox false literal.
   # @return [Loxxy::Datatype::False]

@@ -2,6 +2,7 @@
 
 # Load all the classes implementing AST nodes
 require_relative '../ast/all_lox_nodes'
+require_relative 'binary_operator'
 require_relative 'function'
 require_relative 'symbol_table'
 
@@ -20,13 +21,18 @@ module Loxxy
       # @return [Array<Datatype::BuiltinDatatyp>] Stack for the values of expr
       attr_reader :stack
 
+      # @return [Hash { Symbol => BinaryOperator}]
+      attr_reader :binary_operators
+
       # @param theOptions [Hash]
       def initialize(theOptions)
         @config = theOptions
         @ostream = config.include?(:ostream) ? config[:ostream] : $stdout
         @symbol_table = SymbolTable.new
         @stack = []
+        @binary_operators = {}
 
+        init_binary_operators
         init_globals
       end
 
@@ -148,9 +154,11 @@ module Loxxy
       end
 
       def after_binary_expr(aBinaryExpr)
-        op = aBinaryExpr.operator
         operand2 = stack.pop
         operand1 = stack.pop
+        op = aBinaryExpr.operator
+        operator = binary_operators[op]
+        operator.validate_operands(operand1, operand2)
         if operand1.respond_to?(op)
           stack.push operand1.send(op, operand2)
         else
@@ -233,6 +241,39 @@ module Loxxy
         def to_str
           '<native fn>'
         end
+      end
+
+      def init_binary_operators
+        plus_op = BinaryOperator.new('+', [ [Datatype::Number, :idem],
+                                            [Datatype::LXString, :idem]])
+        binary_operators[:+] = plus_op
+
+        minus_op = BinaryOperator.new('-', [ [Datatype::Number, :idem]])
+        binary_operators[:-] = minus_op
+
+        star_op = BinaryOperator.new('*', [ [Datatype::Number, :idem]])
+        binary_operators[:*] = star_op
+
+        slash_op = BinaryOperator.new('/', [ [Datatype::Number, :idem]])
+        binary_operators[:/] = slash_op
+
+        equal_equal_op = BinaryOperator.new('==', [[Datatype::BuiltinDatatype, Datatype::BuiltinDatatype]])
+        binary_operators[:==] = equal_equal_op
+
+        not_equal_op = BinaryOperator.new('!=', [[Datatype::BuiltinDatatype, Datatype::BuiltinDatatype]])
+        binary_operators[:!=] = not_equal_op
+
+        less_op = BinaryOperator.new('<', [ [Datatype::Number, :idem]])
+        binary_operators[:<] = less_op
+
+        less_equal_op = BinaryOperator.new('<=', [ [Datatype::Number, :idem]])
+        binary_operators[:<=] = less_equal_op
+
+        greater_op = BinaryOperator.new('>', [ [Datatype::Number, :idem]])
+        binary_operators[:>] = greater_op
+
+        greater_equal_op = BinaryOperator.new('>=', [ [Datatype::Number, :idem]])
+        binary_operators[:>=] = greater_equal_op
       end
 
       def init_globals
