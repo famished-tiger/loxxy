@@ -4,8 +4,7 @@ require_relative '../error'
 
 module Loxxy
   module BackEnd
-    Signature = Struct.new(:parameter_types) do
-    end
+    Signature = Struct.new(:parameter_types)
 
     # A Lox binary operator
     class BinaryOperator
@@ -21,7 +20,8 @@ module Loxxy
         @name = aName
         @signatures = theSignatures
       end
-      
+
+      # rubocop: disable Style/ClassEqualityComparison
       def validate_operands(operand1, operand2)
         compliant = signatures.find do |(type1, type2)|
           next unless operand1.kind_of?(type1)
@@ -32,10 +32,16 @@ module Loxxy
             operand2.kind_of?(type2)
           end
         end
-        
+        # rubocop: enable Style/ClassEqualityComparison
+
         unless compliant
+          err = Loxxy::RuntimeError
           if signatures.size == 1 && signatures[0].last == :idem
-            raise Loxxy::RuntimeError, "Operands must be #{datatype_name(signatures[0].first)}s."
+            raise err, "Operands must be #{datatype_name(signatures[0].first)}s."
+          elsif signatures.size == 2 && signatures.all? { |(_, second)| second == :idem }
+            type1 = datatype_name(signatures[0].first)
+            type2 = datatype_name(signatures[1].first)
+            raise err, "Operands must be two #{type1}s or two #{type2}s."
           end
         end
       end

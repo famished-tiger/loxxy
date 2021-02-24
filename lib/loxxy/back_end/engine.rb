@@ -244,17 +244,17 @@ module Loxxy
       end
 
       def init_binary_operators
-        plus_op = BinaryOperator.new('+', [ [Datatype::Number, :idem],
-                                            [Datatype::LXString, :idem]])
+        plus_op = BinaryOperator.new('+', [[Datatype::Number, :idem],
+          [Datatype::LXString, :idem]])
         binary_operators[:+] = plus_op
 
-        minus_op = BinaryOperator.new('-', [ [Datatype::Number, :idem]])
+        minus_op = BinaryOperator.new('-', [[Datatype::Number, :idem]])
         binary_operators[:-] = minus_op
 
-        star_op = BinaryOperator.new('*', [ [Datatype::Number, :idem]])
+        star_op = BinaryOperator.new('*', [[Datatype::Number, :idem]])
         binary_operators[:*] = star_op
 
-        slash_op = BinaryOperator.new('/', [ [Datatype::Number, :idem]])
+        slash_op = BinaryOperator.new('/', [[Datatype::Number, :idem]])
         binary_operators[:/] = slash_op
 
         equal_equal_op = BinaryOperator.new('==', [[Datatype::BuiltinDatatype, Datatype::BuiltinDatatype]])
@@ -263,16 +263,16 @@ module Loxxy
         not_equal_op = BinaryOperator.new('!=', [[Datatype::BuiltinDatatype, Datatype::BuiltinDatatype]])
         binary_operators[:!=] = not_equal_op
 
-        less_op = BinaryOperator.new('<', [ [Datatype::Number, :idem]])
+        less_op = BinaryOperator.new('<', [[Datatype::Number, :idem]])
         binary_operators[:<] = less_op
 
-        less_equal_op = BinaryOperator.new('<=', [ [Datatype::Number, :idem]])
+        less_equal_op = BinaryOperator.new('<=', [[Datatype::Number, :idem]])
         binary_operators[:<=] = less_equal_op
 
-        greater_op = BinaryOperator.new('>', [ [Datatype::Number, :idem]])
+        greater_op = BinaryOperator.new('>', [[Datatype::Number, :idem]])
         binary_operators[:>] = greater_op
 
-        greater_equal_op = BinaryOperator.new('>=', [ [Datatype::Number, :idem]])
+        greater_equal_op = BinaryOperator.new('>=', [[Datatype::Number, :idem]])
         binary_operators[:>=] = greater_equal_op
       end
 

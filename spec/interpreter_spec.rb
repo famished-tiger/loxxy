@@ -429,6 +429,15 @@ LOX_END
         expect(sample_cfg[:ostream].string).to eq('Hello, world!')
       end
     end # context
+
+    context 'Test suite:' do
+      it "should complain if one argument isn't a number" do
+        source = '1 + nil;'
+        err = Loxxy::RuntimeError
+        err_msg = 'Operands must be two numbers or two strings.'
+        expect { subject.evaluate(source) }.to raise_error(err, err_msg)
+      end
+    end # context
   end # describe
   # rubocop: enable Metrics/BlockLength
 end # module

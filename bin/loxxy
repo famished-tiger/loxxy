@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'loxxy'
+
+if ARGV[0]
+lox = Loxxy::Interpreter.new
+File.open(ARGV[0], 'r') do |f|
+lox.evaluate(f.read)
+end
+end
