@@ -22,7 +22,7 @@ describe Loxxy do
     end
   end # context
 
-  context 'Invalid * operator cases:' do
+  context 'Invalid - operator cases:' do
     let(:err) { Loxxy::RuntimeError }
     let(:err_msg) { 'Operands must be numbers.' }
 
