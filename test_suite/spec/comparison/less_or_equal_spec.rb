@@ -11,7 +11,7 @@ describe Loxxy do
         ['2 <= 2;', true],
         ['2 <= 1;', false],
         ['0 <= -0;', true],
-        [' -0 <= 0;', true]        
+        [' -0 <= 0;', true]
       ].each do |(source, predicted)|
         lox = Loxxy::Interpreter.new
         result = lox.evaluate(source)
@@ -33,7 +33,7 @@ describe Loxxy do
         expect { lox.evaluate(source) }.to raise_error(err, err_msg)
       end
     end
-  end # context  
+  end # context
 =begin
 print 1 < 2;    // expect: true
 print 2 < 2;    // expect: false

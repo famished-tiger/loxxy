@@ -5,6 +5,7 @@ require_relative '../ast/all_lox_nodes'
 require_relative 'binary_operator'
 require_relative 'function'
 require_relative 'symbol_table'
+require_relative 'unary_operator'
 
 module Loxxy
   module BackEnd
@@ -21,6 +22,9 @@ module Loxxy
       # @return [Array<Datatype::BuiltinDatatyp>] Stack for the values of expr
       attr_reader :stack
 
+     # @return [Hash { Symbol => UnaryOperator}]
+      attr_reader :unary_operators
+
       # @return [Hash { Symbol => BinaryOperator}]
       attr_reader :binary_operators
 
@@ -30,8 +34,10 @@ module Loxxy
         @ostream = config.include?(:ostream) ? config[:ostream] : $stdout
         @symbol_table = SymbolTable.new
         @stack = []
+        @unary_operators = {}
         @binary_operators = {}
 
+        init_unary_operators
         init_binary_operators
         init_globals
       end
@@ -168,12 +174,14 @@ module Loxxy
       end
 
       def after_unary_expr(anUnaryExpr)
-        op = anUnaryExpr.operator
         operand = stack.pop
+        op = anUnaryExpr.operator
+        operator = unary_operators[op]
+        operator.validate_operand(operand)
         if operand.respond_to?(op)
           stack.push operand.send(op)
         else
-          msg1 = "`#{op}': Unimplemented operator for a #{operand1.class}."
+          msg1 = "`#{op}': Unimplemented operator for a #{operand.class}."
           raise StandardError, msg1
         end
       end
@@ -241,6 +249,14 @@ module Loxxy
         def to_str
           '<native fn>'
         end
+      end
+
+      def init_unary_operators
+        negate_op = UnaryOperator.new('-', [Datatype::Number])
+        unary_operators[:-@] = negate_op
+
+        negation_op = UnaryOperator.new('!', [Datatype::BuiltinDatatype])
+        unary_operators[:!] = negation_op
       end
 
       def init_binary_operators
