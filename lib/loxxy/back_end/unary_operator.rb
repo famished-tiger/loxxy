@@ -25,7 +25,7 @@ module Loxxy
         unless compliant
           err = Loxxy::RuntimeError
           # if signatures.size == 1
-          raise err, "Operand must be a #{datatype_name(signatures[0].first)}."
+          raise err, "Operand must be a #{datatype_name(signatures[0])}."
           # end
         end
       end

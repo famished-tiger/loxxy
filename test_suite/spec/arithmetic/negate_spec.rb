@@ -9,7 +9,7 @@ describe Loxxy do
       [
         ['-(3);', -3],
         ['--(3);', 3],
-        ['---(3);', 3],
+        ['---(3);', -3],
         ['-(0);', 0]
       ].each do |(source, predicted)|
         lox = Loxxy::Interpreter.new
@@ -25,7 +25,7 @@ describe Loxxy do
 
     it "should complain when both operands aren't numbers" do
       [
-        '-"1"'
+        '-"1";'
       ].each do |source|
         lox = Loxxy::Interpreter.new
         expect { lox.evaluate(source) }.to raise_error(err, err_msg)
