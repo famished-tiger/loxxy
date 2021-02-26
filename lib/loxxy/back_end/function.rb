@@ -34,6 +34,13 @@ module Loxxy
         body.empty? ? Datatype::Nil.instance : body.accept(aVisitor)
       end
 
+      # Logical negation.
+      # As a function is a truthy thing, its negation is thus false.
+      # @return [Datatype::False]
+      def !
+        Datatype::False.instance
+      end
+
       # Text representation of a Lox function
       def to_str
         "<fn #{name}>"

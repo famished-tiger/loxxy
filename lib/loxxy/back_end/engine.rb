@@ -255,7 +255,8 @@ module Loxxy
         negate_op = UnaryOperator.new('-', [Datatype::Number])
         unary_operators[:-@] = negate_op
 
-        negation_op = UnaryOperator.new('!', [Datatype::BuiltinDatatype])
+        negation_op = UnaryOperator.new('!', [Datatype::BuiltinDatatype,
+          BackEnd::Function])
         unary_operators[:!] = negation_op
       end
 
