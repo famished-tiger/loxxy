@@ -1,8 +1,22 @@
+## [0.1.03] - 2021-02-26
+- Runtime argument chacking for arithmetic and comparison operators
+
+### Added
+- Test suite for arithmetic and comparison operators (in project repository)
+- Class `BackEnd::UnaryOperator`:  runtime argument validation
+- Class `BackEnd::BinaryOperator`: runtime argument validation
+
+### Changed
+- File `console` renamed to `loxxy`. Very basic command-line interface.
+- Custom exception classes 
+- File `README.md` updated list of supported `Lox` keywords.
+
+
 ## [0.1.02] - 2021-02-21
 - Function definition and call documented in `README.md`
 
 ### Changed
-- File `README.md` updated todescribe function definition and function call.
+- File `README.md` updated description of function definition and function call.
 
 ### Fixed
 - Method `BackEnd::Engine#after_print_stmt` now handles of empty stack or nil data.
