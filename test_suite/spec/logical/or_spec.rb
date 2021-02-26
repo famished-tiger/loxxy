@@ -5,17 +5,18 @@ require_relative '../spec_helper'
 require 'stringio'
 
 describe Loxxy do
-  context 'Valid and operator cases:' do
-    it 'should evaluate the conjunction of two values' do
+  context 'Valid or operator cases:' do
+    it 'should evaluate the disjunction of two values' do
       [
-        # Return the first non-true argument
-        ['false and 1;', false],
-        ['1 and 2 and false;', false],
+        # Return the first true argument
+        ['1 or true;', 1],
+        ['false or 1;', 1],
+        ['false or false or true;', true],
 
-        # Return the last argument if all are true
-        ['true and 1;', 1],
-        ['1 and true;', true],
-        ['1 and 2 and 3;', 3]
+        # Return the last argument if all are falsey
+        ['false or false;', false],
+        ['false or false or false;', false],
+        ['false or nil;', nil]
       ].each do |(source, predicted)|
         lox = Loxxy::Interpreter.new
         result = lox.evaluate(source)
@@ -23,16 +24,16 @@ describe Loxxy do
       end
     end
 
-    it 'should handle conjuncts with falsey values' do
+    it 'should handle disjuncts with falsey values' do
       [
         # false and nil are falsey...
-        ['false and "bad";', false],
-        ['nil and "bad";', nil],
+        ['false or "ok";', 'ok'],
+        ['nil or "ok";', 'ok'],
 
         # ... everything else is truthy
-        ['true and "ok";', 'ok'],
-        ['0 and "ok";', 'ok'],
-        ['"" and "ok";', 'ok']
+        ['true or "ok";', true],
+        ['0 or "ok";', 0],
+        ['"s" or "ok";', 's']
       ].each do |(source, predicted)|
         lox = Loxxy::Interpreter.new
         result = lox.evaluate(source)
@@ -42,20 +43,20 @@ describe Loxxy do
 
     it 'should perform short cicuit evaluation' do
       lox_snippet = <<-LOX_END
-        // Short-circuit at the first false argument.
+        // Short-circuit at the first true argument.
         var a = "before";
         var b = "before";
-        (a = true) and
-            (b = false) and
+        (a = false) or
+            (b = true) or
             (a = "bad");
-        print a; // expect: true
-        print b; // expect: false
+        print a; // expect: false
+        print b; // expect: true
 LOX_END
       io = StringIO.new
       cfg = { ostream: io }
       lox = Loxxy::Interpreter.new(cfg)
       lox.evaluate(lox_snippet)
-      predicted = 'truefalse'
+      predicted = 'falsetrue'
       expect(io.string).to eq(predicted)
     end
   end # context
