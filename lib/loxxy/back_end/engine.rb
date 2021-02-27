@@ -192,9 +192,10 @@ module Loxxy
         callee = stack.pop
         aCallExpr.arguments.reverse_each { |arg| arg.accept(aVisitor) }
 
-        if callee.kind_of?(NativeFunction)
+        case callee
+        when NativeFunction
           stack.push callee.call # Pass arguments
-        else
+        when Function
           new_env = Environment.new(symbol_table.current_env)
           symbol_table.enter_environment(new_env)
           callee.parameters&.each do |param_name|
@@ -204,6 +205,8 @@ module Loxxy
           callee.call(aVisitor)
 
           symbol_table.leave_environment
+        else
+          raise Loxxy::RuntimeError, 'Can only call functions and classes.'
         end
       end
 
