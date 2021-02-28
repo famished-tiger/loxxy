@@ -221,6 +221,11 @@ module Loxxy
         Ast::LoxPrintStmt.new(tokens[1].position, theChildren[1])
       end
 
+      # rule('returnStmt' => 'RETURN expression_opt SEMICOLON')
+      def reduce_return_stmt(_production, _range, tokens, theChildren)
+        Ast::LoxReturnStmt.new(tokens[1].position, theChildren[1])
+      end
+
       # rule('whileStmt' => 'WHILE LEFT_PAREN expression RIGHT_PAREN statement').as ''
       def reduce_while_stmt(_production, _range, tokens, theChildren)
         Ast::LoxWhileStmt.new(tokens[1].position, theChildren[2], theChildren[4])

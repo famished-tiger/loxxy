@@ -424,6 +424,20 @@ LOX_END
         expect(sample_cfg[:ostream].string).to eq('<fn foo><native fn>')
       end
 
+      it 'should support return statements' do
+        program = <<-LOX_END
+          fun max(a, b) {
+            if (a > b) return a;
+
+            return b;
+          }
+
+          max(3, 2);
+        LOX_END
+        result = subject.evaluate(program)
+        expect(result).to eq(3)
+      end
+
       it 'should print the hello world message' do
         expect { subject.evaluate(hello_world) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Hello, world!')

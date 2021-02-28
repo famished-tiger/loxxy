@@ -19,7 +19,7 @@ module Loxxy
       # @return [BackEnd::SymbolTable]
       attr_reader :symbol_table
 
-      # @return [Array<Datatype::BuiltinDatatyp>] Stack for the values of expr
+      # @return [Array<Datatype::BuiltinDatatype>] Data stack for the expression results
       attr_reader :stack
 
      # @return [Hash { Symbol => UnaryOperator}]
@@ -96,6 +96,10 @@ module Loxxy
       def after_print_stmt(_printStmt)
         tos = stack.pop
         @ostream.print tos ? tos.to_str : 'nil'
+      end
+
+      def after_return_stmt(_returnStmt, _aVisitor)
+        throw(:return)
       end
 
       def after_while_stmt(aWhileStmt, aVisitor)
@@ -202,12 +206,20 @@ module Loxxy
             local = Variable.new(param_name, stack.pop)
             symbol_table.insert(local)
           end
-          callee.call(aVisitor)
+          catch(:return) do
+            callee.call(aVisitor)
+            throw(:return)
+          end
 
           symbol_table.leave_environment
         else
           raise Loxxy::RuntimeError, 'Can only call functions and classes.'
         end
+      end
+
+      def complete_call
+        callee = ret_stack.pop
+        symbol_table.leave_environment if callee.kind_of?(Function)
       end
 
       def after_grouping_expr(_groupingExpr)

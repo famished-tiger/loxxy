@@ -91,6 +91,14 @@ module Loxxy
         broadcast(:after_print_stmt, aPrintStmt)
       end
 
+      # Visit event. The visitor is about to visit a return statement.
+      # @param aReturnStmt [AST::LOXReturnStmt] the return statement node to visit
+      def visit_return_stmt(aReturnStmt)
+        broadcast(:before_return_stmt, aReturnStmt)
+        traverse_subnodes(aReturnStmt)
+        broadcast(:after_return_stmt, aReturnStmt, self)
+      end
+
       # Visit event. The visitor is about to visit a while statement node.
       # @param aWhileStmt [AST::LOXWhileStmt] the while statement node to visit
       def visit_while_stmt(aWhileStmt)

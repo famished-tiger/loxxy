@@ -1,5 +1,20 @@
+## [0.1.04] - 2021-02-28
+
+### Added
+- Class `Ast::LoxReturnStmt` a node that represents a return statement
+- Method `Ast::ASTBuilder#reduce_return_stmt`
+- Method `Ast::ASTVisitor#visit_return_stmt` for visiting an `Ast::LoxReturnStmt` node
+- Method `BackEnd::Engine#after_return_stmt` to handle return statement
+- Method `BackEnd::Function#!` implementing the logical negation of a function (as value).
+- Test suite for logical operators (in project repository)
+- Test suite for block code
+- Test suite for call and function declaration (initial)
+
+### Changed
+- Method `BackEnd::Engine#after_call_expr` now generate a `catch` and `throw` events
+
 ## [0.1.03] - 2021-02-26
-- Runtime argument chacking for arithmetic and comparison operators
+- Runtime argument checking for arithmetic and comparison operators
 
 ### Added
 - Test suite for arithmetic and comparison operators (in project repository)
@@ -221,11 +236,11 @@
 - The interpreter can evaluate substraction between two numbers.
 
 ### Added
-- Method `Datatype::Number#-` implmenting the subtraction operation
+- Method `Datatype::Number#-` implementing the subtraction operation
 
 ### Changed
 - File `README.md` minor editorial changes.
-- File `lx_string_spec.rb` Added test for string concatentation
+- File `lx_string_spec.rb` Added test for string concatenation
 - File `number_spec.rb` Added tests for addition and subtraction operations
 - File `interpreter_spec.rb` Added tests for subtraction operation
 

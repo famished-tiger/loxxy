@@ -42,4 +42,24 @@ LOX_END
       expect(io.string).to eq(predicted)
     end
   end # context
+
+  context 'Function object behavior:' do
+    it 'should accept functions with multiple arguments' do
+      [
+        ["fun f0() { return 0; } \nf0();", 0],
+        ["fun f1(a) { return a; } \nf1(1);", 1],
+        ["fun f2(a, b) { return a + b; } \nf2(1, 2);", 3],
+        ["fun f3(a, b, c) { return a + b + c; } \nf3(1, 2, 3);", 6],
+        ["fun f4(a, b, c, d) { return a + b + c + d; } \nf4(1, 2, 3, 4);", 10],
+        ["fun f5(a, b, c, d, e) { return a + b + c + d + e; } \nf5(1, 2, 3, 4, 5);", 15],
+        ["fun f6(a, b, c, d, e, f) { return a + b + c + d + e + f; } \nf6(1, 2, 3, 4, 5, 6);", 21],
+        ["fun f7(a, b, c, d, e, f, g) { return a + b + c + d + e + f + g; } \nf7(1, 2, 3, 4, 5, 6, 7);", 28],
+        ["fun f8(a, b, c, d, e, f, g, h) { return a + b + c + d + e + f + g + h; } \nf8(1, 2, 3, 4, 5, 6, 7, 8);", 36]
+      ].each do |(source, predicted)|
+        lox = Loxxy::Interpreter.new
+        result = lox.evaluate(source)
+        expect(result == predicted).to be_true
+      end
+    end
+  end # context
 end # describe
