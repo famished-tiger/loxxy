@@ -1,3 +1,9 @@
+## [0.1.05] - 2021-03-05
+- Test for Fibbonacci recursive function is now passing.
+
+### Fixed
+- Method `BackEnd::Function#call` a call doesn't no more generate of TWO scopes
+
 ## [0.1.04] - 2021-02-28
 
 ### Added

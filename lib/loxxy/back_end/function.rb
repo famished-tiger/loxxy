@@ -22,7 +22,7 @@ module Loxxy
       def initialize(aName, parameterList, aBody, aStack)
         @name = aName.dup
         @parameters = parameterList
-        @body = aBody
+        @body = aBody.kind_of?(Ast::LoxNoopExpr) ? aBody : aBody.subnodes[0]
         @stack = aStack
       end
 
@@ -30,8 +30,21 @@ module Loxxy
         stack.push self
       end
 
-      def call(aVisitor)
-        body.empty? ? Datatype::Nil.instance : body.accept(aVisitor)
+      def call(engine, aVisitor)
+        new_env = Environment.new(engine.symbol_table.current_env)
+        engine.symbol_table.enter_environment(new_env)
+
+        parameters&.each do |param_name|
+          local = Variable.new(param_name, stack.pop)
+          engine.symbol_table.insert(local)
+        end
+
+        catch(:return) do
+          (body.nil? || body.kind_of?(Ast::LoxNoopExpr)) ? Datatype::Nil.instance : body.accept(aVisitor)
+          throw(:return)
+        end
+
+        engine.symbol_table.leave_environment
       end
 
       # Logical negation.

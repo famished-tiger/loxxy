@@ -200,18 +200,7 @@ module Loxxy
         when NativeFunction
           stack.push callee.call # Pass arguments
         when Function
-          new_env = Environment.new(symbol_table.current_env)
-          symbol_table.enter_environment(new_env)
-          callee.parameters&.each do |param_name|
-            local = Variable.new(param_name, stack.pop)
-            symbol_table.insert(local)
-          end
-          catch(:return) do
-            callee.call(aVisitor)
-            throw(:return)
-          end
-
-          symbol_table.leave_environment
+          callee.call(self, aVisitor)
         else
           raise Loxxy::RuntimeError, 'Can only call functions and classes.'
         end
