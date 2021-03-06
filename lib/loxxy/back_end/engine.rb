@@ -3,7 +3,7 @@
 # Load all the classes implementing AST nodes
 require_relative '../ast/all_lox_nodes'
 require_relative 'binary_operator'
-require_relative 'function'
+require_relative 'lox_function'
 require_relative 'symbol_table'
 require_relative 'unary_operator'
 
@@ -199,16 +199,16 @@ module Loxxy
         case callee
         when NativeFunction
           stack.push callee.call # Pass arguments
-        when Function
+        when LoxFunction
+          arg_count = aCallExpr.arguments.size
+          if arg_count != callee.arity
+            msg = "Expected #{callee.arity} arguments but got #{arg_count}."
+            raise Loxxy::RuntimeError, msg
+          end
           callee.call(self, aVisitor)
         else
           raise Loxxy::RuntimeError, 'Can only call functions and classes.'
         end
-      end
-
-      def complete_call
-        callee = ret_stack.pop
-        symbol_table.leave_environment if callee.kind_of?(Function)
       end
 
       def after_grouping_expr(_groupingExpr)
@@ -234,7 +234,7 @@ module Loxxy
       end
 
       def after_fun_stmt(aFunStmt, _visitor)
-        function = Function.new(aFunStmt.name, aFunStmt.params, aFunStmt.body, stack)
+        function = LoxFunction.new(aFunStmt.name, aFunStmt.params, aFunStmt.body, stack)
         new_var = Variable.new(aFunStmt.name, function)
         symbol_table.insert(new_var)
       end
@@ -260,7 +260,7 @@ module Loxxy
         unary_operators[:-@] = negate_op
 
         negation_op = UnaryOperator.new('!', [Datatype::BuiltinDatatype,
-          BackEnd::Function])
+          BackEnd::LoxFunction])
         unary_operators[:!] = negation_op
       end
 

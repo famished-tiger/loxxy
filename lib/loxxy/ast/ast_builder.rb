@@ -273,7 +273,7 @@ module Loxxy
       def reduce_call_arglist(_production, _range, tokens, theChildren)
         args = theChildren[1] || []
         if args.size > 255
-          raise StandardError, "Can't have more than 255 arguments."
+          raise Loxxy::RuntimeError, "Can't have more than 255 arguments."
         end
 
         LoxCallExpr.new(tokens[0].position, args)
@@ -303,6 +303,10 @@ module Loxxy
       def reduce_function(_production, _range, _tokens, theChildren)
         first_child = theChildren.first
         pos = first_child.token.position
+        if theChildren[2] && theChildren[2].size > 255
+          msg = "Can't have more than 255 parameters."
+          raise Loxxy::SyntaxError, msg
+        end
         LoxFunStmt.new(pos, first_child.token.lexeme, theChildren[2], theChildren[4])
       end
 

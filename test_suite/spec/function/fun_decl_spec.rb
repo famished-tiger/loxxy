@@ -62,4 +62,22 @@ LOX_END
       end
     end
   end # context
+
+
+  context 'Invalid function declarations:' do
+    let(:err) { Loxxy::SyntaxError }
+
+    it 'should complain when more than 255 parameters are declared' do
+      args = +''
+      (1..255).each { |i| args << "          a#{i},\n" }
+      program = <<-LOX_END
+      // 256 parameters.
+      fun f(
+#{args}          a) {}
+      LOX_END
+      lox = Loxxy::Interpreter.new
+      msg = "Can't have more than 255 parameters."
+      expect { lox.evaluate(program) }.to raise_error(err, msg)
+    end
+  end # context
 end # describe

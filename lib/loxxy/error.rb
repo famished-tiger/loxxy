@@ -6,4 +6,7 @@ module Loxxy
 
   # Error occurring while Loxxy executes some invalid Lox code.
   class RuntimeError < Error; end
+
+  # Error occurring while Loxxy parses some invalid Lox code.
+  class SyntaxError < Error; end
 end
