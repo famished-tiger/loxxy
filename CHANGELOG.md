@@ -1,3 +1,12 @@
+## [0.1.06] - 2021-03-06
+- Parameters/arguments checks in function declaration and call
+
+### Changed
+- Method `Ast::AstBuilder#reduce_call_arglist` raises a `Loxxy::RuntimeError` when more than 255 arguments are used.
+- Method `BackEnd::Engine#after_call_expr` raises a `Loxxy::RuntimeError` when argument count doesn't match the arity of function.
+
+- Class `BackEnd::Function` renamed to `LoxFunction`
+
 ## [0.1.05] - 2021-03-05
 - Test for Fibbonacci recursive function is now passing.
 
