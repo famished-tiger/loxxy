@@ -9,9 +9,16 @@ module Loxxy
     # of a relation or a relation definition.
     # It contains a map of names to the objects they name (e.g. logical var)
     class Environment
-      # The  enclosing (parent) environment.
+      # The enclosing (parent) environment.
       # @return [Environment, NilClass]
       attr_accessor :enclosing
+
+      # The previous environment in the environment chain.
+      # @return [Environment, NilClass]
+      attr_accessor :predecessor
+
+      # @return [Boolean] true if this environment is part of a closure (contains an embedded function)
+      attr_accessor :embedding
 
       # Mapping from user-defined name to related definition
       #  (say, a variable object)

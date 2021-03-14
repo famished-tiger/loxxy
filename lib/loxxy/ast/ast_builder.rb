@@ -260,13 +260,26 @@ module Loxxy
 
       # rule('call' => 'primary refinement_plus').as 'call_expr'
       def reduce_call_expr(_production, _range, _tokens, theChildren)
-        theChildren[1].callee = theChildren[0]
-        theChildren[1]
+        members = theChildren.flatten
+        call_expr = nil
+        loop do
+          (callee, call_expr) = members.shift(2)
+          call_expr.callee = callee
+          members.unshift(call_expr)
+          break if members.size == 1
+        end
+
+        call_expr
+      end
+
+      # rule('refinement_plus' => 'refinement_plus refinement')
+      def reduce_refinement_plus_more(_production, _range, _tokens, theChildren)
+        theChildren[0] << theChildren[1]
       end
 
       # rule('refinement_plus' => 'refinement').
       def reduce_refinement_plus_end(_production, _range, _tokens, theChildren)
-        theChildren[0]
+        theChildren
       end
 
       # rule('refinement' => 'LEFT_PAREN arguments_opt RIGHT_PAREN')

@@ -14,6 +14,77 @@ describe Loxxy do
         expect(result == predicted).to be_true
       end
     end
+
+    it 'should support local functions' do
+      source = <<-LOX_END
+        fun outerFunction() {
+          fun localFunction() {
+            print "I'm local!";
+          }
+
+          localFunction();
+        }
+
+        outerFunction();
+      LOX_END
+      predicted = "I'm local!"
+
+      io = StringIO.new
+      cfg = { ostream: io }
+      lox = Loxxy::Interpreter.new(cfg)
+      lox.evaluate(source)
+      expect(io.string).to eq(predicted)
+    end
+
+    it 'should keep bindings of local functions' do
+      source = <<-LOX_END
+        fun returnFunction() {
+          var outside = "outside";
+
+          fun inner() {
+            print outside;
+          }
+
+          return inner;
+        }
+
+        var fn = returnFunction();
+        fn();
+      LOX_END
+      predicted = 'outside'
+
+      io = StringIO.new
+      cfg = { ostream: io }
+      lox = Loxxy::Interpreter.new(cfg)
+      lox.evaluate(source)
+      expect(io.string).to eq(predicted)
+    end
+
+    it 'should evaluate nested calls with arguments' do
+      source = <<-LOX_END
+      fun returnArg(arg) {
+        return arg;
+      }
+
+      fun returnFunCallWithArg(func, arg) {
+        return returnArg(func)(arg);
+      }
+
+      fun printArg(arg) {
+        print arg;
+      }
+
+      returnFunCallWithArg(printArg, "hello world"); // expect: hello world
+      LOX_END
+      predicted = 'hello world'
+
+      io = StringIO.new
+      cfg = { ostream: io }
+      lox = Loxxy::Interpreter.new(cfg)
+      lox.evaluate(source)
+
+      expect(io.string).to eq(predicted)
+    end
   end # context
 
   context 'Invalid call expressions:' do

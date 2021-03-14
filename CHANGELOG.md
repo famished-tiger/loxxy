@@ -1,3 +1,19 @@
+## [0.1.07] - 2021-03-14
+- `Loxxy` now supports nested functions and closures
+
+### Changed
+- Method `Ast::AstBuilder#reduce_call_expr` now supports nested call expressions (e.g. `getCallback()();` )
+- Class `BackEnd::Environment`: added the attributes `predecessor` and `embedding` to support closures.
+- Class `BackeEnd::LoxFunction`: added the attribute `closure` that is equal to the environment where the function is declared.
+- Constructor `BackEnd::LoxFunction#new` now takes a `BackEnd::Engine`as its fourth parameter
+- Methods `BackEnd::SymbolTable#enter_environment`, `BackEnd::SymbolTable#leave_environment` take into account closures. 
+
+### Fixed
+- Method `Ast::AstBuilder#after_var_stmt` now takes into account the value from the top of stack
+
+
+
+
 ## [0.1.06] - 2021-03-06
 - Parameters/arguments checks in function declaration and call
 

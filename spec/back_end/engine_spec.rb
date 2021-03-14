@@ -36,6 +36,8 @@ module Loxxy
 
 
         it "should react to 'after_var_stmt' event" do
+          # Precondition: value to assign is on top of stack
+          subject.stack.push(greeting)
           expect { subject.after_var_stmt(var_decl) }.not_to raise_error
           current_env = subject.symbol_table.current_env
           expect(current_env.defns['greeting']).to be_kind_of(Variable)

@@ -15,7 +15,6 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
 ### Current status
 The project is still in inception and the interpreter is being implemented...  
 Currently it can execute all allowed __Lox__ expressions and statements except:
-- Closures,  
 - Classes and objects.
 
 These will be implemented soon.

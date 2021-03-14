@@ -8,22 +8,24 @@ module Loxxy
     # Representation of a Lox function.
     # It is a named slot that can be associated with a value at the time.
     class LoxFunction
-      # @return [String]
+      # @return [String] The name of the function (if any)
       attr_reader :name
 
       # @return [Array<>] the parameters
       attr_reader :parameters
       attr_reader :body
       attr_reader :stack
+      attr_reader :closure
 
-      # Create a variable with given name and initial value
+      # Create a function with given name
       # @param aName [String] The name of the variable
-      # @param aValue [Datatype::BuiltinDatatype] the initial assigned value
-      def initialize(aName, parameterList, aBody, aStack)
+      def initialize(aName, parameterList, aBody, anEngine)
         @name = aName.dup
         @parameters = parameterList
         @body = aBody.kind_of?(Ast::LoxNoopExpr) ? aBody : aBody.subnodes[0]
-        @stack = aStack
+        @stack = anEngine.stack
+        @closure = anEngine.symbol_table.current_env
+        anEngine.symbol_table.current_env.embedding = true
       end
 
       def arity
@@ -35,7 +37,8 @@ module Loxxy
       end
 
       def call(engine, aVisitor)
-        new_env = Environment.new(engine.symbol_table.current_env)
+        # new_env = Environment.new(engine.symbol_table.current_env)
+        new_env = Environment.new(closure)
         engine.symbol_table.enter_environment(new_env)
 
         parameters&.each do |param_name|

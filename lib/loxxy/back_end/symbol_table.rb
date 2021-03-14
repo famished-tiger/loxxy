@@ -44,23 +44,33 @@ module Loxxy
       # to be a child of current environment and to be itself the new current environment.
       # @param anEnv [BackEnd::Environment] the Environment that
       def enter_environment(anEnv)
-        anEnv.enclosing = current_env
+        if anEnv.enclosing && (anEnv.enclosing != current_env)
+          anEnv.predecessor = current_env
+        else
+          anEnv.enclosing = current_env
+        end
         @current_env = anEnv
       end
 
       def leave_environment
-        current_env.defns.each_pair do |nm, _item|
-          environments = name2envs[nm]
-          if environments.size == 1
-            name2envs.delete(nm)
-          else
-            environments.pop
-            name2envs[nm] = environments
+        unless current_env.embedding
+          current_env.defns.each_pair do |nm, _item|
+            environments = name2envs[nm]
+            if environments.size == 1
+              name2envs.delete(nm)
+            else
+              environments.pop
+              name2envs[nm] = environments
+            end
           end
         end
         raise StandardError, 'Cannot remove root environment.' if current_env == root
 
-        @current_env = current_env.enclosing
+        if current_env.predecessor
+          @current_env = current_env.predecessor
+        else
+          @current_env = current_env.enclosing
+        end
       end
 
       # Add an entry with given name to current environment.

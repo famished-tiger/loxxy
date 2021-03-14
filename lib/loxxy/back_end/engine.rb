@@ -62,7 +62,7 @@ module Loxxy
       end
 
       def after_var_stmt(aVarStmt)
-        new_var = Variable.new(aVarStmt.name, aVarStmt.subnodes[0])
+        new_var = Variable.new(aVarStmt.name, stack.pop)
         symbol_table.insert(new_var)
       end
 
@@ -126,9 +126,8 @@ module Loxxy
         variable = symbol_table.lookup(var_name)
         raise StandardError, "Unknown variable #{var_name}" unless variable
 
-        value = stack.pop
+        value = stack.last # ToS remains since an assignment produces a value
         variable.assign(value)
-        stack.push value # An expression produces a value
       end
 
       def after_logical_expr(aLogicalExpr, visitor)
@@ -234,7 +233,7 @@ module Loxxy
       end
 
       def after_fun_stmt(aFunStmt, _visitor)
-        function = LoxFunction.new(aFunStmt.name, aFunStmt.params, aFunStmt.body, stack)
+        function = LoxFunction.new(aFunStmt.name, aFunStmt.params, aFunStmt.body, self)
         new_var = Variable.new(aFunStmt.name, function)
         symbol_table.insert(new_var)
       end

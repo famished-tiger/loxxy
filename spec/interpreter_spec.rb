@@ -53,15 +53,6 @@ module Loxxy
     end # context
 
     context 'Evaluating Lox code:' do
-      let(:hello_world) do
-        lox = <<-LOX_END
-        var greeting = "Hello"; // Declaring a variable
-        print greeting + ", " + "world!"; // ... Playing with concatenation
-LOX_END
-
-        lox
-      end
-
       it 'should evaluate core data types' do
         result = subject.evaluate('true; // Not false')
         expect(result).to be_kind_of(Loxxy::Datatype::True)
@@ -269,9 +260,9 @@ LOX_END
 
       it 'should accept variable mention' do
         program = <<-LOX_END
-        var foo = "bar";
-        print foo; // => bar
-LOX_END
+          var foo = "bar";
+          print foo; // => bar
+        LOX_END
         expect { subject.evaluate(program) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('bar')
       end
@@ -438,18 +429,35 @@ LOX_END
         expect(result).to eq(3)
       end
 
-      it 'should print the hello world message' do
-        expect { subject.evaluate(hello_world) }.not_to raise_error
-        expect(sample_cfg[:ostream].string).to eq('Hello, world!')
-      end
-    end # context
+      # rubocop: disable Style/StringConcatenation
+      it 'should support local functions and closures' do
+        program = <<-LOX_END
+          fun makeCounter() {
+            var i = 0;
+            fun count() {
+              i = i + 1;
+              print i;
+            }
 
-    context 'Test suite:' do
-      it "should complain if one argument isn't a number" do
-        source = '1 + nil;'
-        err = Loxxy::RuntimeError
-        err_msg = 'Operands must be two numbers or two strings.'
-        expect { subject.evaluate(source) }.to raise_error(err, err_msg)
+            return count;
+          }
+
+          var counter = makeCounter();
+          counter(); // "1".
+          counter(); // "2".
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('1' + '2')
+      end
+      # rubocop: enable Style/StringConcatenation
+
+      it 'should print the hello world message' do
+        program = <<-LOX_END
+          var greeting = "Hello"; // Declaring a variable
+          print greeting + ", " + "world!"; // ... Playing with concatenation
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('Hello, world!')
       end
     end # context
   end # describe

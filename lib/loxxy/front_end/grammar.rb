@@ -127,7 +127,7 @@ module Loxxy
       rule('unaryOp' => 'MINUS')
       rule('call' => 'primary')
       rule('call' => 'primary refinement_plus').as 'call_expr'
-      rule('refinement_plus' => 'refinement_plus refinement') # .as 'refinement_plus_more'
+      rule('refinement_plus' => 'refinement_plus refinement').as 'refinement_plus_more'
       rule('refinement_plus' => 'refinement').as 'refinement_plus_end'
       rule('refinement' => 'LEFT_PAREN arguments_opt RIGHT_PAREN').as 'call_arglist'
       rule('refinement' => 'DOT IDENTIFIER')
