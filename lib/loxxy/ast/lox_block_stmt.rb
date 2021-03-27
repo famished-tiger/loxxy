@@ -20,8 +20,6 @@ module Loxxy
       def accept(visitor)
         visitor.visit_block_stmt(self)
       end
-
-      alias operands subnodes
     end # class
   end # module
 end # module

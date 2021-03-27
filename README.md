@@ -4,7 +4,7 @@
 
 ### What is loxxy?
 A Ruby implementation of the [Lox programming language](https://craftinginterpreters.com/the-lox-language.html ),
-a simple language used in Bob Nystrom's online book [Crafting Interpreters](https://craftinginterpreters.com/ ).
+a simple language defined in Bob Nystrom's online book [Crafting Interpreters](https://craftinginterpreters.com/ ).
 
 ### Purpose of this project:
 - To deliver an open source example of a programming language fully implemented in Ruby  
@@ -13,11 +13,10 @@ a simple language used in Bob Nystrom's online book [Crafting Interpreters](http
   a Lox interpreter written in Lox.
 
 ### Current status
-The project is still in inception and the interpreter is being implemented...  
-Currently it can execute all allowed __Lox__ expressions and statements except:
-- Classes and objects.
+The interpreter currently it can execute all allowed __Lox__ expressions and statements except  
+object-oriented feaures (classes and objects).
 
-These will be implemented soon.
+Our intent is implement to these missing features in Q2 2021.
 
 
 ## What's the fuss about Lox?

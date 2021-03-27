@@ -26,8 +26,6 @@ module Loxxy
       def accept(visitor)
         visitor.visit_fun_stmt(self)
       end
-
-      alias operands subnodes
     end # class
     # rubocop: enable Style/AccessorGrouping
   end # module

@@ -10,8 +10,6 @@ module Loxxy
       def accept(visitor)
         visitor.visit_seq_decl(self)
       end
-
-      alias operands subnodes
     end # class
   end # module
 end # module

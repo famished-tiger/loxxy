@@ -4,6 +4,7 @@
 require_relative '../ast/all_lox_nodes'
 require_relative 'binary_operator'
 require_relative 'lox_function'
+require_relative 'resolver'
 require_relative 'symbol_table'
 require_relative 'unary_operator'
 
@@ -11,7 +12,6 @@ module Loxxy
   module BackEnd
     # An instance of this class executes the statements as when they
     # occur during the abstract syntax tree walking.
-    # @note WIP: very crude implementation.
     class Engine
       # @return [Hash] A set of configuration options
       attr_reader :config
@@ -27,6 +27,9 @@ module Loxxy
 
       # @return [Hash { Symbol => BinaryOperator}]
       attr_reader :binary_operators
+
+      # @return [BackEnd::Resolver]
+      attr_reader :resolver
 
       # @param theOptions [Hash]
       def initialize(theOptions)
@@ -47,6 +50,10 @@ module Loxxy
       # @param aVisitor [AST::ASTVisitor]
       # @return [Loxxy::Datatype::BuiltinDatatype]
       def execute(aVisitor)
+        # Do variable resolution pass first
+        @resolver = BackEnd::Resolver.new
+        resolver.analyze(aVisitor)
+
         aVisitor.subscribe(self)
         aVisitor.start
         aVisitor.unsubscribe(self)
@@ -61,9 +68,18 @@ module Loxxy
         # Do nothing, subnodes were already evaluated
       end
 
-      def after_var_stmt(aVarStmt)
-        new_var = Variable.new(aVarStmt.name, stack.pop)
+      def before_var_stmt(aVarStmt)
+        new_var = Variable.new(aVarStmt.name, Datatype::Nil.instance)
         symbol_table.insert(new_var)
+      end
+
+      def after_var_stmt(aVarStmt)
+        var_name = aVarStmt.name
+        variable = symbol_table.lookup(var_name)
+        raise StandardError, "Unknown variable #{var_name}" unless variable
+
+        value = stack.pop
+        variable.assign(value)
       end
 
       def before_for_stmt(aForStmt)
@@ -121,9 +137,9 @@ module Loxxy
         symbol_table.leave_environment
       end
 
-      def after_assign_expr(anAssignExpr)
+      def after_assign_expr(anAssignExpr, _visitor)
         var_name = anAssignExpr.name
-        variable = symbol_table.lookup(var_name)
+        variable = variable_lookup(anAssignExpr)
         raise StandardError, "Unknown variable #{var_name}" unless variable
 
         value = stack.last # ToS remains since an assignment produces a value
@@ -216,10 +232,10 @@ module Loxxy
 
       def after_variable_expr(aVarExpr, aVisitor)
         var_name = aVarExpr.name
-        var = symbol_table.lookup(var_name)
+        var = variable_lookup(aVarExpr)
         raise StandardError, "Unknown variable #{var_name}" unless var
 
-        var.value.accept(aVisitor) # Evaluate the variable value
+        var.value.accept(aVisitor) # Evaluate variable value then push on stack
       end
 
       # @param literalExpr [Ast::LoxLiteralExpr]
@@ -239,6 +255,19 @@ module Loxxy
       end
 
       private
+
+      def variable_lookup(aVarNode)
+        env = nil
+        offset = resolver.locals[aVarNode]
+        if offset.nil?
+          env = symbol_table.root
+        else
+          env = symbol_table.current_env
+          offset.times { env = env.enclosing }
+        end
+
+        env.defns[aVarNode.name]
+      end
 
       NativeFunction = Struct.new(:callable, :interp) do
         def accept(_visitor)

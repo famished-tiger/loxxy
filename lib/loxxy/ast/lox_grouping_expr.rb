@@ -16,8 +16,6 @@ module Loxxy
       def accept(visitor)
         visitor.visit_grouping_expr(self)
       end
-
-      alias operands subnodes
     end # class
   end # module
 end # module

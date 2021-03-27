@@ -13,8 +13,8 @@ module Loxxy
       # @param aName [String] name of the variable
       # @param aValue [Loxxy::Ast::LoxNode, NilClass] initial value for the variable
       def initialize(aPosition, aName, aValue)
-        initial_value = aValue ? [aValue] : [Datatype::Nil.instance]
-        super(aPosition, initial_value)
+        initial_value = aValue || Datatype::Nil.instance
+        super(aPosition, [initial_value])
         @name = aName
       end
 

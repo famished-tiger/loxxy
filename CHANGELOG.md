@@ -1,3 +1,14 @@
+## [0.1.08] - 2021-03-27
+- `Loxxy` implements variable resolving and binding as described in Chapter 11 of "Crafting Interpreters" book.
+
+### New
+- Class `BackEnd::Resolver` implements the variable resolution (whenever a variable is in use, locate the declaration of that variable)
+
+### Changed
+- Class `Ast::Visitor` changes in some method signatures
+- Class `BackEnd::Engine` new attribute `resolver` that points to a `BackEnd::Resolver` instance
+- Class `BackEnd::Engine` several methods dealing with variables have been adapted to take the resolver into account.
+
 ## [0.1.07] - 2021-03-14
 - `Loxxy` now supports nested functions and closures
 
@@ -10,8 +21,6 @@
 
 ### Fixed
 - Method `Ast::AstBuilder#after_var_stmt` now takes into account the value from the top of stack
-
-
 
 
 ## [0.1.06] - 2021-03-06

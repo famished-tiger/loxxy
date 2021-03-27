@@ -120,7 +120,7 @@ module Loxxy
       def visit_assign_expr(anAssignExpr)
         broadcast(:before_assign_expr, anAssignExpr)
         traverse_subnodes(anAssignExpr)
-        broadcast(:after_assign_expr, anAssignExpr)
+        broadcast(:after_assign_expr, anAssignExpr, self)
       end
 
       # Visit event. The visitor is about to visit a logical expression.
@@ -194,7 +194,7 @@ module Loxxy
       # Visit event. The visitor is about to visit a function statement node.
       # @param aFunStmt [AST::LoxFunStmt] function declaration to visit
       def visit_fun_stmt(aFunStmt)
-        broadcast(:before_fun_stmt, aFunStmt)
+        broadcast(:before_fun_stmt, aFunStmt, self)
         traverse_subnodes(aFunStmt)
         broadcast(:after_fun_stmt, aFunStmt, self)
       end
