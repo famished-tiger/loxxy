@@ -8,7 +8,8 @@ module Loxxy
       # @param aPosition [Rley::Lexical::Position] Position of the entry in the input stream.
       # @param anExpression [Ast::LoxNode] expression to return
       def initialize(aPosition, anExpression)
-        super(aPosition, [anExpression])
+        expr = anExpression || Datatype::Nil.instance
+        super(aPosition, [expr])
       end
 
       # Part of the 'visitee' role in Visitor design pattern.

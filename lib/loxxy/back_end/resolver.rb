@@ -64,6 +64,13 @@ module Loxxy
         anIfStmt.else_stmt&.accept(aVisitor)
       end
 
+      def before_return_stmt(_returnStmt)
+        if scopes.size < 2
+          msg = "Error at 'return': Can't return from top-level code."
+          raise StandardError, msg
+        end
+      end
+
       def after_while_stmt(aWhileStmt, aVisitor)
         aWhileStmt.body.accept(aVisitor)
         aWhileStmt.condition.accept(aVisitor)
@@ -122,6 +129,10 @@ module Loxxy
         return if scopes.empty?
 
         curr_scope = scopes.last
+        if curr_scope.include?(aVarName)
+          msg = "Error at '#{aVarName}': Already variable with this name in this scope."
+          raise StandardError, msg
+        end
 
         # The initializer is not yet processed.
         # Mark the variable as 'not yet ready' = exists but may not be referenced yet

@@ -13,10 +13,9 @@ a simple language defined in Bob Nystrom's online book [Crafting Interpreters](h
   a Lox interpreter written in Lox.
 
 ### Current status
-The interpreter currently it can execute all allowed __Lox__ expressions and statements except  
+The interpreter currently can execute all allowed __Lox__ expressions and statements except  
 object-oriented feaures (classes and objects).
-
-Our intent is implement to these missing features in Q2 2021.
+The goal is to implement these missing features in Q2 2021.
 
 
 ## What's the fuss about Lox?
