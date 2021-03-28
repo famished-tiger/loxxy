@@ -1,3 +1,12 @@
+## [0.1.09] - 2021-03-28
+- Fix and test suite for return statements
+
+### Changed
+- `Loxxy` reports an error when a return statement occurs in top-level scope 
+
+### Fixed
+- A return without explicit value genrated an exception in some cases.
+
 ## [0.1.08] - 2021-03-27
 - `Loxxy` implements variable resolving and binding as described in Chapter 11 of "Crafting Interpreters" book.
 
