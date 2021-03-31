@@ -1,3 +1,10 @@
+## [0.1.10] - 2021-03-31
+- Flag return statements occurring outside functions as an error
+
+### Changed
+- Class `BackEnd::Resolver` Added attribute `current_function` to know whether the visited parse node is located inside a function
+
+
 ## [0.1.09] - 2021-03-28
 - Fix and test suite for return statements
 

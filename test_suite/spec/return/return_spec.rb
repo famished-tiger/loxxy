@@ -87,5 +87,21 @@ describe Loxxy do
       err_msg = "Error at 'return': Can't return from top-level code."
       expect { lox.evaluate(lox_snippet) }.to raise_error(err, err_msg)
     end
+
+    it 'should complain when a return occurs outside a function' do
+      lox_snippet = <<-LOX_END
+        {
+          var a = "inner";
+          {
+            var b = "innermost";
+            return "wrong"; // Error
+          }
+        }
+      LOX_END
+      lox = Loxxy::Interpreter.new
+      err = StandardError
+      err_msg = "Error at 'return': Can't return from outside a function."
+      expect { lox.evaluate(lox_snippet) }.to raise_error(err, err_msg)
+    end
   end # context
 end # describe

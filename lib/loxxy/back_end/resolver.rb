@@ -22,9 +22,14 @@ module Loxxy
       # @return [Hash {LoxNode => Integer}]
       attr_reader :locals
 
+      # An indicator that tells we're in the middle of a function declaration
+      # @return [Symbol] must be one of: :none, :function
+      attr_reader :current_function
+
       def initialize
         @scopes = []
         @locals = {}
+        @current_function = :none
       end
 
       # Given an abstract syntax parse tree visitor, launch the visit
@@ -67,6 +72,11 @@ module Loxxy
       def before_return_stmt(_returnStmt)
         if scopes.size < 2
           msg = "Error at 'return': Can't return from top-level code."
+          raise StandardError, msg
+        end
+
+        if current_function == :none
+          msg = "Error at 'return': Can't return from outside a function."
           raise StandardError, msg
         end
       end
@@ -112,7 +122,7 @@ module Loxxy
       def before_fun_stmt(aFunStmt, aVisitor)
         declare(aFunStmt.name)
         define(aFunStmt.name)
-        resolve_function(aFunStmt, aVisitor)
+        resolve_function(aFunStmt, :function ,aVisitor)
       end
 
       private
@@ -162,7 +172,9 @@ module Loxxy
         end
       end
 
-      def resolve_function(aFunStmt, aVisitor)
+      def resolve_function(aFunStmt, funVisitState, aVisitor)
+        enclosing_function = current_function
+        @current_function = funVisitState
         begin_scope
 
         aFunStmt.params&.each do |param_name|
@@ -176,6 +188,7 @@ module Loxxy
         end
 
         end_scope
+        @current_function = enclosing_function
       end
     end # class
   end # mmodule

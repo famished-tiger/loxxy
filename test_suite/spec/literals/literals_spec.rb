@@ -41,6 +41,23 @@ describe Loxxy do
       end
     end
 
+    it 'should evaluate multi-line string literal' do
+      snippet = <<-LOX_END
+var a = "1
+2
+3";
+
+a;
+// result: 1
+// 2
+// 3
+      LOX_END
+      lox = Loxxy::Interpreter.new
+      result = lox.evaluate(snippet)
+      expect(result).to be_kind_of(Loxxy::Datatype::LXString)
+      expect(result.value).to eq(%w[1 2 3].join("\n"))
+    end
+
     it 'should evaluate nil literal' do
       lox = Loxxy::Interpreter.new
       result = lox.evaluate('nil;')
