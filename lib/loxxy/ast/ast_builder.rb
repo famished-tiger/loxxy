@@ -163,6 +163,31 @@ module Loxxy
         [theChildren[0]]
       end
 
+      # rule('classDecl' => 'CLASS classNaming class_body')
+      def reduce_class_decl(_production, _range, _tokens, theChildren)
+        Ast::LoxClassStmt.new(tokens[1].position, theChildren[1], theChildren[2])
+      end
+
+      # rule('classNaming' => 'IDENTIFIER')
+      def reduce_class_name(_production, _range, _tokens, theChildren)
+        theChildren[0].token.lexeme
+      end
+
+      # rule('class_body' => 'LEFT_BRACE methods_opt RIGHT_BRACE')
+      def reduce_class_body(_production, _range, _tokens, theChildren)
+        theChildren[1]
+      end
+
+      # rule('method_plus' => 'method_plus function')
+      def reduce_method_plus_more(_production, _range, _tokens, theChildren)
+        theChildren[0] << theChildren[1]
+      end
+
+      # rule('method_plus' => 'function')
+      def reduce_method_plus_end(_production, _range, _tokens, theChildren)
+        theChildren
+      end
+
       # rule('funDecl' => 'FUN function')
       def reduce_fun_decl(_production, _range, _tokens, theChildren)
         theChildren[1]

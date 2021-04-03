@@ -3,6 +3,7 @@
 # Load all the classes implementing AST nodes
 require_relative '../ast/all_lox_nodes'
 require_relative 'binary_operator'
+require_relative 'lox_class'
 require_relative 'lox_function'
 require_relative 'resolver'
 require_relative 'symbol_table'
@@ -66,6 +67,12 @@ module Loxxy
 
       def after_seq_decl(aSeqDecls)
         # Do nothing, subnodes were already evaluated
+      end
+
+      def after_class_stmt(aClassStmt, _visitor)
+        klass = LoxClass.new(aClassStmt.name, aClassStmt.methods, self)
+        new_var = Variable.new(aClassStmt.name, klass)
+        symbol_table.insert(new_var)
       end
 
       def before_var_stmt(aVarStmt)

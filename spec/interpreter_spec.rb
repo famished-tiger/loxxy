@@ -451,6 +451,23 @@ LOX_END
       end
       # rubocop: enable Style/StringConcatenation
 
+      it 'should support class declaration' do
+        program = <<-LOX_END
+          class Duck {
+            noise() {
+              quack();
+            }
+
+            quack() {
+              print "quack";
+            }
+          }
+          print Duck;
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('Duck')
+      end
+
       it 'should print the hello world message' do
         program = <<-LOX_END
           var greeting = "Hello"; // Declaring a variable

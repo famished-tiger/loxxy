@@ -6,7 +6,6 @@ module Loxxy
   module BackEnd
     # rubocop: disable Style/AccessorGrouping
     # Representation of a Lox function.
-    # It is a named slot that can be associated with a value at the time.
     class LoxFunction
       # @return [String] The name of the function (if any)
       attr_reader :name
@@ -18,7 +17,7 @@ module Loxxy
       attr_reader :closure
 
       # Create a function with given name
-      # @param aName [String] The name of the variable
+      # @param aName [String] The name of the function
       def initialize(aName, parameterList, aBody, anEngine)
         @name = aName.dup
         @parameters = parameterList

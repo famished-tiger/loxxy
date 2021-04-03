@@ -53,6 +53,15 @@ module Loxxy
         end_scope
       end
 
+      # A class declaration adds a new variable to current scope
+      def before_class_stmt(aClassStmt)
+        declare(aClassStmt.name)
+      end
+
+      def after_class_stmt(aClassStmt, _visitor)
+        define(aClassStmt.name)
+      end
+
       def before_for_stmt(aForStmt)
         before_block_stmt(aForStmt)
       end
@@ -122,7 +131,7 @@ module Loxxy
       def before_fun_stmt(aFunStmt, aVisitor)
         declare(aFunStmt.name)
         define(aFunStmt.name)
-        resolve_function(aFunStmt, :function ,aVisitor)
+        resolve_function(aFunStmt, :function, aVisitor)
       end
 
       private

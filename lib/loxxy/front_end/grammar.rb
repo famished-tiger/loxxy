@@ -37,12 +37,14 @@ module Loxxy
       rule('declaration' => 'varDecl')
       rule('declaration' => 'statement')
 
-      rule('classDecl' => 'CLASS classNaming class_body')
+      rule('classDecl' => 'CLASS classNaming class_body').as 'class_decl'
       rule('classNaming' => 'IDENTIFIER LESS IDENTIFIER')
-      rule('classNaming' => 'IDENTIFIER')
-      rule('class_body' => 'LEFT_BRACE function_star RIGHT_BRACE')
-      rule('function_star' => 'function_star function')
-      rule('function_star' => [])
+      rule('classNaming' => 'IDENTIFIER').as 'class_name'
+      rule('class_body' => 'LEFT_BRACE methods_opt RIGHT_BRACE').as 'class_body'
+      rule('methods_opt' => 'method_plus')
+      rule('methods_opt' => [])
+      rule('method_plus' => 'method_plus function').as 'method_plus_more'
+      rule('method_plus' => 'function').as 'method_plus_end'
 
       rule('funDecl' => 'FUN function').as 'fun_decl'
 

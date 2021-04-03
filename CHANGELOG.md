@@ -1,3 +1,23 @@
+## [0.1.11] - 2021-04-03
+- Intermediate version: `Loxxy` does class declarations
+
+### New
+- Class `Ast::LoxClassStmt` a syntax node that represents a class declaration
+- Method `Ast::ASTBuilder#reduce_class_decl` creates a `LoxClassStmt` instance
+- Method `Ast::ASTBuilder#reduce_class_name`
+- Method `Ast::ASTBuilder#reduce_reduce_class_body` collect the methods of the class
+- Method `Ast::ASTBuilder#reduce_method_plus_more` for dealing with methods
+- Method `Ast::ASTBuilder#reduce_method_plus_end`
+- Method `Ast::ASTVisitor#visit_class_stmt` for visiting an `Ast::LoxClassStmt` node
+- Method `Ast::LoxBlockStmt#empty?` returns true if the code block is empty
+- Method `BackEnd::Engine#after_class_stmt`
+- Method `BackEnd::Resolver#after_class_stmt`
+- Method `BackEnd::Resolver#before_class_stmt`
+- Class `BackEnd::LoxClass` implementation of a Lox class.
+
+### CHANGED
+- File `grammar.rb` refactoring of class declaration syntax rules
+
 ## [0.1.10] - 2021-03-31
 - Flag return statements occurring outside functions as an error
 
@@ -110,9 +130,9 @@
 - Method `Ast::ASTVisitor#visit_fun_stmt` for visiting an `Ast::LoxFunStmt` node
 - Method `Ast::LoxBlockStmt#empty?` returns true if the code block is empty
 - Method `BackEnd::Engine#after_fun_stmt`
-- Method `Backend::NativeFunction#call` 
-- Method `Backend::NativeFunction#to_str` 
-- Method `Backend::Function` implementation of a function object.
+- Method `BackEnd::NativeFunction#call` 
+- Method `BackEnd::NativeFunction#to_str` 
+- Method `BackEnd::LoxFunction` implementation of a function object.
 
 ### Changed
 - Method `BackEnd::Engine#after_call_expr`

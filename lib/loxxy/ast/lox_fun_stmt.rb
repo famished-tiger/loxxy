@@ -16,7 +16,7 @@ module Loxxy
       # @param body [Ast::LoxBlockStmt]
       def initialize(aPosition, aName, paramList, aBody)
         super(aPosition, [])
-        @name = aName
+        @name = aName.dup
         @params = paramList
         @body = aBody
       end

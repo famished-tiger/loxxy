@@ -67,6 +67,14 @@ module Loxxy
         broadcast(:after_var_stmt, aVarStmt)
       end
 
+      # Visit event. The visitor is about to visit a class declaration.
+      # @param aXlassStmt [AST::LOXClassStmt] the for statement node to visit
+      def visit_class_stmt(aClassStmt)
+        broadcast(:before_class_stmt, aClassStmt)
+        traverse_subnodes(aClassStmt) # The methods are visited here...
+        broadcast(:after_class_stmt, aClassStmt, self)
+      end
+
       # Visit event. The visitor is about to visit a for statement.
       # @param aForStmt [AST::LOXForStmt] the for statement node to visit
       def visit_for_stmt(aForStmt)
