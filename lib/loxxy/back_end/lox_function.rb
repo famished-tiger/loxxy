@@ -36,7 +36,6 @@ module Loxxy
       end
 
       def call(engine, aVisitor)
-        # new_env = Environment.new(engine.symbol_table.current_env)
         new_env = Environment.new(closure)
         engine.symbol_table.enter_environment(new_env)
 

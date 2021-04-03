@@ -468,6 +468,20 @@ LOX_END
         expect(sample_cfg[:ostream].string).to eq('Duck')
       end
 
+      it 'should support instance creation' do
+        program = <<-LOX_END
+          class Duck {
+            quack() {
+              print "quack";
+            }
+          }
+          var daffy = Duck();
+          print daffy;
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('Duck instance')
+      end
+
       it 'should print the hello world message' do
         program = <<-LOX_END
           var greeting = "Hello"; // Declaring a variable

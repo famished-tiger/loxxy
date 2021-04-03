@@ -175,7 +175,7 @@ module Loxxy
 
       # rule('class_body' => 'LEFT_BRACE methods_opt RIGHT_BRACE')
       def reduce_class_body(_production, _range, _tokens, theChildren)
-        theChildren[1]
+        theChildren[1].nil? ? [] : theChildren[1]
       end
 
       # rule('method_plus' => 'method_plus function')

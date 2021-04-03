@@ -1,3 +1,16 @@
+## [0.1.12] - 2021-04-03
+- Intermediate version: `Loxxy` does instance creation (default constructor)
+
+### New
+- Method `BackEnd::LoxClass#call` made class callable (for invoking the constructor)
+- Class `BackEnd::LoxInstance` runtime representation of a Lox instance (object).
+
+### Changed
+- Method `BackEnd::Engine#after_call_expr` Added Lox class as callable thing.
+
+### Fixed
+- Method `Ast::ASTBuilder#reduce_class_body` couldn't handle properly empty classes
+
 ## [0.1.11] - 2021-04-03
 - Intermediate version: `Loxxy` does class declarations
 
@@ -13,9 +26,9 @@
 - Method `BackEnd::Engine#after_class_stmt`
 - Method `BackEnd::Resolver#after_class_stmt`
 - Method `BackEnd::Resolver#before_class_stmt`
-- Class `BackEnd::LoxClass` implementation of a Lox class.
+- Class `BackEnd::LoxClass` runtime representation of a Lox class.
 
-### CHANGED
+### Changed
 - File `grammar.rb` refactoring of class declaration syntax rules
 
 ## [0.1.10] - 2021-03-31
@@ -28,7 +41,7 @@
 ## [0.1.09] - 2021-03-28
 - Fix and test suite for return statements
 
-### Changed
+### CHANGED
 - `Loxxy` reports an error when a return statement occurs in top-level scope 
 
 ### Fixed
@@ -40,7 +53,7 @@
 ### New
 - Class `BackEnd::Resolver` implements the variable resolution (whenever a variable is in use, locate the declaration of that variable)
 
-### Changed
+### CHANGED
 - Class `Ast::Visitor` changes in some method signatures
 - Class `BackEnd::Engine` new attribute `resolver` that points to a `BackEnd::Resolver` instance
 - Class `BackEnd::Engine` several methods dealing with variables have been adapted to take the resolver into account.
@@ -132,7 +145,7 @@
 - Method `BackEnd::Engine#after_fun_stmt`
 - Method `BackEnd::NativeFunction#call` 
 - Method `BackEnd::NativeFunction#to_str` 
-- Method `BackEnd::LoxFunction` implementation of a function object.
+- Method `BackEnd::LoxFunction` runtime representation of a Lox function.
 
 ### Changed
 - Method `BackEnd::Engine#after_call_expr`

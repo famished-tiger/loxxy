@@ -228,6 +228,8 @@ module Loxxy
             raise Loxxy::RuntimeError, msg
           end
           callee.call(self, aVisitor)
+        when LoxClass
+          callee.call(self, aVisitor)
         else
           raise Loxxy::RuntimeError, 'Can only call functions and classes.'
         end
