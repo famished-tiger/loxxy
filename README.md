@@ -177,8 +177,8 @@ Loxxy supports single line C-style comments.
 ### Keywords
 Loxxy implements the following __Lox__ reserved keywords:
 ```lang-none
-and, else, false, for, fun, if,
-nil, or, print, true, var, while
+and, class, else, false, for, fun, if,
+nil, or, print, return, this, true, var, while
 ```
 
 ### Datatypes
