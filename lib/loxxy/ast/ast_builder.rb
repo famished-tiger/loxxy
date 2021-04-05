@@ -354,6 +354,11 @@ module Loxxy
         LoxVariableExpr.new(tokens[0].position, var_name)
       end
 
+      # rule('primary' => 'THIS')
+      def reduce_this_expr(_production, _range, tokens, _children)
+        LoxThisExpr.new(tokens[0].position)
+      end
+
       # rule('function' => 'IDENTIFIER LEFT_PAREN params_opt RIGHT_PAREN block').as 'function'
       def reduce_function(_production, _range, _tokens, theChildren)
         first_child = theChildren.first

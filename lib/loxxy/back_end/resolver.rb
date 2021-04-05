@@ -26,10 +26,15 @@ module Loxxy
       # @return [Symbol] must be one of: :none, :function
       attr_reader :current_function
 
+      # An indicator that tells we're in the middle of a class declaration
+      # @return [Symbol] must be one of: :none, :class
+      attr_reader :current_class
+
       def initialize
         @scopes = []
         @locals = {}
         @current_function = :none
+        @current_class = :none
       end
 
       # Given an abstract syntax parse tree visitor, launch the visit
@@ -59,10 +64,16 @@ module Loxxy
       end
 
       def after_class_stmt(aClassStmt, aVisitor)
+        previous_class = current_class
+        @current_class = :class
         define(aClassStmt.name)
+        begin_scope
+        define('this')
         aClassStmt.body.each do |fun_stmt|
           resolve_function(fun_stmt, :method, aVisitor)
         end
+        end_scope
+        @current_class = previous_class
       end
 
       def before_for_stmt(aForStmt)
@@ -138,6 +149,18 @@ module Loxxy
       def after_get_expr(aGetExpr, aVisitor)
         # Evaluate object part
         aGetExpr.object.accept(aVisitor)
+      end
+
+      def before_this_expr(_thisExpr)
+        if current_class == :none
+          msg = "Error at 'this': Can't use 'this' outside of a class."
+          raise StandardError, msg
+        end
+      end
+
+      def after_this_expr(aThisExpr, aVisitor)
+        # 'this' behaves closely to a local variable
+        resolve_local(aThisExpr, aVisitor)
       end
 
       # function declaration creates a new scope for its body & binds its parameters for that scope

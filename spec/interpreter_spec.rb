@@ -466,7 +466,7 @@ LOX_END
         snippet = <<-LOX_END
           class Duck {
             noise() {
-              quack();
+              this.quack();
             }
 
             quack() {
@@ -508,6 +508,21 @@ LOX_END
         LOX_END
         expect { subject.evaluate(program) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('quack')
+      end
+
+      it "should support the 'this' keyword" do
+        program = <<-LOX_END
+          class Egotist {
+            speak() {
+              print this;
+            }
+          }
+
+          var method = Egotist().speak;
+          method(); // Output: Egotist instance
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('Egotist instance')
       end
     end # context
   end # describe

@@ -1,7 +1,21 @@
+## [0.1.14] - 2021-04-05
+- `Loxxy` now implements the 'this' keyword
+
+### New
+- Class `Ast::LoxThisExpr` a syntax node that represents an occurrence of the `this` keyword
+- Method `Ast::ASTBuilder#reduce_this_expr` parse action for this keyword
+- Method `Ast::Visitor#visit_this_expr` visit of an `Ast::LoxThisExpr` node
+- Method `BackEnd::Engine#after_this_expr` runtime action for this keyword (i.e. refers to current instance)
+- Method `BackEnd::LoxFunction#bind` implementation of bound method
+
+### Changed
+- Class `BackEnd::Resolver` implementing semantic actions for `this` keyword
+- File `grammar.rb` added name to a syntax rule
+
 ## [0.1.13] - 2021-04-05
 - `Loxxy` now implements method calls
 
-## New
+### New
 - Class `Ast::LoxGetExpr` a syntax node that represents a read access to an object property
 - Class `Ast::LoxSetExpr` a syntax node that represents a write access to an object property
 - Method `Ast::ASTBuilder#reduce_set_expr` parse action for write access to an object property
@@ -11,11 +25,11 @@
 - Method `BackEnd::Engine#after_set_expr` runtime action for property setting
 - Method `BackEnd::Engine#after_get_expr` runtime action for property getting
 - Method `BackEnd::LoxInstance#set` implementation of write accessor
-- Method `BackEnd::LoxInstance#getr` implementation of read accessor
+- Method `BackEnd::LoxInstance#get` implementation of read accessor
 - Method `BackEnd::Resolver#after_set_expr` resolve action for property setting
 - Method `BackEnd::Resolver#after_get_expr` resolve action for property getting
 
-## Changed
+### Changed
 - Method `Ast::ASTBuilder#reduce_assign_expr` expanded to support write access to an object property
 - Class `LoxClassStmt`: methods are now aggregate under the `body` attribute
 - Class `LoxFunStmt`: has a new attribute `is_method` and inherits from `Ast::LoxNode`

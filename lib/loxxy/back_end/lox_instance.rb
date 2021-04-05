@@ -9,7 +9,7 @@ module Loxxy
       # @return BackEnd::LoxClass] the class that this object is an instance of
       attr_reader :klass
 
-      attr_reader :stack
+      attr_reader :engine
 
       # @return [Hash{String => BuiltinDatatype | LoxFunction | LoxInstance }]
       attr_reader :fields
@@ -18,12 +18,12 @@ module Loxxy
       # @param aClass [BackEnd::LoxClass] the class this this object belong
       def initialize(aClass, anEngine)
         @klass = aClass
-        @stack = anEngine.stack
+        @engine = anEngine
         @fields = {}
       end
 
       def accept(_visitor)
-        stack.push self
+        engine.stack.push self
       end
 
       # Text representation of a Lox instance
@@ -41,7 +41,7 @@ module Loxxy
           raise StandardError, "Undefined property '#{aName}'."
         end
 
-        method
+        method.bind(self)
       end
 
       # Set the value of property with given name

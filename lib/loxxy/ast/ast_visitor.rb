@@ -205,6 +205,13 @@ module Loxxy
         broadcast(:after_variable_expr, aVariableExpr, self)
       end
 
+      # Visit event. The visitor is about to visit the this keyword.
+      # @param aThisExpr [Ast::LoxThisExpr] this expression
+      def visit_this_expr(aThisExpr)
+        broadcast(:before_this_expr, aThisExpr)
+        broadcast(:after_this_expr, aThisExpr, self)
+      end
+
       # Visit event. The visitor is about to visit the given terminal datatype value.
       # @param aValue [Ast::BuiltinDattype] the built-in datatype value
       def visit_builtin(aValue)

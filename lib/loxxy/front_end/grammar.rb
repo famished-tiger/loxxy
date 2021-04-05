@@ -136,7 +136,7 @@ module Loxxy
       rule('primary' => 'TRUE').as 'literal_expr'
       rule('primary' => 'FALSE').as 'literal_expr'
       rule('primary' => 'NIL').as 'literal_expr'
-      rule('primary' => 'THIS')
+      rule('primary' => 'THIS').as 'this_expr'
       rule('primary' => 'NUMBER').as 'literal_expr'
       rule('primary' => 'STRING').as 'literal_expr'
       rule('primary' => 'IDENTIFIER').as 'variable_expr'

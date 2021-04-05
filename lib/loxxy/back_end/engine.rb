@@ -281,6 +281,11 @@ module Loxxy
         stack.push(literalExpr.literal)
       end
 
+      def after_this_expr(aThisExpr, aVisitor)
+        var = variable_lookup(aThisExpr)
+        var.value.accept(aVisitor) # Evaluate this value then push on stack
+      end
+
       # @param aValue [Ast::BuiltinDattype] the built-in datatype value
       def before_visit_builtin(aValue)
         stack.push(aValue)

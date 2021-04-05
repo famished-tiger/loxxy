@@ -52,6 +52,16 @@ module Loxxy
         engine.symbol_table.leave_environment
       end
 
+      def bind(anInstance)
+        new_env = Environment.new(closure)
+        this = Variable.new('this', anInstance)
+        new_env.insert(this)
+        bound_method = dup
+        bound_method.instance_variable_set(:@closure, new_env)
+
+        bound_method
+      end
+
       # Logical negation.
       # As a function is a truthy thing, its negation is thus false.
       # @return [Datatype::False]

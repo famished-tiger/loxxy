@@ -37,7 +37,6 @@ module Loxxy
       # @return [BackEnd::Variable] the variable
       def insert(anEntry)
         e = validated_entry(anEntry)
-        # e.suffix = default_suffix if e.kind_of?(BackEnd::Variable)
         defns[e.name] = e
 
         e
