@@ -269,9 +269,21 @@ module Loxxy
 
       # rule('assignment' => 'owner_opt IDENTIFIER EQUAL assignment')
       def reduce_assign_expr(_production, _range, tokens, theChildren)
-        var_name = theChildren[1].token.lexeme.dup
-        Ast::LoxAssignExpr.new(tokens[1].position, var_name, theChildren[3])
+        name_assignee = theChildren[1].token.lexeme.dup
+        if theChildren[0].kind_of?(Ast::LoxSetExpr)
+          theChildren[0].property = name_assignee
+          theChildren[0].subnodes << theChildren[3]
+          theChildren[0]
+        else
+          Ast::LoxAssignExpr.new(tokens[1].position, name_assignee, theChildren[3])
+        end
       end
+
+      # rule('owner_opt' => 'call DOT')
+      def reduce_set_expr(_production, _range, tokens, theChildren)
+        Ast::LoxSetExpr.new(tokens[1].position, theChildren[0])
+      end
+
 
       # rule('comparisonTest_plus' => 'comparisonTest_plus comparisonTest term').as 'comparison_t_plus_more'
       # TODO: is it meaningful to implement this rule?
@@ -315,6 +327,11 @@ module Loxxy
         end
 
         LoxCallExpr.new(tokens[0].position, args)
+      end
+
+      # rule('refinement' => 'DOT IDENTIFIER').as 'get_expr'
+      def reduce_get_expr(_production, _range, tokens, theChildren)
+        LoxGetExpr.new(tokens[0].position, theChildren[1].token.lexeme)
       end
 
       # rule('primary' => 'LEFT_PAREN expression RIGHT_PAREN')

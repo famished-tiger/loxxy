@@ -10,15 +10,18 @@ module Loxxy
       # @return [String] The name of the class
       attr_reader :name
 
-      # @return [Array<>] the list of methods
-      attr_reader :methods
+      # @return [Hash{String => LoxFunction}] the list of methods
+      attr_reader :meths
       attr_reader :stack
 
       # Create a class with given name
       # @param aName [String] The name of the class
       def initialize(aName, theMethods, anEngine)
         @name = aName.dup
-        @methods = theMethods
+        @meths = {}
+        theMethods.each do |func|
+          meths[func.name] = func
+        end
         @stack = anEngine.stack
       end
 
@@ -33,6 +36,11 @@ module Loxxy
       def call(engine, _visitor)
         instance = LoxInstance.new(self, engine)
         engine.stack.push(instance)
+      end
+
+      # @param aName [String] the method name to search for
+      def find_method(aName)
+        meths[aName]
       end
 
       # Logical negation.

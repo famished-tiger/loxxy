@@ -87,7 +87,7 @@ module Loxxy
       rule('expression' => 'assignment')
       rule('assignment' => 'owner_opt IDENTIFIER EQUAL assignment').as 'assign_expr'
       rule('assignment' => 'logic_or')
-      rule('owner_opt' => 'call DOT')
+      rule('owner_opt' => 'call DOT').as 'set_expr'
       rule('owner_opt' => [])
       rule('logic_or' => 'logic_and')
       rule('logic_or' => 'logic_and disjunct_plus').as 'logical_expr'
@@ -132,7 +132,7 @@ module Loxxy
       rule('refinement_plus' => 'refinement_plus refinement').as 'refinement_plus_more'
       rule('refinement_plus' => 'refinement').as 'refinement_plus_end'
       rule('refinement' => 'LEFT_PAREN arguments_opt RIGHT_PAREN').as 'call_arglist'
-      rule('refinement' => 'DOT IDENTIFIER')
+      rule('refinement' => 'DOT IDENTIFIER').as 'get_expr'
       rule('primary' => 'TRUE').as 'literal_expr'
       rule('primary' => 'FALSE').as 'literal_expr'
       rule('primary' => 'NIL').as 'literal_expr'

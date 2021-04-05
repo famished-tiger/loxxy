@@ -69,8 +69,15 @@ module Loxxy
         # Do nothing, subnodes were already evaluated
       end
 
-      def after_class_stmt(aClassStmt, _visitor)
-        klass = LoxClass.new(aClassStmt.name, aClassStmt.methods, self)
+      def after_class_stmt(aClassStmt, aVisitor)
+        # Convert LoxFunStmt into LoxFunction
+        meths = aClassStmt.body.map do |func_node|
+          func_node.is_method = true
+          func_node.accept(aVisitor)
+          stack.pop
+        end
+
+        klass = LoxClass.new(aClassStmt.name, meths, self)
         new_var = Variable.new(aClassStmt.name, klass)
         symbol_table.insert(new_var)
       end
@@ -151,6 +158,18 @@ module Loxxy
 
         value = stack.last # ToS remains since an assignment produces a value
         variable.assign(value)
+      end
+
+      def after_set_expr(aSetExpr, aVisitor)
+        value = stack.pop
+        # Evaluate object part
+        aSetExpr.object.accept(aVisitor)
+        assignee = stack.pop
+        unless assignee.kind_of?(LoxInstance)
+          raise StandardError, 'Only instances have fields.'
+        end
+
+        assignee.set(aSetExpr.property, value)
       end
 
       def after_logical_expr(aLogicalExpr, visitor)
@@ -235,6 +254,16 @@ module Loxxy
         end
       end
 
+      def after_get_expr(aGetExpr, aVisitor)
+        aGetExpr.object.accept(aVisitor)
+        instance = stack.pop
+        unless instance.kind_of?(LoxInstance)
+          raise StandardError, 'Only instances have properties.'
+        end
+
+        stack.push instance.get(aGetExpr.property)
+      end
+
       def after_grouping_expr(_groupingExpr)
         # Do nothing: work was already done by visiting /evaluating the subexpression
       end
@@ -242,7 +271,7 @@ module Loxxy
       def after_variable_expr(aVarExpr, aVisitor)
         var_name = aVarExpr.name
         var = variable_lookup(aVarExpr)
-        raise StandardError, "Unknown variable #{var_name}" unless var
+        raise StandardError, "Undefined variable '#{var_name}'." unless var
 
         var.value.accept(aVisitor) # Evaluate variable value then push on stack
       end
@@ -259,8 +288,12 @@ module Loxxy
 
       def after_fun_stmt(aFunStmt, _visitor)
         function = LoxFunction.new(aFunStmt.name, aFunStmt.params, aFunStmt.body, self)
-        new_var = Variable.new(aFunStmt.name, function)
-        symbol_table.insert(new_var)
+        if aFunStmt.is_method
+          stack.push function
+        else
+          new_var = Variable.new(aFunStmt.name, function)
+          symbol_table.insert(new_var)
+        end
       end
 
       private

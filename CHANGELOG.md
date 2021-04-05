@@ -1,3 +1,29 @@
+## [0.1.13] - 2021-04-05
+- `Loxxy` now implements method calls
+
+## New
+- Class `Ast::LoxGetExpr` a syntax node that represents a read access to an object property
+- Class `Ast::LoxSetExpr` a syntax node that represents a write access to an object property
+- Method `Ast::ASTBuilder#reduce_set_expr` parse action for write access to an object property
+- Method `Ast::ASTBuilder#reduce_get_expr` parse action for read access to an object property
+- Method `Ast::Visitor#visit_set_expr` visit of an `Ast::LoxSetExpr` node
+- Method `Ast::Visitor#visit_get_expr` visit of an `Ast::LoxGetExpr` node
+- Method `BackEnd::Engine#after_set_expr` runtime action for property setting
+- Method `BackEnd::Engine#after_get_expr` runtime action for property getting
+- Method `BackEnd::LoxInstance#set` implementation of write accessor
+- Method `BackEnd::LoxInstance#getr` implementation of read accessor
+- Method `BackEnd::Resolver#after_set_expr` resolve action for property setting
+- Method `BackEnd::Resolver#after_get_expr` resolve action for property getting
+
+## Changed
+- Method `Ast::ASTBuilder#reduce_assign_expr` expanded to support write access to an object property
+- Class `LoxClassStmt`: methods are now aggregate under the `body` attribute
+- Class `LoxFunStmt`: has a new attribute `is_method` and inherits from `Ast::LoxNode`
+- Method `BackEnd::Engine#after_class_stmt` methods are aggregated into the classes
+- Method `BackEnd::Engine#after_fun_stmt` extension for method
+- File `grammar.rb` added names to two syntax rules
+
+
 ## [0.1.12] - 2021-04-03
 - Intermediate version: `Loxxy` does instance creation (default constructor)
 

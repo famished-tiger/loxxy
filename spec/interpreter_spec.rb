@@ -451,8 +451,19 @@ LOX_END
       end
       # rubocop: enable Style/StringConcatenation
 
-      it 'should support class declaration' do
+      it 'should print the hello world message' do
         program = <<-LOX_END
+          var greeting = "Hello"; // Declaring a variable
+          print greeting + ", " + "world!"; // ... Playing with concatenation
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('Hello, world!')
+      end
+    end # context
+
+    context 'Object orientation:' do
+      let(:duck_class) do
+        snippet = <<-LOX_END
           class Duck {
             noise() {
               quack();
@@ -462,33 +473,41 @@ LOX_END
               print "quack";
             }
           }
-          print Duck;
+        LOX_END
+
+        snippet
+      end
+
+      it 'should support class declaration' do
+        program = <<-LOX_END
+          #{duck_class}
+
+          print Duck; // Class names can appear in statements
         LOX_END
         expect { subject.evaluate(program) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Duck')
       end
 
-      it 'should support instance creation' do
+      it 'should support default instance creation' do
         program = <<-LOX_END
-          class Duck {
-            quack() {
-              print "quack";
-            }
-          }
-          var daffy = Duck();
+          #{duck_class}
+
+          var daffy = Duck(); // Default constructor
           print daffy;
         LOX_END
         expect { subject.evaluate(program) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Duck instance')
       end
 
-      it 'should print the hello world message' do
+      it 'should support calls to method' do
         program = <<-LOX_END
-          var greeting = "Hello"; // Declaring a variable
-          print greeting + ", " + "world!"; // ... Playing with concatenation
+          #{duck_class}
+
+          var daffy = Duck(); // Default constructor
+          daffy.quack();
         LOX_END
         expect { subject.evaluate(program) }.not_to raise_error
-        expect(sample_cfg[:ostream].string).to eq('Hello, world!')
+        expect(sample_cfg[:ostream].string).to eq('quack')
       end
     end # context
   end # describe

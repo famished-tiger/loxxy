@@ -58,8 +58,11 @@ module Loxxy
         declare(aClassStmt.name)
       end
 
-      def after_class_stmt(aClassStmt, _visitor)
+      def after_class_stmt(aClassStmt, aVisitor)
         define(aClassStmt.name)
+        aClassStmt.body.each do |fun_stmt|
+          resolve_function(fun_stmt, :method, aVisitor)
+        end
       end
 
       def before_for_stmt(aForStmt)
@@ -109,6 +112,11 @@ module Loxxy
         resolve_local(anAssignExpr, aVisitor)
       end
 
+      def after_set_expr(aSetExpr, aVisitor)
+        # Evaluate object part
+        aSetExpr.object.accept(aVisitor)
+      end
+
       # Variable expressions require their variables resolved
       def before_variable_expr(aVarExpr)
         var_name = aVarExpr.name
@@ -125,6 +133,11 @@ module Loxxy
         # Evaluate callee part
         aCallExpr.callee.accept(aVisitor)
         aCallExpr.arguments.reverse_each { |arg| arg.accept(aVisitor) }
+      end
+
+      def after_get_expr(aGetExpr, aVisitor)
+        # Evaluate object part
+        aGetExpr.object.accept(aVisitor)
       end
 
       # function declaration creates a new scope for its body & binds its parameters for that scope

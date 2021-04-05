@@ -5,14 +5,19 @@ require_relative 'lox_compound_expr'
 module Loxxy
   module Ast
     class LoxClassStmt < LoxCompoundExpr
+      # @return [String] the class name
       attr_reader :name
+
+      # @return [Array<Ast::LoxFunStmt>] the methods
+      attr_reader :body
 
       # @param aPosition [Rley::Lexical::Position] Position of the entry in the input stream.
       # @param condExpr [Loxxy::Ast::LoxNode] iteration condition
-      # @param theBody [Loxxy::Ast::LoxNode]
+      # @param theBody [Array<Loxxy::Ast::LoxNode>]
       def initialize(aPosition, aName, theMethods)
-        super(aPosition, theMethods)
+        super(aPosition, [])
         @name = aName.dup
+        @body = theMethods
       end
 
       # Part of the 'visitee' role in Visitor design pattern.
@@ -20,8 +25,6 @@ module Loxxy
       def accept(visitor)
         visitor.visit_class_stmt(self)
       end
-
-      alias body subnodes
     end # class
   end # module
 end # module

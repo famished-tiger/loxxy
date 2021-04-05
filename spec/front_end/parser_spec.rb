@@ -305,6 +305,83 @@ LOX_END
           expect(expr.operands[1].operands[1].literal.value).to eq(5)
         end
       end # context
+
+      context 'Object orientation:' do
+        it 'should parse object property get access' do
+          input = 'print someObject.someProperty;'
+          ptree = subject.parse(input)
+          expr = ptree.root.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxPrintStmt)
+          get_expr = expr.subnodes[0]
+          expect(get_expr).to be_kind_of(Ast::LoxGetExpr)
+          expect(get_expr.object.name).to eq('someObject')
+          expect(get_expr.property).to eq('someProperty')
+        end
+
+        it 'should parse nested call expressions' do
+          input = 'print egg.scramble(3).with(cheddar);'
+          # From section 12.3.1, one expects something like:
+          # LoxCallExpr
+          # +- arguments = ['cheddar']
+          # +- callee = LoxGetExpr
+          #    +- property = 'with'
+          #    +- object = LoxCallExpr
+          #       +- arguments = [3]
+          #       +- callee = LoxGetExpr
+          #          +- property = 'scramble'
+          #          +- object = variable 'egg'
+          ptree = subject.parse(input)
+          print_stmt = ptree.root.subnodes[0]
+          expect(print_stmt).to be_kind_of(Ast::LoxPrintStmt)
+          outer_call = print_stmt.subnodes[0]
+          expect(outer_call).to be_kind_of(Ast::LoxCallExpr)
+          expect(outer_call.arguments[0].name).to eq('cheddar')
+          expect(outer_call.callee).to be_kind_of(Ast::LoxGetExpr)
+          expect(outer_call.callee.property).to eq('with')
+          inner_call = outer_call.callee.object
+          expect(inner_call).to be_kind_of(Ast::LoxCallExpr)
+          expect(inner_call.arguments[0].literal).to eq(3)
+          expect(inner_call.callee).to be_kind_of(Ast::LoxGetExpr)
+          expect(inner_call.callee.property).to eq('scramble')
+          expect(inner_call.callee.object.name).to eq('egg')
+        end
+
+        it 'should parse object property set access' do
+          input = 'someObject.someProperty = value;'
+          ptree = subject.parse(input)
+          expr = ptree.root.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxSetExpr)
+          expect(expr.object.name).to eq('someObject')
+          expect(expr.property).to eq('someProperty')
+          expect(expr.subnodes[0]).to be_kind_of(Ast::LoxVariableExpr)
+          expect(expr.subnodes[0].name).to eq('value')
+        end
+
+        it 'should parse complex set access' do
+          input = 'breakfast.omelette.filling.meat = ham;'
+          # From section 12.3.2, one expects something like:
+          # LoxSetExpr
+          # +- property = 'meat'
+          # +- subnodes[0] = LoxVariableExpr 'ham'
+          # +- object = LoxGetExpr
+          #    +- property = 'filling'
+          #    +- object = LoxGetExpr
+          #       +- property = 'omelette'
+          #       +- object = LoxVariableExpr 'breakfast'
+          ptree = subject.parse(input)
+          expr = ptree.root.subnodes[0]
+          expect(expr).to be_kind_of(Ast::LoxSetExpr)
+          expect(expr.property).to eq('meat')
+          expect(expr.subnodes[0]).to be_kind_of(Ast::LoxVariableExpr)
+          expect(expr.subnodes[0].name).to eq('ham')
+          expect(expr.object).to be_kind_of(Ast::LoxGetExpr)
+          expect(expr.object.property).to eq('filling')
+          expect(expr.object.object).to be_kind_of(Ast::LoxGetExpr)
+          expect(expr.object.object.property).to eq('omelette')
+          expect(expr.object.object.object).to be_kind_of(Ast::LoxVariableExpr)
+          expect(expr.object.object.object.name).to eq('breakfast')
+        end
+      end # context
     end # describe
   end # module
 end # module

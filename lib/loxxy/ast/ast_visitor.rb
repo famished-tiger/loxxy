@@ -68,7 +68,7 @@ module Loxxy
       end
 
       # Visit event. The visitor is about to visit a class declaration.
-      # @param aXlassStmt [AST::LOXClassStmt] the for statement node to visit
+      # @param aClassStmt [AST::LOXClassStmt] the for statement node to visit
       def visit_class_stmt(aClassStmt)
         broadcast(:before_class_stmt, aClassStmt)
         traverse_subnodes(aClassStmt) # The methods are visited here...
@@ -131,6 +131,13 @@ module Loxxy
         broadcast(:after_assign_expr, anAssignExpr, self)
       end
 
+      # @param aSetExpr [AST::LOXGetExpr] the get expression node to visit
+      def visit_set_expr(aSetExpr)
+        broadcast(:before_set_expr, aSetExpr)
+        traverse_subnodes(aSetExpr)
+        broadcast(:after_set_expr, aSetExpr, self)
+      end
+
       # Visit event. The visitor is about to visit a logical expression.
       # Since logical expressions may take shorcuts by not evaluating all their
       # sub-expressiosns, they are responsible for visiting or not their children.
@@ -169,6 +176,12 @@ module Loxxy
         broadcast(:after_call_expr, aCallExpr, self)
       end
 
+      # @param aGetExpr [AST::LOXGetExpr] the get expression node to visit
+      def visit_get_expr(aGetExpr)
+        broadcast(:before_get_expr, aGetExpr)
+        broadcast(:after_get_expr, aGetExpr, self)
+      end
+
       # Visit event. The visitor is about to visit a grouping expression.
       # @param aGroupingExpr [AST::LoxGroupingExpr] grouping expression to visit
       def visit_grouping_expr(aGroupingExpr)
@@ -203,7 +216,6 @@ module Loxxy
       # @param aFunStmt [AST::LoxFunStmt] function declaration to visit
       def visit_fun_stmt(aFunStmt)
         broadcast(:before_fun_stmt, aFunStmt, self)
-        traverse_subnodes(aFunStmt)
         broadcast(:after_fun_stmt, aFunStmt, self)
       end
 
