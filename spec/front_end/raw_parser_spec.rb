@@ -76,8 +76,11 @@ LOX_END
           expect(decls.symbol.name).to eq('declaration_plus')
           stmt = decls.subnodes[0].subnodes[0]
           expect(stmt).to be_kind_of(Rley::PTree::NonTerminalNode)
-          expect(stmt.symbol.name).to eq('statement')
-          prnt_stmt = stmt.subnodes[0]
+          expect(stmt.symbol.name).to eq('stmt')
+          statement = stmt.subnodes[0]
+          expect(statement).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(statement.symbol.name).to eq('statement')
+          prnt_stmt = statement.subnodes[0]
           expect(prnt_stmt).to be_kind_of(Rley::PTree::NonTerminalNode)
           expect(prnt_stmt.subnodes.size).to eq(3)
           expect(prnt_stmt.subnodes[0]).to be_kind_of(Rley::PTree::TerminalNode)

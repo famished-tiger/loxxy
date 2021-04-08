@@ -5,7 +5,7 @@ require_relative '../spec_helper'
 
 describe 'this:' do
   context 'Valid cases:' do
-    it 'should return current instance when this occurs' do
+    it "should return current instance where 'this' occurs in source" do
       lox_snippet = <<-LOX_END
         class Foo {
           bar() { return this; }
@@ -20,28 +20,59 @@ describe 'this:' do
       expect(io.string).to eq('baz')
     end
 
-    it 'should support this in a function nested in a method' do
-      # TODO: make this test pass
-      # lox_snippet = <<-LOX_END
-      #   class Foo {
-      #     getClosure() {
-      #       fun closure() {
-      #         return this.toString();
-      #       }
-      #       return closure;
-      #     }
-      #
-      #     toString() { return "foo"; }
-      #   }
-      #
-      #   var closure = Foo().getClosure();
-      #   print closure(); // output: foo
-      # LOX_END
-      # io = StringIO.new
-      # lox = Loxxy::Interpreter.new({ ostream: io })
-      # expect { lox.evaluate(lox_snippet) }.not_to raise_error
-      # expect(io.string).to eq('foo')
+    # rubocop: disable Style/StringConcatenation
+    it 'should implement this in nested classes' do
+      lox_snippet = <<-LOX_END
+        class Outer {
+          method() {
+            print this; // output: Outer instance
+
+            fun f() {
+              print this; // output: Outer instance
+
+              class Inner {
+                method() {
+                  print this; // output: Inner instance
+                }
+              }
+
+              Inner().method();
+            }
+            f();
+          }
+        }
+
+        Outer().method();
+      LOX_END
+      io = StringIO.new
+      lox = Loxxy::Interpreter.new({ ostream: io })
+      expect { lox.evaluate(lox_snippet) }.not_to raise_error
+      predicted = ('Outer instance' * 2) + 'Inner instance'
+      expect(io.string).to eq(predicted)
     end
+    # rubocop: enable Style/StringConcatenation
+
+    # it 'should support this in a function nested in a method' do
+    #   lox_snippet = <<-LOX_END
+    #     class Foo {
+    #       getClosure() {
+    #         fun closure() {
+    #           return this.toString();
+    #         }
+    #         return closure;
+    #       }
+    #
+    #       toString() { return "foo"; }
+    #     }
+    #
+    #     var closure = Foo().getClosure();
+    #     print closure(); // output: foo
+    #   LOX_END
+    #   io = StringIO.new
+    #   lox = Loxxy::Interpreter.new({ ostream: io })
+    #   expect { lox.evaluate(lox_snippet) }.not_to raise_error
+    #   expect(io.string).to eq('foo')
+    # end
   end # context
 
   context 'Invalid - return cases:' do

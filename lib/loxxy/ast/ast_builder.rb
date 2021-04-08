@@ -233,11 +233,20 @@ module Loxxy
         return_first_child(range, tokens, theChildren)
       end
 
-      # rule('ifStmt' => 'IF ifCondition statement elsePart_opt')
+      # rule('ifStmt' => 'IF ifCondition statement ELSE statement')
+      # rule('unbalancedStmt' => 'IF ifCondition statement ELSE unbalancedStmt')
+      def reduce_if_else_stmt(_production, _range, tokens, theChildren)
+        condition = theChildren[1]
+        then_stmt = theChildren[2]
+        else_stmt = theChildren[4]
+        LoxIfStmt.new(tokens[0].position, condition, then_stmt, else_stmt)
+      end
+
+      # rule('unbalancedStmt' => 'IF ifCondition stmt').as ''
       def reduce_if_stmt(_production, _range, tokens, theChildren)
         condition = theChildren[1]
         then_stmt = theChildren[2]
-        else_stmt = theChildren[3]
+        else_stmt = nil
         LoxIfStmt.new(tokens[0].position, condition, then_stmt, else_stmt)
       end
 

@@ -35,7 +35,7 @@ module Loxxy
       rule('declaration' => 'classDecl')
       rule('declaration' => 'funDecl')
       rule('declaration' => 'varDecl')
-      rule('declaration' => 'statement')
+      rule('declaration' => 'stmt')
 
       rule('classDecl' => 'CLASS classNaming class_body').as 'class_decl'
       rule('classNaming' => 'IDENTIFIER LESS IDENTIFIER')
@@ -52,6 +52,8 @@ module Loxxy
       rule('varDecl' => 'VAR IDENTIFIER EQUAL expression SEMICOLON').as 'var_initialization'
 
       # Statements: produce side effects, but don't introduce bindings
+      rule('stmt' => 'statement')
+      rule('stmt' => 'unbalancedStmt') # Tweak to cope with "dangling else" problem
       rule('statement' => 'exprStmt')
       rule('statement' => 'forStmt')
       rule('statement' => 'ifStmt')
@@ -70,10 +72,10 @@ module Loxxy
       rule('forTest' => 'expression_opt SEMICOLON').as 'for_test'
       rule('forUpdate' => 'expression_opt')
 
-      rule('ifStmt' => 'IF ifCondition statement elsePart_opt').as 'if_stmt'
+      rule('ifStmt' => 'IF ifCondition statement ELSE statement').as 'if_else_stmt'
+      rule('unbalancedStmt' => 'IF ifCondition stmt').as 'if_stmt'
+      rule('unbalancedStmt' => 'IF ifCondition statement ELSE unbalancedStmt').as 'if_else_stmt'
       rule('ifCondition' => 'LEFT_PAREN expression RIGHT_PAREN').as 'keep_symbol2'
-      rule('elsePart_opt' => 'ELSE statement').as 'keep_symbol2'
-      rule('elsePart_opt' => [])
 
       rule('printStmt' => 'PRINT expression SEMICOLON').as 'print_stmt'
       rule('returnStmt' => 'RETURN expression_opt SEMICOLON').as 'return_stmt'

@@ -227,19 +227,20 @@ module Loxxy
           # Evaluate the 'then' expression if the condition is true.
           ['if (true) print "then-branch";', 'then-branch'],
           ['if (false) print "ignored";', ''],
-          # TODO: test with then block body
-          # TODO: test with assignment in if condition
+          ['if (nil) print "ignored";', ''],
+          ['if (true) { print "block"; }', 'block'],
+          ['var a = false; if (a = true) print a;', 'true'],
 
           # Evaluate the 'else' expression if the condition is false.
           ['if (true) print "then-branch"; else print "else-branch";', 'then-branch'],
           ['if (false) print "then-branch"; else print "else-branch";', 'else-branch'],
           ['if (0) print "then-branch"; else print "else-branch";', 'then-branch'],
-          ['if (nil) print "then-branch"; else print "else-branch";', 'else-branch']
-          # TODO: test with else block body
+          ['if (nil) print "then-branch"; else print "else-branch";', 'else-branch'],
+          ['if (false) nil; else { print "else-branch"; }', 'else-branch'],
 
-          # TODO: A dangling else binds to the right-most if.
-          # ['if (true) if (false) print "bad"; else print "good";', 'good'],
-          # ['if (false) if (true) print "bad"; else print "worse";', 'bad']
+          # A dangling else binds to the right-most if.
+          ['if (true) if (false) print "bad"; else print "good";', 'good'],
+          ['if (false) if (true) print "bad"; else print "worse";', '']
         ].each do |(source, predicted)|
           io = StringIO.new
           cfg = { ostream: io }

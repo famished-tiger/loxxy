@@ -331,30 +331,6 @@ print "else-branch";
 ```
 
 As for other languages, the `else` part is optional.
-##### Warning: nested `if`...`else`
-Call it a bug ... Nested `if` `else` control flow structure aren't yet supported by __Loxxy__.  
-The culprit has a name: [the dangling else](https://en.wikipedia.org/wiki/Dangling_else). 
-
-The problem in a nutshell: in a nested if ... else ... statement like this:
-``` javascript
-'if (true) if (false) print "bad"; else print "good";
-```
-... there is an ambiguity.  
-Indeed, according to the __Lox__ grammar, the `else` could be bound 
-either to the first `if` or to the second one.
-This ambiguity is usually lifted by applying an ad-hoc rule: an `else` is aways bound to the most 
-recent (rightmost) `if`.  
-Being a generic parsing library, `Rley` doesn't apply any of these supplemental rules.  
-As a consequence,it complains about the found ambiguity and stops the parsing...
-Although `Rley` can cope with ambiguities, this requires the use of an advanced data structure
-called `Shared Packed Parse Forest (SPPF)`.
-SPPF are much more complex to handle than the "common" parse trees present in most compiler or interpreter books.
-Therefore, a future version of `Rley` will incorporate the capability to define disambuiguation rules.  
-
-In the meantime, the `Loxxy` will progress on other __Lox__ features like:
-- Block structures...
-- Iteration structures (`for` and `while` loops)
-
 
 ####  Print Statement
 
