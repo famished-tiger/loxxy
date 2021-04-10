@@ -24,6 +24,15 @@ module Loxxy
     # @param lox_input [String] Lox program to evaluate
     # @return [Loxxy::Datatype::BuiltinDatatype]
     def evaluate(lox_input)
+      raw_evaluate(lox_input).first
+    end
+
+    # Evaluate the given Lox program.
+    # Return the pair [result, a BackEnd::Engine instance]
+    #   where result is the value of the last executed expression (if any)
+    # @param lox_input [String] Lox program to evaluate
+    # @return Loxxy::Datatype::BuiltinDatatype, Loxxy::BackEnd::Engine]
+    def raw_evaluate(lox_input)
       # Front-end scans, parses the input and blurps an AST...
       parser = FrontEnd::Parser.new
 
@@ -34,7 +43,9 @@ module Loxxy
       # Back-end launches the tree walking & responds to visit events
       # by executing the code determined by the visited AST node.
       engine = BackEnd::Engine.new(config)
-      engine.execute(visitor)
+      result = engine.execute(visitor)
+
+      [result, engine]
     end
   end # class
 end # module

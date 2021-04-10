@@ -1,3 +1,26 @@
+## [0.1.16] - 2021-04-10
+- Fixed an issue in name lookup. All the `this` test suite is passing.
+
+### Changed
+- Method `BackEnd::Engine#after_var_stmt` now it creates the variable and pouts it in the symbol table
+
+### Removed
+- Method `BackEnd::Engine#before_var_stmt` it generated bug when assigning a value to a var, when that var name occurred elsewhere
+
+## [0.1.15] - 2021-04-08
+- Fixed the `dangling else`by tweaking the grammar rules
+
+### Changed
+- Method `Ast::ASTBuilder#reduce_if__else_stmt` parse action specific for if with else branch
+
+### Fixed
+- File `grammar.rb` changed rules to cope with `dangling else` issue
+
+### Changed
+- Method `Ast::ASTBuilder#reduce_if_stmt` parse action for if without else branch
+- File `README.md` removed the section about the `dangling else` issue.
+
+
 ## [0.1.14] - 2021-04-05
 - `Loxxy` now implements the 'this' keyword
 

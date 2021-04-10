@@ -85,7 +85,7 @@ module Loxxy
           name2envs[name] = [current_env]
         end
 
-        anEntry.name # anEntry.i_name
+        anEntry.name
       end
 
       # Search for the object with the given name
@@ -98,23 +98,6 @@ module Loxxy
         sc = environments.last
         sc.defns[aName]
       end
-
-      # Search for the object with the given i_name
-      # @param anIName [String]
-      # @return [BackEnd::Variable]
-      # def lookup_i_name(anIName)
-        # found = nil
-        # environment = current_env
-
-        # begin
-          # found = environment.defns.values.find { |e| e.i_name == anIName }
-          # break if found
-
-          # environment = environment.parent
-        # end while environment
-
-        # found
-      # end
 
       # Return all variables defined in the current .. root chain.
       # Variables are sorted top-down and left-to-right.

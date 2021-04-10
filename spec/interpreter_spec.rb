@@ -525,6 +525,48 @@ LOX_END
         expect { subject.evaluate(program) }.not_to raise_error
         expect(sample_cfg[:ostream].string).to eq('Egotist instance')
       end
+
+      it 'should support a closure nested in a method' do
+        lox_snippet = <<-LOX_END
+        class Foo {
+          getClosure() {
+            fun closure() {
+              return this.toString();
+            }
+            return closure;
+          }
+
+          toString() { return "foo"; }
+        }
+
+        var closure = Foo().getClosure();
+        closure;
+        LOX_END
+        # Expected result: Backend::LoxFunction('closure')
+        # Expected function's closure ()environment layout):
+        # Environment('global')
+        #   defns
+        #   +- ['clock'] => BackEnd::Engine::NativeFunction
+        #   *- ['Foo'] => BackEnd::LoxClass
+        # Environment
+        #   defns
+        #   ['this'] => BackEnd::LoxInstance
+        # Environment
+        #   defns
+        #   +- ['closure'] => Backend::LoxFunction
+        result = subject.evaluate(lox_snippet)
+        expect(result).to be_kind_of(BackEnd::LoxFunction)
+        expect(result.name).to eq('closure')
+        closure = result.closure
+        expect(closure).to be_kind_of(Loxxy::BackEnd::Environment)
+        expect(closure.defns['closure'].value).to eq(result)
+        expect(closure.enclosing).to be_kind_of(Loxxy::BackEnd::Environment)
+        expect(closure.enclosing.defns['this'].value).to be_kind_of(Loxxy::BackEnd::LoxInstance)
+        global_env = closure.enclosing.enclosing
+        expect(global_env).to be_kind_of(Loxxy::BackEnd::Environment)
+        expect(global_env.defns['clock'].value).to be_kind_of(BackEnd::Engine::NativeFunction)
+        expect(global_env.defns['Foo'].value).to be_kind_of(BackEnd::LoxClass)
+      end
     end # context
   end # describe
   # rubocop: enable Metrics/BlockLength

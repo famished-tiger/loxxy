@@ -82,18 +82,12 @@ module Loxxy
         symbol_table.insert(new_var)
       end
 
-      def before_var_stmt(aVarStmt)
+      def after_var_stmt(aVarStmt)
         new_var = Variable.new(aVarStmt.name, Datatype::Nil.instance)
         symbol_table.insert(new_var)
-      end
-
-      def after_var_stmt(aVarStmt)
-        var_name = aVarStmt.name
-        variable = symbol_table.lookup(var_name)
-        raise StandardError, "Unknown variable #{var_name}" unless variable
 
         value = stack.pop
-        variable.assign(value)
+        new_var.assign(value)
       end
 
       def before_for_stmt(aForStmt)

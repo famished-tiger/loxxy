@@ -34,15 +34,7 @@ module Loxxy
         let(:var_decl) { Ast::LoxVarStmt.new(sample_pos, 'greeting', greeting) }
         let(:lit_expr) { Ast::LoxLiteralExpr.new(sample_pos, greeting) }
 
-        it "should react to 'before_var_stmt' event" do
-          expect { subject.before_var_stmt(var_decl) }.not_to raise_error
-          current_env = subject.symbol_table.current_env
-          expect(current_env.defns['greeting']).to be_kind_of(Variable)
-        end
-
         it "should react to 'after_var_stmt' event" do
-          # Precondition: `before_var_stmt` is called...
-          expect { subject.before_var_stmt(var_decl) }.not_to raise_error
           # Precondition: value to assign is on top of stack
           subject.stack.push(greeting)
 

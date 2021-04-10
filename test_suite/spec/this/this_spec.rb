@@ -20,6 +20,28 @@ describe 'this:' do
       expect(io.string).to eq('baz')
     end
 
+    it "should allow 'this' function nested in method" do
+      lox_snippet = <<-LOX_END
+        class Foo {
+          getClosure() {
+            fun closure() {
+              return this.toString();
+            }
+            return closure;
+          }
+
+          toString() { return "bar"; }
+        }
+
+        var closure = Foo().getClosure();
+        print closure(); // output: bar
+      LOX_END
+      io = StringIO.new
+      lox = Loxxy::Interpreter.new({ ostream: io })
+      expect { lox.evaluate(lox_snippet) }.not_to raise_error
+      expect(io.string).to eq('bar')
+    end
+
     # rubocop: disable Style/StringConcatenation
     it 'should implement this in nested classes' do
       lox_snippet = <<-LOX_END
@@ -52,27 +74,34 @@ describe 'this:' do
     end
     # rubocop: enable Style/StringConcatenation
 
-    # it 'should support this in a function nested in a method' do
-    #   lox_snippet = <<-LOX_END
-    #     class Foo {
-    #       getClosure() {
-    #         fun closure() {
-    #           return this.toString();
-    #         }
-    #         return closure;
-    #       }
-    #
-    #       toString() { return "foo"; }
-    #     }
-    #
-    #     var closure = Foo().getClosure();
-    #     print closure(); // output: foo
-    #   LOX_END
-    #   io = StringIO.new
-    #   lox = Loxxy::Interpreter.new({ ostream: io })
-    #   expect { lox.evaluate(lox_snippet) }.not_to raise_error
-    #   expect(io.string).to eq('foo')
-    # end
+    it 'should support this in function nested in methods' do
+      lox_snippet = <<-LOX_END
+        class Foo {
+          getClosure() {
+            fun f() {
+              fun g() {
+                fun h() {
+                  return this.toString();
+                }
+                return h;
+              }
+              return g;
+            }
+            return f;
+          }
+
+          toString() { return "foo"; }
+        }
+
+        var closure = Foo().getClosure();
+        print closure()()(); // output: foo
+      LOX_END
+      io = StringIO.new
+      lox = Loxxy::Interpreter.new({ ostream: io })
+      expect { lox.evaluate(lox_snippet) }.not_to raise_error
+      predicted = 'foo'
+      expect(io.string).to eq(predicted)
+    end
   end # context
 
   context 'Invalid - return cases:' do
