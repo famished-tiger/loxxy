@@ -30,11 +30,18 @@ module Loxxy
       end
 
       def arity
-        0
+        initializer = find_method('init')
+        initializer ? initializer.arity : 0
       end
 
-      def call(engine, _visitor)
+      def call(engine, visitor)
         instance = LoxInstance.new(self, engine)
+        initializer = find_method('init')
+        if initializer
+          constructor = initializer.bind(instance)
+          constructor.call(engine, visitor)
+        end
+
         engine.stack.push(instance)
       end
 

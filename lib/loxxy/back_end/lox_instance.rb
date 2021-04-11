@@ -47,10 +47,6 @@ module Loxxy
       # Set the value of property with given name
       # aName [String] name of object property
       def set(aName, aValue)
-        unless fields.include? aName
-          raise StandardError, "Undefined property '#{aName}'."
-        end
-
         fields[aName] = aValue
       end
     end # class

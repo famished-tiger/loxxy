@@ -74,7 +74,9 @@ module Loxxy
         meths = aClassStmt.body.map do |func_node|
           func_node.is_method = true
           func_node.accept(aVisitor)
-          stack.pop
+          mth = stack.pop
+          mth.is_initializer = true if mth.name == 'init'
+          mth
         end
 
         klass = LoxClass.new(aClassStmt.name, meths, self)
@@ -234,14 +236,12 @@ module Loxxy
         case callee
         when NativeFunction
           stack.push callee.call # Pass arguments
-        when LoxFunction
+        when LoxFunction, LoxClass
           arg_count = aCallExpr.arguments.size
           if arg_count != callee.arity
             msg = "Expected #{callee.arity} arguments but got #{arg_count}."
             raise Loxxy::RuntimeError, msg
           end
-          callee.call(self, aVisitor)
-        when LoxClass
           callee.call(self, aVisitor)
         else
           raise Loxxy::RuntimeError, 'Can only call functions and classes.'

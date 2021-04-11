@@ -15,6 +15,7 @@ module Loxxy
       attr_reader :body
       attr_reader :stack
       attr_reader :closure
+      attr_accessor :is_initializer
 
       # Create a function with given name
       # @param aName [String] The name of the function
@@ -24,6 +25,7 @@ module Loxxy
         @body = aBody.kind_of?(Ast::LoxNoopExpr) ? aBody : aBody.subnodes[0]
         @stack = anEngine.stack
         @closure = anEngine.symbol_table.current_env
+        @is_initializer = false
         anEngine.symbol_table.current_env.embedding = true
       end
 
@@ -47,6 +49,10 @@ module Loxxy
         catch(:return) do
           (body.nil? || body.kind_of?(Ast::LoxNoopExpr)) ? Datatype::Nil.instance : body.accept(aVisitor)
           throw(:return)
+        end
+        if is_initializer
+          enclosing_env = engine.symbol_table.current_env.enclosing
+          engine.stack.push(enclosing_env.defns['this'].value)
         end
 
         engine.symbol_table.leave_environment

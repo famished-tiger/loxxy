@@ -543,7 +543,7 @@ LOX_END
         closure;
         LOX_END
         # Expected result: Backend::LoxFunction('closure')
-        # Expected function's closure ()environment layout):
+        # Expected function's closure (environment layout):
         # Environment('global')
         #   defns
         #   +- ['clock'] => BackEnd::Engine::NativeFunction
@@ -566,6 +566,30 @@ LOX_END
         expect(global_env).to be_kind_of(Loxxy::BackEnd::Environment)
         expect(global_env.defns['clock'].value).to be_kind_of(BackEnd::Engine::NativeFunction)
         expect(global_env.defns['Foo'].value).to be_kind_of(BackEnd::LoxClass)
+      end
+
+      it 'should support custom initializer' do
+        lox_snippet = <<-LOX_END
+          // From section 3.9.5
+          class Breakfast {
+            init(meat, bread) {
+              this.meat = meat;
+              this.bread = bread;
+            }
+
+            serve(who) {
+              print "Enjoy your " + this.meat + " and " +
+                  this.bread + ", " + who + ".";
+            }
+          }
+
+          var baconAndToast = Breakfast("bacon", "toast");
+          baconAndToast.serve("Dear Reader");
+          // Output: "Enjoy your bacon and toast, Dear Reader."
+        LOX_END
+        expect { subject.evaluate(lox_snippet) }.not_to raise_error
+        predicted = 'Enjoy your bacon and toast, Dear Reader.'
+        expect(sample_cfg[:ostream].string).to eq(predicted)
       end
     end # context
   end # describe

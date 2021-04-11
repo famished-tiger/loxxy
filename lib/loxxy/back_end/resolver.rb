@@ -70,7 +70,8 @@ module Loxxy
         begin_scope
         define('this')
         aClassStmt.body.each do |fun_stmt|
-          resolve_function(fun_stmt, :method, aVisitor)
+          mth_type = fun_stmt.name == 'init' ? :initializer : :method
+          resolve_function(fun_stmt, mth_type, aVisitor)
         end
         end_scope
         @current_class = previous_class
@@ -92,7 +93,7 @@ module Loxxy
         anIfStmt.else_stmt&.accept(aVisitor)
       end
 
-      def before_return_stmt(_returnStmt)
+      def before_return_stmt(returnStmt)
         if scopes.size < 2
           msg = "Error at 'return': Can't return from top-level code."
           raise StandardError, msg
@@ -101,6 +102,11 @@ module Loxxy
         if current_function == :none
           msg = "Error at 'return': Can't return from outside a function."
           raise StandardError, msg
+        end
+
+        if current_function == :initializer
+          msg = "Error at 'return': Can't return a value from an initializer."
+          raise StandardError, msg unless returnStmt.subnodes[0].kind_of?(Datatype::Nil)
         end
       end
 
