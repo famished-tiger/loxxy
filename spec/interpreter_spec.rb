@@ -6,6 +6,7 @@ require 'stringio'
 # Load the class under test
 require_relative '../lib/loxxy/interpreter'
 
+# rubocop: disable Metrics/ModuleLength
 module Loxxy
   # This spec contains the bare bones test for the Interpreter class.
   # The execution of Lox code is tested elsewhere.
@@ -591,7 +592,34 @@ LOX_END
         predicted = 'Enjoy your bacon and toast, Dear Reader.'
         expect(sample_cfg[:ostream].string).to eq(predicted)
       end
+
+      it 'should support class inheritance and super keyword' do
+        lox_snippet = <<-LOX_END
+          class A {
+            method() {
+              print "A method";
+            }
+          }
+
+          class B < A {
+            method() {
+              print "B method";
+            }
+
+            test() {
+              super.method();
+            }
+          }
+
+          class C < B {}
+
+          C().test();
+        LOX_END
+        expect { subject.evaluate(lox_snippet) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('A method')
+      end
     end # context
   end # describe
   # rubocop: enable Metrics/BlockLength
 end # module
+# rubocop: enable Metrics/ModuleLength

@@ -70,6 +70,21 @@ module Loxxy
       end
 
       def after_class_stmt(aClassStmt, aVisitor)
+        if aClassStmt.superclass
+          aClassStmt.superclass.accept(aVisitor)
+          parent = stack.pop
+          unless parent.kind_of?(LoxClass)
+            raise StandardError, 'Superclass must be a class.'
+          end
+        else
+          parent = nil
+        end
+
+        if parent # Create an environment specific for 'super'
+          super_env = Environment.new(symbol_table.current_env)
+          symbol_table.enter_environment(super_env)
+        end
+
         # Convert LoxFunStmt into LoxFunction
         meths = aClassStmt.body.map do |func_node|
           func_node.is_method = true
@@ -79,7 +94,12 @@ module Loxxy
           mth
         end
 
-        klass = LoxClass.new(aClassStmt.name, meths, self)
+        klass = LoxClass.new(aClassStmt.name, parent, meths, self)
+        if parent
+          super_var = Variable.new('super', klass)
+          symbol_table.insert(super_var)
+          symbol_table.leave_environment
+        end
         new_var = Variable.new(aClassStmt.name, klass)
         symbol_table.insert(new_var)
       end
@@ -278,6 +298,20 @@ module Loxxy
       def after_this_expr(aThisExpr, aVisitor)
         var = variable_lookup(aThisExpr)
         var.value.accept(aVisitor) # Evaluate this value then push on stack
+      end
+
+      def after_super_expr(aSuperExpr, aVisitor)
+        offset = resolver.locals[aSuperExpr]
+        env = symbol_table.current_env
+        (offset - 1).times { env = env.enclosing }
+        instance = env.defns['this'].value.accept(aVisitor)[0]
+        superklass = variable_lookup(aSuperExpr).value.superclass
+        method = superklass.find_method(aSuperExpr.property)
+        unless method
+          raise StandardError, "Undefined property '#{aSuperExpr.property}'."
+        end
+
+        stack.push method.bind(instance)
       end
 
       # @param aValue [Ast::BuiltinDattype] the built-in datatype value

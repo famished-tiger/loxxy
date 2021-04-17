@@ -4,19 +4,52 @@
 
 ### What is loxxy?
 A Ruby implementation of the [Lox programming language](https://craftinginterpreters.com/the-lox-language.html ),
-a simple language defined in Bob Nystrom's online book [Crafting Interpreters](https://craftinginterpreters.com/ ).
+a simple language defined in Bob Nystrom's highly recommended online book [Crafting Interpreters](https://craftinginterpreters.com/ ).
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'loxxy'
+```
+
+And then execute:
+
+    $ bundle install
+
+Or install it yourself as:
+
+    $ gem install loxxy
+
+## Running your first `Lox`  script
+
+Create a text file and enter the following statement:
+```javascript
+print "Hello, world.";
+```
+Assuming that you named file `hello.lox`, invoke the `Loxxy` interpreter:
+
+    $ loxxy hello.lox
+
+Lo and behold: on the output screen you can read:
+
+    Hello, world.
+ 
+
+Congrats! You ran your first `Lox` program from your Ruby interpreter.
+
 
 ### Purpose of this project:
 - To deliver an open source example of a programming language fully implemented in Ruby  
   (from the scanner and parser to an interpreter).
 - The implementation should be mature enough to run [LoxLox](https://github.com/benhoyt/loxlox),  
   a Lox interpreter written in Lox.
-
-### Current status
-The interpreter currently can execute all allowed __Lox__ expressions and statements except  
-object-oriented feaures (classes and objects).
-The goal is to implement these missing features in Q2 2021.
-
+  
+### Roadmap
+- To extend the test suite
+- To improve the documentation
+- To run the LoxLox interpreter
 
 ## What's the fuss about Lox?
 ... Nothing...  
@@ -35,25 +68,9 @@ Although __Lox__ is fairly simple, it is far from a toy language:
 In other words, __Lox__ contains interesting features found in most general-purpose 
 languages.
 
-### What's missing in Lox?
-__Lox__ was constrained by design and was therefore not aimed to be a language used in real-world applications.
-Here are some missing parts to make it a _practical_ language:
-- Collections (arrays, maps, ...)
-- Modules (importing stuff from other packages/files)
-- Error handling (e.g. exceptions)  
-- Support for concurrency (e.g. threads, coroutines)
-
-Also a decent standard library for IO, networking,... is lacking. 
-
-For sure, the language has shortcomings but on the other hand, it exhibits the essential features 
-to cover in an introduction to language implementation.
-
-That's already fun... and if all this gives you the inspiration for creating your own
-language, that might be even funnier... 
-
-Last point: what's makes __Lox__ interesting is the fact that there are implementations in many [languages](https://github.com/munificent/craftinginterpreters/wiki/Lox-implementations)
-
 ## Hello world example
+The next examples show how to use the interpreter directly from Ruby code.
+
 ```ruby
 require 'loxxy'
 
@@ -377,25 +394,7 @@ fun add4(n) // `add4` will be the name of the function
 print add4(6); // output: 10
 ```
 
-## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'loxxy'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install loxxy
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Other Lox implementations in Ruby
 

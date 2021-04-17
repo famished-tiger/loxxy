@@ -67,6 +67,16 @@ module Loxxy
         previous_class = current_class
         @current_class = :class
         define(aClassStmt.name)
+        if aClassStmt.superclass
+          if aClassStmt.name == aClassStmt.superclass.name
+            raise StandardError, "'A class can't inherit from itself."
+          end
+
+          @current_class = :subclass
+          aClassStmt.superclass.accept(aVisitor)
+          begin_scope
+          define('super')
+        end
         begin_scope
         define('this')
         aClassStmt.body.each do |fun_stmt|
@@ -74,6 +84,7 @@ module Loxxy
           resolve_function(fun_stmt, mth_type, aVisitor)
         end
         end_scope
+        end_scope if aClassStmt.superclass
         @current_class = previous_class
       end
 
@@ -168,6 +179,25 @@ module Loxxy
         # 'this' behaves closely to a local variable
         resolve_local(aThisExpr, aVisitor)
       end
+
+      # rubocop: disable Style/CaseLikeIf
+      # rubocop: disable Style/StringConcatenation
+      def after_super_expr(aSuperExpr, aVisitor)
+        msg_prefix = "Error at 'super': Can't use 'super' "
+        if current_class == :none
+          err_msg = msg_prefix + 'outside of a class.'
+          raise StandardError, err_msg
+
+        elsif current_class == :class
+          err_msg = msg_prefix + 'in a class without superclass.'
+          raise StandardError, err_msg
+
+        end
+        # 'super' behaves closely to a local variable
+        resolve_local(aSuperExpr, aVisitor)
+      end
+      # rubocop: enable Style/StringConcatenation
+      # rubocop: enable Style/CaseLikeIf
 
       # function declaration creates a new scope for its body & binds its parameters for that scope
       def before_fun_stmt(aFunStmt, aVisitor)

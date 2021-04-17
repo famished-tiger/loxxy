@@ -165,12 +165,26 @@ module Loxxy
 
       # rule('classDecl' => 'CLASS classNaming class_body')
       def reduce_class_decl(_production, _range, _tokens, theChildren)
-        Ast::LoxClassStmt.new(tokens[1].position, theChildren[1], theChildren[2])
+        if theChildren[1].kind_of?(Array)
+          name = theChildren[1].first
+          parent = theChildren[1].last
+        else
+          name = theChildren[1]
+          parent = nil
+        end
+        Ast::LoxClassStmt.new(tokens[1].position, name, parent, theChildren[2])
       end
 
       # rule('classNaming' => 'IDENTIFIER')
       def reduce_class_name(_production, _range, _tokens, theChildren)
         theChildren[0].token.lexeme
+      end
+
+      # rule('classNaming' => 'IDENTIFIER LESS IDENTIFIER')
+      def reduce_class_subclassing(_production, _range, _tokens, theChildren)
+        super_token = theChildren[2].token
+        super_var = LoxVariableExpr.new(super_token.position, super_token.lexeme)
+        [theChildren[0].token.lexeme, super_var]
       end
 
       # rule('class_body' => 'LEFT_BRACE methods_opt RIGHT_BRACE')
@@ -366,6 +380,11 @@ module Loxxy
       # rule('primary' => 'THIS')
       def reduce_this_expr(_production, _range, tokens, _children)
         LoxThisExpr.new(tokens[0].position)
+      end
+
+      # rule('primary' => 'SUPER DOT IDENTIFIER')
+      def reduce_super_expr(_production, _range, _tokens, theChildren)
+        LoxSuperExpr.new(theChildren[0].token.position, theChildren[2].token.lexeme)
       end
 
       # rule('function' => 'IDENTIFIER LEFT_PAREN params_opt RIGHT_PAREN block').as 'function'

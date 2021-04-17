@@ -40,14 +40,14 @@ Gem::Specification.new do |spec|
   spec.version       = Loxxy::VERSION
   spec.authors       = ['Dimitri Geshef']
   spec.email         = ['famished.tiger@yahoo.com']
-  spec.summary       = 'An implementation of the Lox programming language. WIP'
-  spec.description   = 'An implementation of the Lox programming language. WIP'
+  spec.summary       = 'An implementation of the Lox programming language.'
+  spec.description   = 'An implementation of the Lox programming language.'
   spec.homepage      = 'https://github.com/famished-tiger/loxxy'
   spec.license       = 'MIT'
   spec.required_ruby_version = '~> 2.4'
 
-  spec.bindir        = 'exe'
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.bindir        = 'bin'
+  spec.executables   = ['loxxy']
   spec.require_paths = ['lib']
 
   PkgExtending.pkg_files(spec)

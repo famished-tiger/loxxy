@@ -38,7 +38,7 @@ module Loxxy
       rule('declaration' => 'stmt')
 
       rule('classDecl' => 'CLASS classNaming class_body').as 'class_decl'
-      rule('classNaming' => 'IDENTIFIER LESS IDENTIFIER')
+      rule('classNaming' => 'IDENTIFIER LESS IDENTIFIER').as 'class_subclassing'
       rule('classNaming' => 'IDENTIFIER').as 'class_name'
       rule('class_body' => 'LEFT_BRACE methods_opt RIGHT_BRACE').as 'class_body'
       rule('methods_opt' => 'method_plus')
@@ -143,7 +143,7 @@ module Loxxy
       rule('primary' => 'STRING').as 'literal_expr'
       rule('primary' => 'IDENTIFIER').as 'variable_expr'
       rule('primary' => 'LEFT_PAREN expression RIGHT_PAREN').as 'grouping_expr'
-      rule('primary' => 'SUPER DOT IDENTIFIER')
+      rule('primary' => 'SUPER DOT IDENTIFIER').as 'super_expr'
 
       # Utility rules
       rule('function' => 'IDENTIFIER LEFT_PAREN params_opt RIGHT_PAREN block').as 'function'

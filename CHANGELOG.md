@@ -1,8 +1,36 @@
+## [0.2.00] - 2021-04-17
+- `Loxxy` implements the complete `Lox` language including its object-oriented features.
+
+### New
+- Class `Ast::LoxSuperExpr` an AST node that represents the occurrence of `super` in source code.
+- Method `Ast::ASTBuilder#reduce_class_subclassing` action launched by the parser when detecting inheritance
+- Method `Ast::ASTBuilder#reduce_super_expr` action launched by the parser when detecting the super keyword
+- Method `Ast::Visitor#visit_super_expr` visit of an `Ast::LoxSuperExpr` node
+- Method `BackEnd::Engine#after_super_stmt` does the lookup of an inherited method.
+- Method `BackEnd::Resolver#after_super_stmt` checks for correct context for super occurrence
+
+
+### Changed
+- Method `Ast::ASTBuilder#reduce_class_decl` expanded in order to support superclass
+- Class `Ast::LoxClassStmt` added `superclass` attribute, expanded constructor signature.
+- Method `BackEnd::Engine#after_class_stmt` adds an environment for super variable.
+- Class `BackEnd::LoxClass` added `superclass` attribute, expanded constructor signature.
+- Method `BackEnd::LoxClass#find_method` now does the lookup in superclass(es)
+- Method `BackEnd::Resolver#after_class_stmt` super variable resolution
+- File `grammar.rb` changed rules to cope with superclass name and super keyword
+- File `README.md` updated to reflect current implementation level
+
 ## [0.1.17] - 2021-04-11
-- TODO
+- `Loxxy` now support custom initializer.
+
+### Changed
+- Method `BackEnd::Class#call` updated for custom initializer.
+- Class `BackEnd::LoxFunction` added an attribute `is_initializer`
+- Class `BackEnd::Resolver#before_return_stmt` added a check that return in initializer may not return a value
 
 ### Fixed
-- TODO
+- Method `BackEnd::Engine#after_call_expr` now does arity checking also for initalizer.
+- Method `BackEnd::LoxInstance#set` removed the check of field existence that prevented the creation of ... fields
 
 ## [0.1.16] - 2021-04-10
 - Fixed an issue in name lookup. All the `this` test suite is passing.

@@ -212,6 +212,13 @@ module Loxxy
         broadcast(:after_this_expr, aThisExpr, self)
       end
 
+      # Visit event. The visitor is about to visit the super keyword.
+      # @param aSuperExpr [Ast::LoxSuperExpr] super expression
+      def visit_super_expr(aSuperExpr)
+        broadcast(:before_super_expr, aSuperExpr)
+        broadcast(:after_super_expr, aSuperExpr, self)
+      end
+
       # Visit event. The visitor is about to visit the given terminal datatype value.
       # @param aValue [Ast::BuiltinDattype] the built-in datatype value
       def visit_builtin(aValue)
