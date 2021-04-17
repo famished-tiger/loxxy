@@ -2,10 +2,8 @@ version: '{build}'
 max_jobs: 5
 environment:
   matrix:  
-  - Ruby_version: 27-x64
   - Ruby_version: 26-x64
   - Ruby_version: 25-x64   
-  - Ruby_version: 27
   - Ruby_version: 26
   - Ruby_version: 25   
 
