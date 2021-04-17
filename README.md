@@ -17,9 +17,11 @@ Although __Lox__ is fairly simple, it is far from being a toy language:
 - Object-orientation (classes, methods, inheritance).
 
 ## How to start in 1, 2, 3...?
+... in less than 3 minutes...
+
 ### 1. Installing
 Install __Loxxy__ as a gem:
-... in less than 3 minutes.
+
 
     $ gem install loxxy
 
@@ -43,8 +45,8 @@ Lo and behold! The output device displays the famous greeting:
 Congrats! You ran your first `Lox` program with __Loxxy__.
 
 ### Something beefier?...
-Let's admit it, the hello world example was unimpressive.
-Here another assignment: compute the first 20 elements of the Fibbonacci sequence.
+Let's admit it, the hello world example was unimpressive.  
+Next assignment: compute the first 20 elements of the Fibbonacci sequence.  
 Here's an answer using the `while` loop construct:
 
 ```javascript
