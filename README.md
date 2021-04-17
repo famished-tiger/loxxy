@@ -1,43 +1,95 @@
 # loxxy
 [![Gem Version](https://badge.fury.io/rb/loxxy.svg)](https://badge.fury.io/rb/loxxy)
+[![Build status](https://ci.appveyor.com/api/projects/status/8e5p7dgjanm0qjkp?svg=true)](https://ci.appveyor.com/project/famished-tiger/loxxy)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/famished-tiger/loxxy/blob/main/LICENSE.txt)
 
 ### What is loxxy?
 A Ruby implementation of the [Lox programming language](https://craftinginterpreters.com/the-lox-language.html ),
-a simple language defined in Bob Nystrom's highly recommended online book [Crafting Interpreters](https://craftinginterpreters.com/ ).
+a simple language defined in Bob Nystrom's excellent online book [Crafting Interpreters](https://craftinginterpreters.com/ ).
 
-## Installation
+Although __Lox__ is fairly simple, it is far from being a toy language:
+- Dynamically typed,
+- Provides data types such as booleans, number, strings,
+- Supports arithmetic operations (+, -, *, / ) and comparison ( >, >= , <, <=)
+- Implements equality operators (==, !=) and the logical connectors `and` and `or`.
+- Control flow statements `if`, `for` and `while`
+- Functions and closures
+- Object-orientation (classes, methods, inheritance).
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'loxxy'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
+## How to start in 1, 2, 3...?
+### 1. Installing
+Install __Loxxy__ as a gem:
+... in less than 3 minutes.
 
     $ gem install loxxy
 
-## Running your first `Lox`  script
-
-Create a text file and enter the following statement:
+### 2. Your first `Lox`  program
+Create a text file and enter the following lines:
 ```javascript
+// Your firs Lox program
 print "Hello, world.";
 ```
-Assuming that you named file `hello.lox`, invoke the `Loxxy` interpreter:
+
+### 3. Running your program...
+Assuming that you named file `hello.lox`, launch the `Loxxy` interpreter in same directory:
 
     $ loxxy hello.lox
 
-Lo and behold: on the output screen you can read:
+Lo and behold! The output device displays the famous greeting:
 
     Hello, world.
  
 
-Congrats! You ran your first `Lox` program from your Ruby interpreter.
+Congrats! You ran your first `Lox` program with __Loxxy__.
+
+### Something beefier?...
+Let's admit it, the hello world example was unimpressive.
+Here another assignment: compute the first 20 elements of the Fibbonacci sequence.
+Here's an answer using the `while` loop construct:
+
+```javascript
+// Compute the first 20 elements from the Fibbonacci sequence
+
+var a = 1;  // Use the var keyword to declare a new variable
+var b = 1;
+var count = 20;
+
+while (count > 0) {
+  print a;
+  print " ";
+  var tmp = a;
+  a = b;
+  b = tmp + b;
+  count = count - 1;
+}
+```
+
+Assuming, that this source code was put in a file named `fibbonacci.lox`, then
+the command line
+
+    $ loxxy fibbonacci.lox
+
+Results in:
+
+    1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765
+ 
+Fans of `for` loops will be pleased to find their favorite looping construct.
+Here again, the Fibbonacci sequence with a `for` loop:
+
+```javascript
+var a = 1;
+var b = 1;
+var count = 20;
+
+for (var i = 0; i < count; i = i + 1) {
+  print a;
+  print " ";
+  var tmp = a;
+  a = b;
+  b = tmp + b;
+}
+```
+
 
 
 ### Purpose of this project:
@@ -56,14 +108,7 @@ Congrats! You ran your first `Lox` program from your Ruby interpreter.
 Bob Nystrom designed a language __simple__ enough so that he could present 
 two implementations (an interpreter, then a compiler) in one single book.
 
-Although __Lox__ is fairly simple, it is far from a toy language:
-- Dynamically typed,
-- Provides datatypes such as booleans, number, strings,
-- Supports arithmetic operations (+, -, *, / ) and comparison ( >, >= , <, <=)
-- Implements equality operators (==, !=) and the logical connectors `and` and `or`.
-- Control flow statements `if`, `for` and `while`
-- Functions and closures
-- Object-orientation (classes, methods, inheritance).
+
 
 In other words, __Lox__ contains interesting features found in most general-purpose 
 languages.
