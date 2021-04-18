@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'loxxy/version'
+require_relative 'loxxy/cli_parser'
 require_relative 'loxxy/interpreter'
 require_relative 'loxxy/front_end/raw_parser'
 

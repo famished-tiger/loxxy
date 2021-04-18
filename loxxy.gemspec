@@ -41,7 +41,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Dimitri Geshef']
   spec.email         = ['famished.tiger@yahoo.com']
   spec.summary       = 'An implementation of the Lox programming language.'
-  spec.description   = 'An implementation of the Lox programming language.'
+  spec.description   = <<-DESCR_END
+  A Ruby implementation of the Lox programming language. Lox is a dynamically typed,
+  object-oriented programming language that features first-class functions, closures,
+  classes, and inheritance.
+  DESCR_END
   spec.homepage      = 'https://github.com/famished-tiger/loxxy'
   spec.license       = 'MIT'
   spec.required_ruby_version = '~> 2.4'

@@ -3,9 +3,53 @@
 
 require 'loxxy'
 
-if ARGV[0]
-lox = Loxxy::Interpreter.new
-File.open(ARGV[0], 'r') do |f|
-lox.evaluate(f.read)
-end
-end
+class LoxxyRunner
+  DefaultLoxExtension = 'lox'
+  attr_reader(:cli_options)
+
+  def initialize(prog_name, args)
+    my_version = Loxxy::VERSION
+    cli = Loxxy::CLIParser.new(prog_name, my_version)
+    @cli_options = cli.parse!(args)
+  end
+
+  def run!(file_names)
+    return if file_names.nil? || file_names.empty?
+
+    lox = Loxxy::Interpreter.new
+    file_names.each do |lox_file|
+      fname = validate_filename(lox_file)
+      next unless file_exist?(fname)
+
+      File.open(fname, 'r') { |f| lox.evaluate(f.read) }
+    end
+  end
+
+  private
+
+  def validate_filename(raw_fname)
+    # When necessary add extension to file name
+    fname = raw_fname.dup
+    basename = File.basename(fname)
+    has_extension = basename =~ /(?<=[^.])\.[^.]+$/
+    fname << '.' << DefaultLoxExtension unless has_extension
+
+    fname
+  end
+
+  def file_exist?(fname)
+    exists = File.exist?(fname)
+    $stderr.puts "No such file '#{fname}'" unless exists
+
+    exists
+  end
+end # class
+
+########################################
+# ENTRY POINT
+########################################
+program = LoxxyRunner.new(File.basename(__FILE__), ARGV)
+
+# All options from CLI gobbled from ARGV, remains only file name
+program.run!(ARGV)
+# End of file

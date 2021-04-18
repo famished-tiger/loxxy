@@ -33,7 +33,7 @@ print "Hello, world.";
 ```
 
 ### 3. Running your program...
-Assuming that you named file `hello.lox`, launch the `Loxxy` interpreter in same directory:
+Assuming that you named the file `hello.lox`, launch the `Loxxy` interpreter in same directory:
 
     $ loxxy hello.lox
 
@@ -45,14 +45,36 @@ Lo and behold! The output device displays the famous greeting:
 Congrats! You ran your first `Lox` program with __Loxxy__.
 
 ### Something beefier?...
-Let's admit it, the hello world example was unimpressive.  
-Next assignment: compute the first 20 elements of the Fibbonacci sequence.  
+Let's admit it, the hello world example was unimpressive. 
+To a get a taste of `Lox` object-oriented capabilities, let's try another `Hello world` variant:
+
+```javascript
+// Object-oriented hello world
+class Greeter {
+  // in Lox, initializers/constructors are named `init`
+  init(who) {
+    this.interjection = "Hello";
+    this.subject = who;
+  }
+
+  greeting() {
+    this.interjection + ", " + this.subject + ".";
+  }
+}
+
+var greeter = Greeter("world"); // an instance is created here...
+print greeter.greeting();
+```
+
+Running this version will result in the same famous greeting.
+
+Our next assignment: compute the first 20 elements of the Fibbonacci sequence.  
 Here's an answer using the `while` loop construct:
 
 ```javascript
 // Compute the first 20 elements from the Fibbonacci sequence
 
-var a = 1;  // Use the var keyword to declare a new variable
+var a = 0;  // Use the var keyword to declare a new variable
 var b = 1;
 var count = 20;
 
@@ -73,13 +95,14 @@ the command line
 
 Results in:
 
-    1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765
+    0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181
  
-Fans of `for` loops will be pleased to find their favorite looping construct.
-Here again, the Fibbonacci sequence with a `for` loop:
+Fans of `for` loops will be pleased to find their favorite looping construct.  
+Here again, the Fibbonacci sequence refactored with a `for` loop:
 
 ```javascript
-var a = 1;
+// Fibbonacci sequence - version 2
+var a = 0;
 var b = 1;
 var count = 20;
 
@@ -91,7 +114,69 @@ for (var i = 0; i < count; i = i + 1) {
   b = tmp + b;
 }
 ```
+Lets's call this file `fibbonacci_v2.lox` and execute it thanks `loxxy` CLI:
 
+    $ loxxy fibbonacci_v2.lox
+
+We see again the same sequence:
+
+    0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181
+
+To complete our quick tour of `Lox` language, let's calculate the sequence with a recursive function:
+
+```javascript
+// Fibbonacci sequence - version 3
+var count = 20;
+
+// Let's define a recursive function
+fun fib(n) {
+  if (n < 2) return n;
+  return fib(n - 1) + fib(n - 2);
+}
+
+// For demo purposes, let's assign the function to a variable
+var fib_fun = fib;
+
+for (var i = 0; i < count; i = i + 1) {
+  print fib_fun(i);
+  print " ";
+}
+```
+
+This completes our quick tour of `Lox`, to learn more about the language,
+check the online book [Crafting Interpreters](https://craftinginterpreters.com/ )
+
+## What's the fuss about Lox?
+... Nothing...  
+Bob Nystrom designed a language __simple__ enough so that he could present
+two implementations (an interpreter, then a compiler) in one single book.
+
+In other words, __Lox__ contains interesting features found in most general-purpose
+languages. In addition to that, there are [numerous implementations](https://github.com/munificent/craftinginterpreters/wiki/Lox-implementations) in different languages 
+
+Lox interpreters, like `Loxxy` give the unique opportunity for the curious to learn the internals of reasonably-sized language.
+
+### What's missing in Lox?
+While `Lox` blends interesting features from the two mainstream paradigms (OO and functional),
+it doesn't pretend to be used in real-life projects.
+
+In fact, the language was designed to be simple to implement at the expense of missing advanced features.  
+Here are features I'll like to put on my wish list:
+- Collection classes (e.g. Arrays, Maps (Hash))
+- Modules  
+- Standard library
+- Concurrency / parallelism constructs
+
+That `Lox` cannot be compared to a full-featured language, is both a drawback and and an opportunity.
+Indeed, an open-source language that misses some features is an invitation for the curious to tinker and experiment with extensions.
+There are already a number of programming languages derived from `Lox`...
+
+## Why `Loxxy`? What's in it for me?...
+Features:
+- Complete tree-walking interpreter including lexer, parser and resolver
+- 100% pure Ruby with clean design (not a port from some other language)
+- Ruby API for integrating a Lox interpreter with your code.
+- Minimal runtime dependency (Rley gem). Won't drag a bunch of gems...
 
 
 ### Purpose of this project:
@@ -101,19 +186,10 @@ for (var i = 0; i < count; i = i + 1) {
   a Lox interpreter written in Lox.
   
 ### Roadmap
-- To extend the test suite
-- To improve the documentation
-- To run the LoxLox interpreter
-
-## What's the fuss about Lox?
-... Nothing...  
-Bob Nystrom designed a language __simple__ enough so that he could present 
-two implementations (an interpreter, then a compiler) in one single book.
-
-
-
-In other words, __Lox__ contains interesting features found in most general-purpose 
-languages.
+- Extend the test suite
+- Improve the error handling  
+- Improve the documentation
+- Ability run the LoxLox interpreter
 
 ## Hello world example
 The next examples show how to use the interpreter directly from Ruby code.
@@ -172,48 +248,10 @@ lox_input = <<-LOX_END
   print "Hello, world!";
 LOX_END
 
-# Show that the raw parser accepts the above program
-base_parser = Loxxy::FrontEnd::RawParser.new
 
-# Now parse the input into a concrete parse tree...
-ptree = base_parser.parse(lox_input)
-
-# Display the parse tree thanks to Rley formatters...
-visitor = Rley::ParseTreeVisitor.new(ptree)
-tree_formatter = Rley::Formatter::Asciitree.new($stdout)
-tree_formatter.render(visitor)
-```
-
-This is the output produced by the above example:
-```
-program
-+-- declaration_plus
-|   +-- declaration
-|       +-- statement
-|           +-- printStmt
-|               +-- PRINT: 'print'
-|               +-- expression
-|               |   +-- assignment
-|               |       +-- logic_or
-|               |           +-- logic_and
-|               |               +-- equality
-|               |                   +-- comparison
-|               |                       +-- term
-|               |                           +-- factor
-|               |                               +-- unary
-|               |                                   +-- call
-|               |                                       +-- primary
-|               |                                           +-- STRING: '"Hello, world!"'
-|               +-- SEMICOLON: ';'
-+-- EOF: ''
-```
 
 ## Suppported Lox language features
-On one hand, the parser covers the complete Lox grammar and should therefore, in principle,
-parse any valid Lox program.
 
-On the other hand, the interpreter is under development and currently it can evaluate only a subset of __Lox__.
-But the situation is changing almost daily, stay tuned...
 
 Here are the language features currently supported by the interpreter:
 

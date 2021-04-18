@@ -3,6 +3,9 @@ AllCops:
     - 'exp/**/*'
     - 'demo/**/*'
 
+Gemspec/DateAssignment:
+  Enabled: true
+
 Layout/ArgumentAlignment:
   Enabled: false
 
@@ -34,7 +37,7 @@ Layout/EndOfLine:
 
 Layout/FirstArgumentIndentation:
   Enabled: false
-  
+
 Layout/HashAlignment:
   Enabled: false
 
@@ -56,7 +59,7 @@ Layout/MultilineMethodCallBraceLayout:
 
 Layout/SpaceAroundOperators:
   Enabled: true
-  
+
 Layout/SpaceBeforeBrackets:
   Enabled: true
 
@@ -74,8 +77,11 @@ Layout/TrailingEmptyLines:
 
 Layout/TrailingWhitespace:
   Enabled: true
-  
+
 Lint/AmbiguousAssignment:
+  Enabled: true
+
+Lint/DeprecatedConstants:
   Enabled: true
 
 Lint/DuplicateBranch:
@@ -90,13 +96,25 @@ Lint/EmptyBlock:
 Lint/EmptyClass:
   Enabled: false
 
+Lint/LambdaWithoutLiteralBlock:
+  Enabled: true
+
 Lint/Loop:
   Enabled: true
 
 Lint/NoReturnInBeginEndBlocks:
   Enabled: true
 
+Lint/NumberedParameterAssignment:
+  Enabled: true
+
+Lint/OrAssignmentToConstant:
+  Enabled: true
+
 Lint/RaiseException:
+  Enabled: true
+
+Lint/RedundantDirGlobSort:
   Enabled: true
 
 Lint/RescueException:
@@ -105,7 +123,13 @@ Lint/RescueException:
 Lint/StructNewOverride:
   Enabled: true
 
+Lint/SymbolConversion:
+  Enabled: true
+
 Lint/ToEnumArguments:
+  Enabled: true
+
+Lint/TripleQuotes:
   Enabled: true
 
 Lint/UnexpectedBlockArity:
@@ -170,7 +194,7 @@ Naming/BlockParameterName:
 
 Naming/MethodParameterName:
   Enabled: false
-  
+
 Naming/MethodName:
   Enabled: false
 
@@ -200,7 +224,7 @@ Style/ClassCheck:
 
 Style/ClassVars:
   Enabled: false
-  
+
 Style/CollectionCompact:
   Enabled: true
 
@@ -221,7 +245,7 @@ Style/DefWithParentheses:
 
 Style/Documentation:
   Enabled: false
-  
+
 Style/DocumentDynamicEvalDefinition:
   Enabled: true
 
@@ -236,7 +260,7 @@ Style/GuardClause:
 
 Style/HashEachMethods:
   Enabled: true
-  
+
 Style/HashExcept:
   Enabled: true
 
@@ -254,13 +278,13 @@ Style/InverseMethods:
 
 Style/MissingRespondToMissing:
   Enabled: false
-  
+
 Style/NegatedIfElseCondition:
   Enabled: true
 
 Style/Next:
   Enabled: false
-  
+
 Style/NilLambda:
   Enabled: true
 
@@ -269,7 +293,7 @@ Style/NumericLiterals:
 
 Style/RaiseArgs:
   Enabled: true
-  
+
 Style/RedundantArgument:
   Enabled: true
 
@@ -290,7 +314,7 @@ Style/StderrPuts:
 
 Style/StringLiterals:
   Enabled: true
-  
+
 Style/SwapValues:
   Enabled: true
 
@@ -352,6 +376,9 @@ Style/BisectedAttrAccessor:
 Style/CaseLikeIf:
   Enabled: true
 
+Style/EndlessMethod:
+  Enabled: true
+
 Style/ExplicitBlockArgument:
   Enabled: true
 
@@ -361,7 +388,13 @@ Style/GlobalStdStream:
 Style/HashAsLastArrayItem:
   Enabled: true
 
+Style/HashConversion:
+  Enabled: true
+
 Style/HashLikeCase:
+  Enabled: true
+
+Style/IfWithBooleanLiteralBranches:
   Enabled: true
 
 Style/OptionalBooleanParameter:
@@ -386,6 +419,9 @@ Style/SingleArgumentDig:
   Enabled: true
 
 Style/SlicingWithRange:
+  Enabled: true
+
+Style/StringChars:
   Enabled: true
 
 Style/StringConcatenation:
