@@ -189,6 +189,26 @@ LOX_END
           end
         end
 
+        it 'should recognize escaped quotes' do
+          embedded_quotes = %q{she said: \"Hello\"}
+          result = subject.send(:unescape_string, embedded_quotes)
+          expect(result).to eq('she said: "Hello"')
+        end
+
+        it 'should recognize escaped backslash' do
+          embedded_backslash = 'backslash>\\\\'
+          result = subject.send(:unescape_string, embedded_backslash)
+          expect(result).to eq('backslash>\\')
+        end
+
+        # rubocop: disable Style/StringConcatenation
+        it 'should recognize newline escape sequence' do
+          embedded_newline = 'line1\\nline2'
+          result = subject.send(:unescape_string, embedded_newline)
+          expect(result).to eq('line1' + "\n" + 'line2')
+        end
+        # rubocop: enable Style/StringConcatenation
+
         it 'should recognize a nil token' do
           subject.start_with('nil')
           token_nil = subject.tokens[0]
@@ -236,6 +256,20 @@ LOX_END
             %w[NUMBER 2]
           ]
           match_expectations(subject, expectations)
+        end
+
+        it 'should complain if it finds an unterminated string' do
+          subject.start_with('var a = "Unfinished;')
+          err = Loxxy::ScanError
+          err_msg = 'Error: [line 1:21]: Unterminated string.'
+          expect { subject.tokens }.to raise_error(err, err_msg)
+        end
+
+        it 'should complain if it finds an unexpected character' do
+          subject.start_with('var a = ?1?;')
+          err = Loxxy::ScanError
+          err_msg = 'Error: [line 1:9]: Unexpected character.'
+          expect { subject.tokens }.to raise_error(err, err_msg)
         end
       end # context
     end # describe

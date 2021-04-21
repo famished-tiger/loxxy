@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/8e5p7dgjanm0qjkp?svg=true)](https://ci.appveyor.com/project/famished-tiger/loxxy)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/famished-tiger/loxxy/blob/main/LICENSE.txt)
 
-### What is loxxy?
+## What is loxxy?
 A Ruby implementation of the [Lox programming language](https://craftinginterpreters.com/the-lox-language.html ),
 a simple language defined in Bob Nystrom's excellent online book [Crafting Interpreters](https://craftinginterpreters.com/ ).
 
@@ -15,6 +15,14 @@ Although __Lox__ is fairly simple, it is far from being a toy language:
 - Control flow statements `if`, `for` and `while`
 - Functions and closures
 - Object-orientation (classes, methods, inheritance).
+
+### Loxxy gem features
+- Complete tree-walking interpreter including lexer, parser and resolver
+- 100% pure Ruby with clean design (not a port from some other language)
+- Minimal runtime dependency (Rley gem). Won't drag a bunch of gems...  
+- Ruby API for integrating a Lox interpreter with your code.
+- A command-line interpreter `loxxy`
+- Open for your language extensions
 
 ## How to start in 1, 2, 3...?
 ... in less than 3 minutes...
@@ -42,10 +50,11 @@ Lo and behold! The output device displays the famous greeting:
     Hello, world.
  
 
-Congrats! You ran your first `Lox` program with __Loxxy__.
+Congrats! You ran your first `Lox` program thanks __Loxxy__ gem. 
+For a less superficial encounter with the language jump to the next section.
 
-### Something beefier?...
-Let's admit it, the hello world example was unimpressive. 
+## So you want something beefier?...
+Let's admit it, the hello world example was unimpressive.   
 To a get a taste of `Lox` object-oriented capabilities, let's try another `Hello world` variant:
 
 ```javascript
@@ -172,12 +181,6 @@ Indeed, an open-source language that misses some features is an invitation for t
 There are already a number of programming languages derived from `Lox`...
 
 ## Why `Loxxy`? What's in it for me?...
-Features:
-- Complete tree-walking interpreter including lexer, parser and resolver
-- 100% pure Ruby with clean design (not a port from some other language)
-- Ruby API for integrating a Lox interpreter with your code.
-- Minimal runtime dependency (Rley gem). Won't drag a bunch of gems...
-
 
 ### Purpose of this project:
 - To deliver an open source example of a programming language fully implemented in Ruby  

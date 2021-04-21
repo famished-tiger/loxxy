@@ -2,6 +2,7 @@
 
 require 'strscan'
 require 'rley'
+require_relative '../error'
 require_relative '../datatype/all_datatypes'
 require_relative 'literal'
 
@@ -60,8 +61,6 @@ module Loxxy
         PRINT RETURN SUPER THIS TRUE VAR WHILE
       ].map { |x| [x, x] }.to_h
 
-      class ScanError < StandardError; end
-
       # Constructor. Initialize a tokenizer for Lox input.
       # @param source [String] Lox text to tokenize.
       def initialize(source = nil)
@@ -117,11 +116,14 @@ module Loxxy
           keyw = @@keywords[lexeme.upcase]
           tok_type = keyw || 'IDENTIFIER'
           token = build_token(tok_type, lexeme)
+        elsif scanner.scan(/"(?:\\"|[^"])*\z/)
+          # Error: unterminated string...
+          col = scanner.pos - @line_start + 1
+          raise ScanError, "Error: [line #{lineno}:#{col}]: Unterminated string."
         else # Unknown token
-          erroneous = curr_ch.nil? ? '' : scanner.scan(/./)
-          sequel = scanner.scan(/.{1,20}/)
-          erroneous += sequel unless sequel.nil?
-          raise ScanError, "Unknown token #{erroneous} on line #{lineno}"
+          col = scanner.pos - @line_start + 1
+          _erroneous = curr_ch.nil? ? '' : scanner.scan(/./)
+          raise ScanError, "Error: [line #{lineno}:#{col}]: Unexpected character."
         end
 
         return token
@@ -156,7 +158,7 @@ module Loxxy
           when 'NUMBER'
             value = Datatype::Number.new(aLexeme)
           when 'STRING'
-            value = Datatype::LXString.new(aLexeme)
+            value = Datatype::LXString.new(unescape_string(aLexeme))
           when 'TRUE'
             value = Datatype::True.instance
           else
@@ -164,6 +166,29 @@ module Loxxy
         end
 
         return [value, symb]
+      end
+
+      # Replace any sequence sequence by their "real" value.
+      def unescape_string(aText)
+        result = +''
+        previous = nil
+
+        aText.each_char do |ch|
+          if previous
+            if ch == ?n
+              result << "\n"
+            else
+              result << ch
+            end
+            previous = nil
+          elsif ch == '\\'
+            previous = ?\
+          else
+            result << ch
+          end
+        end
+
+        result
       end
 
       # Skip non-significant whitespaces and comments.

@@ -17,11 +17,15 @@ class LoxxyRunner
     return if file_names.nil? || file_names.empty?
 
     lox = Loxxy::Interpreter.new
-    file_names.each do |lox_file|
-      fname = validate_filename(lox_file)
-      next unless file_exist?(fname)
+    begin
+      file_names.each do |lox_file|
+        fname = validate_filename(lox_file)
+        next unless file_exist?(fname)
 
-      File.open(fname, 'r') { |f| lox.evaluate(f.read) }
+        File.open(fname, 'r') { |f| lox.evaluate(f.read) }
+      end
+    rescue Loxxy::ScanError => e
+      $stderr.puts e.message
     end
   end
 

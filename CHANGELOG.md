@@ -1,3 +1,26 @@
+## [0.2.02] - 2021-04-21
+- Improvements in the scanner class (escape sequence for quotes and newlines), error messages closer to jlox.
+
+### Changed
+- File `loxxy` executable doesn't show a stack trace for scanner errors
+- Class `ScannerError` is now a subclass of `Loxxy::Error`
+- Class `Scanner` now returns a specific error message for unterminated strings
+- Class `Scanner` error messages are closer to the ones from jlox
+- Class `Scanner` supports now escape sequences \" for double quotes, \n for newlines
+- File `README.md` Reshuffled some text
+
+## [0.2.01] - 2021-04-18
+- Minor improvements in CLI, starting re-documenting `README.md`.
+
+### New
+- Class `Loxxy::CLIParser` parser for the command-line options
+
+### Changed
+- File `loxxy` executable now uses commad-line parsing
+- File `.rubocop.yml` updated with new cops
+- File `README.md` Added examples for command-line interface
+- File `loxxy.gemspec` expanded description of gem
+
 ## [0.2.00] - 2021-04-17
 - `Loxxy` implements the complete `Lox` language including its object-oriented features.
 
