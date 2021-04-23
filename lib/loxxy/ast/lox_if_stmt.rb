@@ -21,17 +21,13 @@ module Loxxy
         @else_stmt = elseStmt
       end
 
-      # Part of the 'visitee' role in Visitor design pattern.
-      # @param visitor [Ast::ASTVisitor] the visitor
-      def accept(visitor)
-        visitor.visit_if_stmt(self)
-      end
-
       # Accessor to the condition expression
       # @return [LoxNode]
       def condition
         subnodes[0]
       end
+
+      define_accept # Add `accept` method as found in Visitor design pattern
     end # class
   end # module
 end # module

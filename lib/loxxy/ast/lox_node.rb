@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
+require_relative 'ast_visitee'
+
 module Loxxy
   module Ast
+    # Abstract class.
+    # Instances of its subclasses represent nodes of an abstract syntax tree
+    # that is the product of the parse of an input text.
     class LoxNode
+      # Let nodes take `visitee` role as defined in the Visitor design pattern
+      extend ASTVisitee
+
       # return [Rley::Lexical::Position] Position of the entry in the input stream.
       attr_reader :position
 
@@ -16,7 +24,7 @@ module Loxxy
         # Default: do nothing ...
       end
 
-      # Abstract method.
+      # Abstract method (must be overriden in subclasses).
       # Part of the 'visitee' role in Visitor design pattern.
       # @param _visitor [LoxxyTreeVisitor] the visitor
       def accept(_visitor)

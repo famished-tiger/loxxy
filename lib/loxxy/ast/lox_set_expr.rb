@@ -18,11 +18,7 @@ module Loxxy
         @object = anObject
       end
 
-      # Part of the 'visitee' role in Visitor design pattern.
-      # @param visitor [ASTVisitor] the visitor
-      def accept(visitor)
-        visitor.visit_set_expr(self)
-      end
+      define_accept # Add `accept` method as found in Visitor design pattern
     end # class
   end # module
 end # module

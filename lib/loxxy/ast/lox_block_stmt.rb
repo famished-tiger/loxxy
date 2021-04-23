@@ -15,11 +15,7 @@ module Loxxy
         subnodes.size == 1 && subnodes[0].nil?
       end
 
-      # Part of the 'visitee' role in Visitor design pattern.
-      # @param visitor [Ast::ASTVisitor] the visitor
-      def accept(visitor)
-        visitor.visit_block_stmt(self)
-      end
+      define_accept # Add `accept` method as found in Visitor design pattern
     end # class
   end # module
 end # module

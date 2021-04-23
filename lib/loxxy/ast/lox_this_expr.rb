@@ -12,11 +12,7 @@ module Loxxy
         'this'
       end
 
-      # Part of the 'visitee' role in Visitor design pattern.
-      # @param _visitor [LoxxyTreeVisitor] the visitor
-      def accept(aVisitor)
-        aVisitor.visit_this_expr(self)
-      end
+      define_accept # Add `accept` method as found in Visitor design pattern
     end # class
   end # module
 end # module

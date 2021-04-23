@@ -16,12 +16,7 @@ module Loxxy
         @operator = anOperator
       end
 
-      # Part of the 'visitee' role in Visitor design pattern.
-      # @param visitor [Ast::ASTVisitor] the visitor
-      def accept(visitor)
-        visitor.visit_logical_expr(self)
-      end
-
+      define_accept # Add `accept` method as found in Visitor design pattern
       alias operands subnodes
     end # class
   end # module

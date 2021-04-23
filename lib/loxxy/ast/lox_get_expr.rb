@@ -18,12 +18,7 @@ module Loxxy
         @property = aPropertyName
       end
 
-      # Part of the 'visitee' role in Visitor design pattern.
-      # @param visitor [ASTVisitor] the visitor
-      def accept(visitor)
-        visitor.visit_get_expr(self)
-      end
-
+      define_accept # Add `accept` method as found in Visitor design pattern
       alias callee= object=
     end # class
   end # module

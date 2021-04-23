@@ -18,17 +18,13 @@ module Loxxy
         @property = aMethodName
       end
 
-      # Part of the 'visitee' role in Visitor design pattern.
-      # @param visitor [ASTVisitor] the visitor
-      def accept(visitor)
-        visitor.visit_super_expr(self)
-      end
-
       # Quack like a LoxVariableExpr
       # @return [String] the `super` keyword
       def name
         'super'
       end
+
+      define_accept # Add `accept` method as found in Visitor design pattern
       alias callee= object=
     end # class
   end # module

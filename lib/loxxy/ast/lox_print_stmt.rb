@@ -11,11 +11,7 @@ module Loxxy
         super(aPosition, [anExpression])
       end
 
-      # Part of the 'visitee' role in Visitor design pattern.
-      # @param visitor [Ast::ASTVisitor] the visitor
-      def accept(visitor)
-        visitor.visit_print_stmt(self)
-      end
+      define_accept # Add `accept` method as found in Visitor design pattern
     end # class
   end # module
 end # module
