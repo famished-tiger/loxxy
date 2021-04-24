@@ -22,16 +22,27 @@ Although __Lox__ is fairly simple, it is far from being a toy language:
 - Minimal runtime dependency (Rley gem). Won't drag a bunch of gems...  
 - Ruby API for integrating a Lox interpreter with your code.
 - A command-line interpreter `loxxy`
-- Open for your language extensions
+- Open for your language extensions...
 
 ## How to start in 1, 2, 3...?
 ... in less than 3 minutes...
 
 ### 1. Installing
-Install __Loxxy__ as a gem:
+__Loxxy__'s  installation is pretty standard:
 
 
     $ gem install loxxy
+
+Alternatively, you can install `loxxy` with Bundler.  
+Add this line to your application's Gemfile:
+
+    gem 'loxxy'
+
+And then execute:
+
+    $ bundle
+
+
 
 ### 2. Your first `Lox`  program
 Create a text file and enter the following lines:

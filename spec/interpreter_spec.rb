@@ -480,6 +480,18 @@ LOX_END
         snippet
       end
 
+      it 'should support field assignment expression' do
+        program = <<-LOX_END
+          class Foo {}
+
+          var foo = Foo();
+
+          print foo.bar = "bar value"; // expect: bar value
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('bar value')
+      end
+
       it 'should support class declaration' do
         program = <<-LOX_END
           #{duck_class}

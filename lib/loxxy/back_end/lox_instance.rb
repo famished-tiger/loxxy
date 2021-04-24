@@ -38,7 +38,7 @@ module Loxxy
 
         method = klass.find_method(aName)
         unless method
-          raise StandardError, "Undefined property '#{aName}'."
+          raise Loxxy::RuntimeError, "Undefined property '#{aName}'."
         end
 
         method.bind(self)

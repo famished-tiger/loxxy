@@ -1,3 +1,15 @@
+## [0.2.03] - 2021-04-24
+- Fixes for the set (field) expressions, `accept` methods for AST nodes are meta-programmed 
+
+### New
+- Module `Ast::Visitee` provides the `define_accept` method that generate `accept` method with meta-programming
+
+### Fixed
+- Method `BackEnd::Engine#before_set_expr` methos method that ensure that the receiver is evaluated first, then the assigned value
+- Method `BackEnd::Engine`#after_set_expr` now pushes the value assigned to the field also onto the stack
+- Class `BackEnd::Engine` a number of StnadardError exceptions are replaced by Loxxy::RuntimeError
+
+
 ## [0.2.02] - 2021-04-21
 - Improvements in the scanner class (escape sequence for quotes and newlines), error messages closer to jlox.
 

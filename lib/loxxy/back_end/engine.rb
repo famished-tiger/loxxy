@@ -176,16 +176,20 @@ module Loxxy
         variable.assign(value)
       end
 
-      def after_set_expr(aSetExpr, aVisitor)
-        value = stack.pop
-        # Evaluate object part
+      def before_set_expr(aSetExpr, aVisitor)
+        # Evaluate receiver object part
         aSetExpr.object.accept(aVisitor)
+      end
+
+      def after_set_expr(aSetExpr, _visitor)
+        value = stack.pop
         assignee = stack.pop
         unless assignee.kind_of?(LoxInstance)
-          raise StandardError, 'Only instances have fields.'
+          raise Loxxy::RuntimeError, 'Only instances have fields.'
         end
 
         assignee.set(aSetExpr.property, value)
+        stack.push value
       end
 
       def after_logical_expr(aLogicalExpr, visitor)
@@ -272,7 +276,7 @@ module Loxxy
         aGetExpr.object.accept(aVisitor)
         instance = stack.pop
         unless instance.kind_of?(LoxInstance)
-          raise StandardError, 'Only instances have properties.'
+          raise Loxxy::RuntimeError, 'Only instances have properties.'
         end
 
         stack.push instance.get(aGetExpr.property)
@@ -285,7 +289,7 @@ module Loxxy
       def after_variable_expr(aVarExpr, aVisitor)
         var_name = aVarExpr.name
         var = variable_lookup(aVarExpr)
-        raise StandardError, "Undefined variable '#{var_name}'." unless var
+        raise Loxxy::RuntimeError, "Undefined variable '#{var_name}'." unless var
 
         var.value.accept(aVisitor) # Evaluate variable value then push on stack
       end
