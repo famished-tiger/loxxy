@@ -46,7 +46,7 @@ module Loxxy
           # Stop if the parse failed...
           line1 = "Parsing failed\n"
           line2 = "Reason: #{result.failure_reason.message}"
-          raise StandardError, line1 + line2
+          raise SyntaxError, line1 + line2
         end
 
         return engine.convert(result) # engine.to_ptree(result)

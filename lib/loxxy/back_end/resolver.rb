@@ -93,7 +93,7 @@ module Loxxy
       end
 
       def after_for_stmt(aForStmt, aVisitor)
-        aForStmt.test_expr.accept(aVisitor)
+        aForStmt.test_expr&.accept(aVisitor)
         aForStmt.body_stmt.accept(aVisitor)
         aForStmt.update_expr&.accept(aVisitor)
         after_block_stmt(aForStmt)

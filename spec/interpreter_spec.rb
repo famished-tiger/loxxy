@@ -431,6 +431,17 @@ LOX_END
         expect(result).to eq(3)
       end
 
+      it 'should support return within statements inside a function' do
+        program = <<-LOX_END
+          fun foo() {
+            for (;;) return "done";
+          }
+          print foo(); // output: done
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('done')
+      end
+
       # rubocop: disable Style/StringConcatenation
       it 'should support local functions and closures' do
         program = <<-LOX_END

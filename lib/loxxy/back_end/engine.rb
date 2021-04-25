@@ -117,10 +117,19 @@ module Loxxy
       end
 
       def after_for_stmt(aForStmt, aVisitor)
+        iterating = false
+
         loop do
-          aForStmt.test_expr.accept(aVisitor)
-          condition = stack.pop
-          break unless condition.truthy?
+          if aForStmt.test_expr
+            aForStmt.test_expr.accept(aVisitor)
+            condition = stack.pop
+            break unless condition.truthy?
+          elsif iterating
+            # when both test and update expressions are nil => execute body once
+            break unless aForStmt.update_expr
+          else
+            iterating = true
+          end
 
           aForStmt.body_stmt.accept(aVisitor)
           aForStmt.update_expr&.accept(aVisitor)
