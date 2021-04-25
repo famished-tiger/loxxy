@@ -1,3 +1,10 @@
+## [0.2.04] - 2021-04-25
+- `Loxxy` passes the test suite for `for` statements
+
+### Fixed
+- Method `BackEnd::Engine#after_for_stmt` now a for(;;) executes the body once; a for without test will execute forever
+- Method `BackEnd::Resolver#after_for_stmt now accepts nil test expression
+
 ## [0.2.03] - 2021-04-24
 - Fixes for the set (field) expressions, `accept` methods for AST nodes are meta-programmed 
 
@@ -6,7 +13,7 @@
 
 ### Fixed
 - Method `BackEnd::Engine#before_set_expr` methos method that ensure that the receiver is evaluated first, then the assigned value
-- Method `BackEnd::Engine`#after_set_expr` now pushes the value assigned to the field also onto the stack
+- Method `BackEnd::Engine#after_set_expr` now pushes the value assigned to the field also onto the stack
 - Class `BackEnd::Engine` a number of StnadardError exceptions are replaced by Loxxy::RuntimeError
 
 
