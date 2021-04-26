@@ -54,11 +54,11 @@ module Loxxy
         '<=' => 'LESS_EQUAL'
       }.freeze
 
-      # Here are all the implemented Lox keywords (in uppercase)
+      # Here are all the implemented Lox keywords
       # These are enumerated in section 4.2.1 Token type
       @@keywords = %w[
-        AND CLASS ELSE FALSE FUN FOR IF NIL OR
-        PRINT RETURN SUPER THIS TRUE VAR WHILE
+        and class else false fun for if nil or
+        print return super this true var while
       ].map { |x| [x, x] }.to_h
 
       # Constructor. Initialize a tokenizer for Lox input.
@@ -113,8 +113,8 @@ module Loxxy
         elsif (lexeme = scanner.scan(/"(?:\\"|[^"])*"/))
           token = build_token('STRING', lexeme)
         elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z_0-9]*/))
-          keyw = @@keywords[lexeme.upcase]
-          tok_type = keyw || 'IDENTIFIER'
+          keyw = @@keywords[lexeme]
+          tok_type = keyw ? keyw.upcase : 'IDENTIFIER'
           token = build_token(tok_type, lexeme)
         elsif scanner.scan(/"(?:\\"|[^"])*\z/)
           # Error: unterminated string...

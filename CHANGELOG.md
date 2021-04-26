@@ -1,3 +1,20 @@
+## [0.2.05] - 2021-04-26
+- `Loxxy` now transforms for loops into while loops (desugaring), fix in Scanner class
+
+### Changed
+- Method `Ast::ASTBuilder#reduce_for_stmt` converts 'for' loops into 'while' loops
+- Method `Ast::ASTBuilder#reduce_for_control takes care of case for(expr1;;expr2) now test expression is set to true
+
+### Fixed
+- Method `FrontEnd::Scanner#next_token` keyword recognition was case insensitive
+
+### Removed
+- Method `Ast::Visitor#visitor_for_stmt`
+- Method `BackEnd::Engine#after_for_stmt`
+- Method `BackEnd::Resolver#before_for_stmt`
+- Method `BackEnd::Resolver#after_for_stmt`
+
+
 ## [0.2.04] - 2021-04-25
 - `Loxxy` passes the test suite for `for` statements
 

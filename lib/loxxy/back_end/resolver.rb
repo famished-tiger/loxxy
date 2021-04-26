@@ -88,17 +88,6 @@ module Loxxy
         @current_class = previous_class
       end
 
-      def before_for_stmt(aForStmt)
-        before_block_stmt(aForStmt)
-      end
-
-      def after_for_stmt(aForStmt, aVisitor)
-        aForStmt.test_expr&.accept(aVisitor)
-        aForStmt.body_stmt.accept(aVisitor)
-        aForStmt.update_expr&.accept(aVisitor)
-        after_block_stmt(aForStmt)
-      end
-
       def after_if_stmt(anIfStmt, aVisitor)
         anIfStmt.then_stmt.accept(aVisitor)
         anIfStmt.else_stmt&.accept(aVisitor)
@@ -123,7 +112,7 @@ module Loxxy
 
       def after_while_stmt(aWhileStmt, aVisitor)
         aWhileStmt.body.accept(aVisitor)
-        aWhileStmt.condition.accept(aVisitor)
+        aWhileStmt.condition&.accept(aVisitor)
       end
 
       # A variable declaration adds a new variable to current scope

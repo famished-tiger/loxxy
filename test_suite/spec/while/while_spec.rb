@@ -3,7 +3,7 @@
 require 'loxxy'
 require_relative '../spec_helper'
 
-describe 'for statement:' do
+describe 'while statement:' do
   include LoxFileTester
 
   let(:my_path) { __FILE__.sub(/\/[^\/]+$/, '/') }
@@ -13,23 +13,11 @@ describe 'for statement:' do
       run_positive_test
     end
 
-    it "passes 'closure_in_body.lox'" do
-      run_positive_test
-    end
-
     it "passes 'return_closure.lox'" do
       run_positive_test
     end
 
     it "passes 'return_inside.lox'" do
-      run_positive_test
-    end
-
-    it "passes 'scope.lox'" do
-      run_positive_test
-    end
-
-    it "passes 'scope.lox'" do
       run_positive_test
     end
 
@@ -45,21 +33,6 @@ describe 'for statement:' do
     end
 
     it "passes 'fun_in_body.lox'" do
-      # Non-compliant error message
-      run_negative_test(Loxxy::SyntaxError, nil)
-    end
-
-    it "passes 'statement_condition.lox'" do
-      # Non-compliant error message
-      run_negative_test(Loxxy::SyntaxError, nil)
-    end
-
-    it "passes 'statement_increment.lox'" do
-      # Non-compliant error message
-      run_negative_test(Loxxy::SyntaxError, nil)
-    end
-
-    it "passes 'statement_initializer.lox'" do
       # Non-compliant error message
       run_negative_test(Loxxy::SyntaxError, nil)
     end

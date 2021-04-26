@@ -74,7 +74,7 @@ module Loxxy
           aClassStmt.superclass.accept(aVisitor)
           parent = stack.pop
           unless parent.kind_of?(LoxClass)
-            raise StandardError, 'Superclass must be a class.'
+            raise Loxxy::RuntimeError, 'Superclass must be a class.'
           end
         else
           parent = nil
@@ -116,28 +116,6 @@ module Loxxy
         before_block_stmt(aForStmt)
       end
 
-      def after_for_stmt(aForStmt, aVisitor)
-        iterating = false
-
-        loop do
-          if aForStmt.test_expr
-            aForStmt.test_expr.accept(aVisitor)
-            condition = stack.pop
-            break unless condition.truthy?
-          elsif iterating
-            # when both test and update expressions are nil => execute body once
-            break unless aForStmt.update_expr
-          else
-            iterating = true
-          end
-
-          aForStmt.body_stmt.accept(aVisitor)
-          aForStmt.update_expr&.accept(aVisitor)
-          stack.pop
-        end
-        after_block_stmt(aForStmt)
-      end
-
       def after_if_stmt(anIfStmt, aVisitor)
         # Retrieve the result of the condition evaluation
         condition = stack.pop
@@ -163,7 +141,7 @@ module Loxxy
           break unless condition.truthy?
 
           aWhileStmt.body.accept(aVisitor)
-          aWhileStmt.condition.accept(aVisitor)
+          aWhileStmt.condition&.accept(aVisitor)
         end
       end
 
@@ -179,7 +157,7 @@ module Loxxy
       def after_assign_expr(anAssignExpr, _visitor)
         var_name = anAssignExpr.name
         variable = variable_lookup(anAssignExpr)
-        raise StandardError, "Unknown variable #{var_name}" unless variable
+        raise Loxxy::RuntimeError, "Undefined variable '#{var_name}'." unless variable
 
         value = stack.last # ToS remains since an assignment produces a value
         variable.assign(value)

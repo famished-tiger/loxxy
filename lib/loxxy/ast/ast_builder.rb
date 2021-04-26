@@ -225,16 +225,39 @@ module Loxxy
       end
 
       # rule('forStmt' => 'FOR LEFT_PAREN forControl RIGHT_PAREN statement')
-      def reduce_for_stmt(_production, _range, _tokens, theChildren)
-        for_stmt = theChildren[2]
-        for_stmt.body_stmt = theChildren[4]
+      def reduce_for_stmt(_production, _range, tokens, theChildren)
+        # Following 'Crafting Interpreters', we replace the for statement by a while loop
+        return theChildren[4] if theChildren[2].compact.empty? # for(;;) => execute body once
+
+        (init, test, update) = theChildren[2]
+        if update
+          new_body = LoxSeqDecl.new(tokens[0].position, [theChildren[4], update])
+          stmt = Ast::LoxBlockStmt.new(tokens[1].position, new_body)
+        else
+          stmt = theChildren[4]
+        end
+        while_stmt = Ast::LoxWhileStmt.new(tokens[0].position, test, stmt)
+
+        if init
+          block_body = LoxSeqDecl.new(tokens[0].position, [init, while_stmt])
+          for_stmt = Ast::LoxBlockStmt.new(tokens[1].position, block_body)
+        else
+          for_stmt = while_stmt
+        end
+
         for_stmt
       end
 
       # rule('forControl' => 'forInitialization forTest forUpdate')
       def reduce_for_control(_production, _range, tokens, theChildren)
         (init, test, update) = theChildren
-        Ast::LoxForStmt.new(tokens[0].position, init, test, update)
+        if test.nil? && update
+          # when test expr is nil but update expr is not, then force test to be true
+          test = LoxLiteralExpr.new(tokens[0].position, Datatype::True.instance)
+          [init, test, update]
+        else
+          theChildren
+        end
       end
 
       # rule('forInitialization' => 'SEMICOLON')

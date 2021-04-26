@@ -3,68 +3,56 @@
 require 'loxxy'
 require_relative '../spec_helper'
 
-describe 'for statement:' do
+describe 'if statement:' do
   include LoxFileTester
 
   let(:my_path) { __FILE__.sub(/\/[^\/]+$/, '/') }
 
   context 'Valid cases:' do
-    it "passes 'closure_in_body.lox'" do
+    it "passes 'dangling_else.lox'" do
       run_positive_test
     end
 
-    it "passes 'closure_in_body.lox'" do
+    it "passes 'else.lox'" do
       run_positive_test
     end
 
-    it "passes 'return_closure.lox'" do
+    it "passes 'if.lox'" do
       run_positive_test
     end
 
-    it "passes 'return_inside.lox'" do
-      run_positive_test
-    end
-
-    it "passes 'scope.lox'" do
-      run_positive_test
-    end
-
-    it "passes 'scope.lox'" do
-      run_positive_test
-    end
-
-    it "passes 'syntax.lox'" do
+    it "passes 'truth.lox'" do
       run_positive_test
     end
   end # context
 
   context 'Invalid cases:' do
-    it "passes 'class_in_body.lox'" do
+    it "passes 'class_in_else.lox'" do
       # Non-compliant error message
       run_negative_test(Loxxy::SyntaxError, nil)
     end
 
-    it "passes 'fun_in_body.lox'" do
+    it "passes 'class_in_then.lox'" do
       # Non-compliant error message
       run_negative_test(Loxxy::SyntaxError, nil)
     end
 
-    it "passes 'statement_condition.lox'" do
+    it "passes 'fun_in_else.lox'" do
       # Non-compliant error message
       run_negative_test(Loxxy::SyntaxError, nil)
     end
 
-    it "passes 'statement_increment.lox'" do
+    it "passes 'fun_in_then.lox'" do
       # Non-compliant error message
       run_negative_test(Loxxy::SyntaxError, nil)
     end
 
-    it "passes 'statement_initializer.lox'" do
+    it "passes 'var_in_else.lox'" do
       # Non-compliant error message
       run_negative_test(Loxxy::SyntaxError, nil)
     end
 
-    it "passes 'var_in_body.lox'" do
+    it "passes 'var_in_then.lox'" do
       # Non-compliant error message
       run_negative_test(Loxxy::SyntaxError, nil)
     end

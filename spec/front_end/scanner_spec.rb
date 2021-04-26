@@ -217,6 +217,13 @@ LOX_END
           expect(token_nil.lexeme).to eq('nil')
           expect(token_nil.value).to be_kind_of(Datatype::Nil)
         end
+
+        it 'should differentiate nil from variable spelled same' do
+          subject.start_with('Nil')
+          similar = subject.tokens[0]
+          expect(similar.terminal).to eq('IDENTIFIER')
+          expect(similar.lexeme).to eq('Nil')
+        end
       end # context
 
       context 'Handling comments:' do
