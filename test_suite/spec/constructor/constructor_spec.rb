@@ -2,22 +2,57 @@
 
 require 'loxxy'
 require_relative '../spec_helper'
-require 'stringio'
 
-describe Loxxy do
-  context 'Constructor:' do
-    it 'should accept default constructor' do
-      source = <<-LOX_END
-        class Foo {}
+describe 'Constructor:' do
+  include LoxFileTester
 
-        var foo = Foo();
-        print foo; // output: Foo instance
-      LOX_END
-      io = StringIO.new
-      cfg = { ostream: io }
-      lox = Loxxy::Interpreter.new(cfg)
-      lox.evaluate(source)
-      expect(io.string).to eq('Foo instance')
+  let(:my_path) { __FILE__.sub(/\/[^\/]+$/, '/') }
+
+  context 'Valid cases:' do
+    it "passes 'arguments.lox'" do
+      run_positive_test
+    end
+
+    it "passes 'call_init_early_return.lox'" do
+      run_positive_test
+    end
+
+    it "passes 'call_init_explicitly.lox'" do
+      run_positive_test
+    end
+
+    it "passes 'default.lox'" do
+      run_positive_test
+    end
+
+    it "passes 'early_return.lox'" do
+      run_positive_test
+    end
+
+    it "passes 'init_not_method.lox'" do
+      run_positive_test
+    end
+
+    it "passes 'return_in_nested_function.lox'" do
+      run_positive_test
+    end
+  end # context
+
+  context 'Invalid cases:' do
+    it "passes 'default_arguments.lox'" do
+      run_negative_test
+    end
+
+    it "passes 'extra_arguments.lox'" do
+      run_negative_test
+    end
+
+    it "passes 'missing_arguments.lox'" do
+      run_negative_test
+    end
+
+    it "passes 'return_value.lox'" do
+      run_negative_test
     end
   end # context
 end # describe

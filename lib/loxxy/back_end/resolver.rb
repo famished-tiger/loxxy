@@ -106,7 +106,7 @@ module Loxxy
 
         if current_function == :initializer
           msg = "Error at 'return': Can't return a value from an initializer."
-          raise StandardError, msg unless returnStmt.subnodes[0].kind_of?(Datatype::Nil)
+          raise Loxxy::RuntimeError, msg unless returnStmt.subnodes[0].kind_of?(Datatype::Nil)
         end
       end
 

@@ -4,14 +4,18 @@ require 'stringio'
 
 # Mix-in module that provides utility methods to RSpec tests
 module LoxFileTester
-  def run_positive_test
+  def run_positive_test(nonCompliantResult = nil)
     original_dir = Dir.getwd
     Dir.chdir(my_path)
 
     File.open(lox_filename, 'r') do |f|
       source = f.read
-      expectations = collect_expected_output(source)
-      predicted = expectations.join
+      if nonCompliantResult
+        predicted = nonCompliantResult
+      else
+        expectations = collect_expected_output(source)
+        predicted = expectations.join
+      end
       io = interpret2string_io(source)
       expect(io.string).to eq(predicted)
     end

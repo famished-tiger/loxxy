@@ -218,7 +218,8 @@ module Loxxy
         operator = binary_operators[op]
         operator.validate_operands(operand1, operand2)
         if operand1.respond_to?(op)
-          stack.push operand1.send(op, operand2)
+          result = operand1.send(op, operand2)
+          stack.push convert2lox_datatype(result)
         else
           msg1 = "`#{op}': Unimplemented operator for a #{operand1.class}."
           raise StandardError, msg1
@@ -231,7 +232,8 @@ module Loxxy
         operator = unary_operators[op]
         operator.validate_operand(operand)
         if operand.respond_to?(op)
-          stack.push operand.send(op)
+          result = operand.send(op)
+          stack.push convert2lox_datatype(result)
         else
           msg1 = "`#{op}': Unimplemented operator for a #{operand.class}."
           raise StandardError, msg1
@@ -354,7 +356,7 @@ module Loxxy
         unary_operators[:-@] = negate_op
 
         negation_op = UnaryOperator.new('!', [Datatype::BuiltinDatatype,
-          BackEnd::LoxFunction])
+          BackEnd::LoxInstance, BackEnd::LoxFunction, BackEnd::LoxClass])
         unary_operators[:!] = negation_op
       end
 
@@ -406,6 +408,15 @@ module Loxxy
         proc do
           now = Time.now.to_f
           Datatype::Number.new(now)
+        end
+      end
+
+      def convert2lox_datatype(item)
+        case item
+        when TrueClass then Datatype::True.instance
+        when FalseClass then Datatype::False.instance
+        else
+          item
         end
       end
     end # class
