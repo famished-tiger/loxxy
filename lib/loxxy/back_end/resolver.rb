@@ -69,7 +69,7 @@ module Loxxy
         define(aClassStmt.name)
         if aClassStmt.superclass
           if aClassStmt.name == aClassStmt.superclass.name
-            raise StandardError, "'A class can't inherit from itself."
+            raise Loxxy::RuntimeError, "'A class can't inherit from itself."
           end
 
           @current_class = :subclass
@@ -96,12 +96,12 @@ module Loxxy
       def before_return_stmt(returnStmt)
         if scopes.size < 2
           msg = "Error at 'return': Can't return from top-level code."
-          raise StandardError, msg
+          raise Loxxy::RuntimeError, msg
         end
 
         if current_function == :none
           msg = "Error at 'return': Can't return from outside a function."
-          raise StandardError, msg
+          raise Loxxy::RuntimeError, msg
         end
 
         if current_function == :initializer
@@ -160,7 +160,7 @@ module Loxxy
       def before_this_expr(_thisExpr)
         if current_class == :none
           msg = "Error at 'this': Can't use 'this' outside of a class."
-          raise StandardError, msg
+          raise Loxxy::RuntimeError, msg
         end
       end
 
@@ -175,11 +175,11 @@ module Loxxy
         msg_prefix = "Error at 'super': Can't use 'super' "
         if current_class == :none
           err_msg = msg_prefix + 'outside of a class.'
-          raise StandardError, err_msg
+          raise Loxxy::RuntimeError, err_msg
 
         elsif current_class == :class
           err_msg = msg_prefix + 'in a class without superclass.'
-          raise StandardError, err_msg
+          raise Loxxy::RuntimeError, err_msg
 
         end
         # 'super' behaves closely to a local variable
@@ -205,14 +205,19 @@ module Loxxy
         scopes.pop
       end
 
+      # rubocop: disable Style/SoleNestedConditional
       def declare(aVarName)
         return if scopes.empty?
 
         curr_scope = scopes.last
-        if curr_scope.include?(aVarName)
-          msg = "Error at '#{aVarName}': Already variable with this name in this scope."
-          raise StandardError, msg
+        if scopes.size > 1 # Not at top-level?
+          # Oddly enough, Lox allows variable re-declaration at top-level
+          if curr_scope.include?(aVarName)
+            msg = "Error at '#{aVarName}': Already variable with this name in this scope."
+            raise Loxxy::RuntimeError, msg
+          end
         end
+        # rubocop: enable Style/SoleNestedConditional
 
         # The initializer is not yet processed.
         # Mark the variable as 'not yet ready' = exists but may not be referenced yet

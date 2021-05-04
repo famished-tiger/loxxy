@@ -1,0 +1,12 @@
+Copyright note
+==============
+
+All files with the .lox extensions in this `baseline` directory and its sub-directories are
+copyright (C) Bob Nystrom.
+
+For more details, please jump to the Crafting Interpreters project repository and more specifically:
+https://github.com/munificent/craftinginterpreters/blob/master/LICENSE
+
+All remaining files in this `baseline` directory and sub-directory are copyright (C) Dimitri Geshef
+they are subjected to the same licence terms as for the remainder of the `Loxxy` project:
+https://github.com/famished-tiger/loxxy/blob/main/LICENSE.txt

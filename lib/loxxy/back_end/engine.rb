@@ -301,7 +301,7 @@ module Loxxy
         superklass = variable_lookup(aSuperExpr).value.superclass
         method = superklass.find_method(aSuperExpr.property)
         unless method
-          raise StandardError, "Undefined property '#{aSuperExpr.property}'."
+          raise Loxxy::RuntimeError, "Undefined property '#{aSuperExpr.property}'."
         end
 
         stack.push method.bind(instance)

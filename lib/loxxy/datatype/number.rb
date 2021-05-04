@@ -7,6 +7,10 @@ module Loxxy
   module Datatype
     # Class for representing a Lox numeric value.
     class Number < BuiltinDatatype
+      def zero?
+        value.zero?
+      end
+
       # Perform the addition of two Lox numbers or
       # one Lox number and a Ruby Numeric
       # @param other [Loxxy::Datatype::Number, Numeric]
@@ -59,17 +63,28 @@ module Loxxy
       # one Lox number and a Ruby Numeric
       # @param other [Loxxy::Datatype::Number, Numeric]
       # @return [Loxxy::Datatype::Number]
+      # rubocop: disable Lint/BinaryOperatorWithIdenticalOperands
       def /(other)
         case other
-        when Number
-          self.class.new(value / other.value)
-        when Numeric
-          self.class.new(value / other)
+        when Number, Numeric
+          if other.zero?
+            if zero?
+              # NaN case detected
+              self.class.new(0.0 / 0.0)
+            else
+              raise ZeroDivisionError
+            end
+          elsif other.kind_of?(Number)
+            self.class.new(value / other.value)
+          else
+            self.class.new(value / other)
+          end
         else
           err_msg = "'/': Operands must be numbers."
           raise TypeError, err_msg
         end
       end
+      # rubocop: enable Lint/BinaryOperatorWithIdenticalOperands
 
       # Unary minus (return value with changed sign)
       # @return [Loxxy::Datatype::Number]

@@ -124,18 +124,15 @@ LOX_END
 
         it 'should recognize number values' do
           input = <<-LOX_END
-          123     987654
-          0       -0
-          123.456 -0.001
-LOX_END
+            123     987654
+            0       123.456
+          LOX_END
 
           expectations = [
             ['123', 123],
             ['987654', 987654],
             ['0', 0],
-            ['-0', 0],
-            ['123.456', 123.456],
-            ['-0.001', -0.001]
+            ['123.456', 123.456]
           ]
 
           subject.start_with(input)
@@ -146,6 +143,30 @@ LOX_END
             expect(tok.lexeme).to eq(lexeme)
             expect(tok.value).to be_kind_of(Datatype::Number)
             expect(tok.value.value).to eq(val)
+          end
+        end
+
+        it 'should recognize negative number values' do
+          input = <<-LOX_END
+            -0
+            -0.001
+          LOX_END
+
+          expectations = [
+            ['-', '0'],
+            ['-', '0.001']
+          ].flatten
+
+          subject.start_with(input)
+          tokens = subject.tokens
+          tokens.pop
+          i = 0
+          tokens.each_slice(2) do |(sign, lit)|
+            expect(sign.terminal).to eq('MINUS')
+            expect(sign.lexeme).to eq(expectations[i])
+            expect(lit.terminal).to eq('NUMBER')
+            expect(lit.lexeme).to eq(expectations[i + 1])
+            i += 2
           end
         end
 

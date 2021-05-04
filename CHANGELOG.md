@@ -1,3 +1,19 @@
+## [0.2.06] - 2021-05-04
+- Nearly passing the 'official' test suite, fixing non-compliant behavior, specialized exceptions for errors
+
+### New
+- Module `LoxFileTester` module that hosts methods that simplify the tests of `Lox` source file. 
+
+### Changed
+- Folder `test_suite` vastly reorganized. Sub-folder `baseline` contains spec files testing the `Lox` files from official implementation
+- Class `BackEnd::Engine` replaced most `StandardError` by `Loxxy::RuntimeError` exception.
+- Class `BackEnd::Resolver` replaced most `StandardError` by `Loxxy::RuntimeError` exception.
+- Method `Datatype::Number#/` now handles correctly expression like `0/0` (integer divide)
+
+### Fixed
+- `0/0` expression results in a ZeroDivisionError exception, in Lox this result to a NaN (Not a Number). Now, `Loxxy` is aligned to standard `Lox`
+- `FrontEnd::Scanner` now always treats expression like `-123` as the unary or binary minus operator applied to a positive number. 
+
 ## [0.2.05] - 2021-04-26
 - `Loxxy` now transforms for loops into while loops (desugaring), fix in Scanner class
 

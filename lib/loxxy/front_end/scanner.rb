@@ -84,7 +84,7 @@ module Loxxy
           token = _next_token
           tok_sequence << token unless token.nil?
         end
-        tok_sequence << build_token('EOF', '')
+        tok_sequence << build_token('EOF', nil)
 
         return tok_sequence
       end
@@ -99,16 +99,16 @@ module Loxxy
 
         token = nil
 
-        if '(){},.;/*'.include? curr_ch
+        if '(){},.;-/*'.include? curr_ch
           # Single delimiter or separator character
           token = build_token(@@lexeme2name[curr_ch], scanner.getch)
-        elsif (lexeme = scanner.scan(/[+\-](?!\d)/))
+        elsif (lexeme = scanner.scan(/\+(?!\d)/))
           # Minus or plus character not preceding a digit
           token = build_token(@@lexeme2name[lexeme], lexeme)
         elsif (lexeme = scanner.scan(/[!=><]=?/))
           # One or two special character tokens
           token = build_token(@@lexeme2name[lexeme], lexeme)
-        elsif (lexeme = scanner.scan(/-?\d+(?:\.\d+)?/))
+        elsif (lexeme = scanner.scan(/\d+(?:\.\d+)?/))
           token = build_token('NUMBER', lexeme)
         elsif (lexeme = scanner.scan(/"(?:\\"|[^"])*"/))
           token = build_token('STRING', lexeme)
@@ -133,7 +133,8 @@ module Loxxy
       def build_token(aSymbolName, aLexeme)
         begin
           (value, symb) = convert_to(aLexeme, aSymbolName)
-          col = scanner.pos - aLexeme.size - @line_start + 1
+          lex_length = aLexeme ? aLexeme.size : 0
+          col = scanner.pos - lex_length - @line_start + 1
           pos = Rley::Lexical::Position.new(@lineno, col)
           if value
             token = Literal.new(value, aLexeme.dup, symb, pos)

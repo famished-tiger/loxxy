@@ -148,6 +148,19 @@ module Loxxy
         end
       end
 
+      it 'should ignore spaces surrounding minus in subtraction of two numbers' do
+        [
+          ['1 - 1;', 0],
+          ['1 -1;', 0],
+          ['1- 1;', 0],
+          ['1-1;', 0]
+        ].each do |(source, predicted)|
+          lox = Loxxy::Interpreter.new
+          result = lox.evaluate(source)
+          expect(result.value == predicted).to be_truthy
+        end
+      end
+
       it 'should evaluate the negation of an object' do
         [
           ['!true;', false],
