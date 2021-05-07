@@ -1,3 +1,10 @@
+## [0.3.00] - 2021-05-07
+- Milestone: `Loxxy` passes all reference test suite.
+
+### Fixed
+- Method `BackEdn::Resolver#before_variable_expr`: Standard `Lox` allows re-declaration of a variable at top-level scope 
+
+ 
 ## [0.2.06] - 2021-05-04
 - Nearly passing the 'official' test suite, fixing non-compliant behavior, specialized exceptions for errors
 
