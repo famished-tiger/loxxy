@@ -106,25 +106,6 @@ module Loxxy
           expect(subject.lookup('q')).to eq(subject.current_env.defns['q'])
         end
 
-        # it 'should allow the search of an entry based on its i_name' do
-          # subject.insert(var('q'))
-          # i_name_x = subject.insert(var('x'))
-          # subject.enter_environment(BackEnd::Environment.new)
-          # i_name_q2 = subject.insert(var('q'))
-          # i_name_y = subject.insert(var('y'))
-
-          # # Search for unknown i_name
-          # expect(subject.lookup_i_name('dummy')).to be_nil
-
-          # curr_scope = subject.current_env
-          # # # Search for existing unique names
-          # expect(subject.lookup_i_name(i_name_y)).to eq(curr_scope.defns['y'])
-          # expect(subject.lookup_i_name(i_name_x)).to eq(subject.root.defns['x'])
-
-          # # Search for redefined name
-          # expect(subject.lookup_i_name(i_name_q2)).to eq(curr_scope.defns['q'])
-        # end
-
         it 'should list all the variables defined in all the szcope chain' do
           subject.insert(var('q'))
           subject.enter_environment(BackEnd::Environment.new)

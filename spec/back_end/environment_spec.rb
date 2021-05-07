@@ -54,20 +54,6 @@ module Loxxy
           expect(var_b).to be_kind_of(Variable)
           expect(var_b.name).to eq('b')
         end
-
-        # it 'should set the suffix of just created variable' do
-          # subject.insert(var('a'))
-          # var_a = subject.defns['a']
-          # expect(var_a.suffix).to eq("_#{subject.object_id.to_s(16)}")
-        # end
-
-        # it 'should complain when variable names collide' do
-          # subject.insert(var('c'))
-          # expect(subject.defns['c']).to be_kind_of(Datatype::Variable)
-          # err = StandardError
-          # err_msg = "Variable with name 'c' already exists."
-          # expect { subject.insert(var('c')) }.to raise_error(err, err_msg)
-        # end
       end # context
     end # describe
   end # module

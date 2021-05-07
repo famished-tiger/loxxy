@@ -57,16 +57,11 @@ describe 'Variable:' do
       run_positive_test
     end
 
-    # FAILS!!!
-    # but standard behaviour is questionable
-    # it "passes 'use_global_in_initializer.lox'" do
-    #   run_positive_test
-    # end
-
-    # FAILS!!!
-    # it "passes 'use_local_in_initializer.lox'" do
-    #   run_positive_test
-    # end
+    it "passes 'use_global_in_initializer.lox'" do
+      # passes the test but ...
+      # ... standard behaviour is questionable
+      run_positive_test
+    end
   end # context
 
   context 'Invalid cases:' do
@@ -98,6 +93,10 @@ describe 'Variable:' do
 
     it "passes 'use_false_as_var.lox'" do
       run_negative_test(Loxxy::SyntaxError)
+    end
+
+    it "passes 'use_local_in_initializer.lox'" do
+      run_negative_test(Loxxy::RuntimeError)
     end
 
     it "passes 'use_nil_as_var.lox'" do

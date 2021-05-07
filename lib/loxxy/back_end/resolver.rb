@@ -117,6 +117,9 @@ module Loxxy
 
       # A variable declaration adds a new variable to current scope
       def before_var_stmt(aVarStmt)
+        # Oddly enough, Lox allows the re-definition of a variable at top-level scope
+        return if scopes.size == 1 && scopes.last[aVarStmt.name]
+
         declare(aVarStmt.name)
       end
 
@@ -138,7 +141,7 @@ module Loxxy
       def before_variable_expr(aVarExpr)
         var_name = aVarExpr.name
         if !scopes.empty? && (scopes.last[var_name] == false)
-          raise StandardError, "Can't read variable #{var_name} in its own initializer"
+          raise Loxxy::RuntimeError, "Can't read variable #{var_name} in its own initializer"
         end
       end
 
@@ -205,19 +208,18 @@ module Loxxy
         scopes.pop
       end
 
-      # rubocop: disable Style/SoleNestedConditional
       def declare(aVarName)
         return if scopes.empty?
 
         curr_scope = scopes.last
-        if scopes.size > 1 # Not at top-level?
           # Oddly enough, Lox allows variable re-declaration at top-level
-          if curr_scope.include?(aVarName)
-            msg = "Error at '#{aVarName}': Already variable with this name in this scope."
-            raise Loxxy::RuntimeError, msg
-          end
+        if curr_scope.include?(aVarName)
+          msg = "Error at '#{aVarName}': Already variable with this name in this scope."
+          raise Loxxy::RuntimeError, msg
+        elsif curr_scope.size == 255 && current_function != :none
+          msg = "Error at '#{aVarName}': Too many local variables in function."
+          raise Loxxy::RuntimeError, msg
         end
-        # rubocop: enable Style/SoleNestedConditional
 
         # The initializer is not yet processed.
         # Mark the variable as 'not yet ready' = exists but may not be referenced yet

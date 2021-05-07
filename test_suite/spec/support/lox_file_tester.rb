@@ -79,6 +79,22 @@ module LoxFileTester
     Dir.chdir(original_dir)
   end
 
+  def run_file
+    original_dir = Dir.getwd
+    Dir.chdir(my_path)
+    result = nil
+
+    File.open(lox_filename, 'r') do |f|
+      source = f.read
+      lox = Loxxy::Interpreter.new
+
+      result = lox.evaluate(source)
+    end
+
+    Dir.chdir(original_dir)
+    result
+  end
+
   private
 
   def interpret2string_io(source)
