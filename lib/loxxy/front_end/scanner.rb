@@ -99,12 +99,9 @@ module Loxxy
 
         token = nil
 
-        if '(){},.;-/*'.include? curr_ch
+        if '(){},.;+-/*'.include? curr_ch
           # Single delimiter or separator character
           token = build_token(@@lexeme2name[curr_ch], scanner.getch)
-        elsif (lexeme = scanner.scan(/\+(?!\d)/))
-          # Minus or plus character not preceding a digit
-          token = build_token(@@lexeme2name[lexeme], lexeme)
         elsif (lexeme = scanner.scan(/[!=><]=?/))
           # One or two special character tokens
           token = build_token(@@lexeme2name[lexeme], lexeme)

@@ -1,8 +1,17 @@
+## [0.3.01] - 2021-05-08
+- Fix in `Scanner` class, added more tests in test suite.
+
+### New
+- Added the new subfolder `extra` under `test_suite`. It will contain tests for non-standard features or tests not covered in standard test suite.
+
+### Fixed
+- Class `FrontEnd::Scanner`: Couldn't correctly recognize a plus preceding directly a number literal
+
 ## [0.3.00] - 2021-05-07
 - Milestone: `Loxxy` passes all reference test suite.
 
 ### Fixed
-- Method `BackEdn::Resolver#before_variable_expr`: Standard `Lox` allows re-declaration of a variable at top-level scope 
+- Method `BackEnd::Resolver#before_variable_expr`: Standard `Lox` allows re-declaration of a variable at top-level scope 
 
  
 ## [0.2.06] - 2021-05-04
