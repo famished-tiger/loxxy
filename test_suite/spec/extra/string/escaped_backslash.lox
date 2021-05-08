@@ -1,0 +1,1 @@
+print "This string ends with a backslash\\"; // expect: This string ends with a backslash\

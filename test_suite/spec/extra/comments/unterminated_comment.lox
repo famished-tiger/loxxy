@@ -1,0 +1,3 @@
+print "ok";
+/* This comment is unterminated
+  expect: Unterminated '/* ... */' block comment on line 4

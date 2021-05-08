@@ -1,0 +1,9 @@
+/* Comment block 1
+  /* 
+    Comment block 2
+  */
+
+  /* 
+    Unterminated block 3
+*/ // expect: Unterminated '/* ... */' block comment on line 9    
+  

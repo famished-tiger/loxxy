@@ -1,0 +1,23 @@
+/***************************************
+ *
+ * Heading block comment
+ *
+ **************************************/
+ 
+print "ok"; // expect: ok
+
+/*
+  /* function max
+   * param a: number
+   * param b: number
+  */
+  fun max(a, b) {
+    if (a > b) {
+      return a;
+    }
+
+    return b;  
+  }
+
+print max(2, 3);
+*/
