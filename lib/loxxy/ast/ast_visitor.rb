@@ -126,7 +126,6 @@ module Loxxy
       # @param aSetExpr [AST::LOXGetExpr] the get expression node to visit
       def visit_set_expr(aSetExpr)
         broadcast(:before_set_expr, aSetExpr, self)
-        traverse_subnodes(aSetExpr)
         broadcast(:after_set_expr, aSetExpr, self)
       end
 

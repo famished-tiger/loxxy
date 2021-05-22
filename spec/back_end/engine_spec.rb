@@ -35,8 +35,8 @@ module Loxxy
         let(:lit_expr) { Ast::LoxLiteralExpr.new(sample_pos, greeting) }
 
         it "should react to 'after_var_stmt' event" do
-          # Precondition: value to assign is on top of stack
-          subject.stack.push(greeting)
+          # Precondition: value to assign is on top of expr stack
+          subject.expr_stack.push(greeting)
 
           expect { subject.after_var_stmt(var_decl) }.not_to raise_error
           current_env = subject.symbol_table.current_env
@@ -46,7 +46,17 @@ module Loxxy
 
         it "should react to 'before_literal_expr' event" do
           expect { subject.before_literal_expr(lit_expr) }.not_to raise_error
-          expect(subject.stack.pop).to eq(greeting)
+          expect(subject.expr_stack.pop).to eq(greeting)
+        end
+      end
+
+      context 'Built-in functions:' do
+        it 'should provide built-in functions' do
+          symb_table = subject.symbol_table
+          %w[clock getc chr exit print_error].each do |name|
+            fun_var = symb_table.current_env.defns[name]
+            expect(fun_var.value).to be_kind_of(BackEnd::Engine::NativeFunction)
+          end
         end
       end
     end # describe

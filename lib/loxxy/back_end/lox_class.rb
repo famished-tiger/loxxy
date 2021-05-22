@@ -7,17 +7,15 @@ module Loxxy
   module BackEnd
     # Runtime representation of a Lox class.
     class LoxClass
-      # rubocop: disable Style/AccessorGrouping
-
       # @return [String] The name of the class
       attr_reader :name
       attr_reader :superclass
 
       # @return [Hash{String => LoxFunction}] the list of methods
       attr_reader :meths
-      attr_reader :stack
 
-      # rubocop: enable Style/AccessorGrouping
+      # @return [Loxxy::BackEnd::Engine]
+      attr_reader :engine
 
       # Create a class with given name
       # @param aName [String] The name of the class
@@ -28,11 +26,11 @@ module Loxxy
         theMethods.each do |func|
           meths[func.name] = func
         end
-        @stack = anEngine.stack
+        @engine = anEngine
       end
 
       def accept(_visitor)
-        stack.push self
+        engine.expr_stack.push self
       end
 
       def arity
@@ -46,9 +44,9 @@ module Loxxy
         if initializer
           constructor = initializer.bind(instance)
           constructor.call(engine, visitor)
+        else
+          engine.expr_stack.push(instance)
         end
-
-        engine.stack.push(instance)
       end
 
       # @param aName [String] the method name to search for

@@ -13,7 +13,7 @@ module Loxxy
       # @return [Array<>] the parameters
       attr_reader :parameters
       attr_reader :body
-      attr_reader :stack
+      attr_reader :engine
       attr_reader :closure
       attr_accessor :is_initializer
 
@@ -23,7 +23,7 @@ module Loxxy
         @name = aName.dup
         @parameters = parameterList
         @body = aBody.kind_of?(Ast::LoxNoopExpr) ? aBody : aBody.subnodes[0]
-        @stack = anEngine.stack
+        @engine = anEngine
         @closure = anEngine.symbol_table.current_env
         @is_initializer = false
         anEngine.symbol_table.current_env.embedding = true
@@ -34,28 +34,34 @@ module Loxxy
       end
 
       def accept(_visitor)
-        stack.push self
+        engine.expr_stack.push self
       end
 
-      def call(engine, aVisitor)
+      def call(_engine, aVisitor)
         new_env = Environment.new(closure)
         engine.symbol_table.enter_environment(new_env)
 
         parameters&.each do |param_name|
-          local = Variable.new(param_name, stack.pop)
+          local = Variable.new(param_name, engine.stack.pop)
           engine.symbol_table.insert(local)
         end
 
         catch(:return) do
-          (body.nil? || body.kind_of?(Ast::LoxNoopExpr)) ? Datatype::Nil.instance : body.accept(aVisitor)
-          throw(:return)
+          body.accept(aVisitor) unless body.nil? || body.kind_of?(Ast::LoxNoopExpr)
+          # implicit return at end of function...
+          engine.stack.push(Datatype::Nil.instance) unless is_initializer
         end
+        # Compensate for deeply nested return
+        engine.symbol_table.leave_environment while engine.current_env != new_env
+
         if is_initializer
           enclosing_env = engine.symbol_table.current_env.enclosing
           engine.stack.push(enclosing_env.defns['this'].value)
         end
 
         engine.symbol_table.leave_environment
+        # engine.expr_stack.clear
+        engine.expr_stack.push(engine.stack.pop) unless engine.stack.empty?
       end
 
       def bind(anInstance)

@@ -133,6 +133,7 @@ module Loxxy
       end
 
       def after_set_expr(aSetExpr, aVisitor)
+        aSetExpr.value.accept(aVisitor)
         # Evaluate object part
         aSetExpr.object.accept(aVisitor)
       end

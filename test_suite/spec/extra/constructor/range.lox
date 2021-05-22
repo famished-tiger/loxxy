@@ -1,0 +1,33 @@
+fun max(a, b) {
+  if (a >= b) {
+    return a;
+  }
+  
+  return b;
+}
+
+fun min(a, b) {
+  if (a <= b) {
+    return a;
+  }
+  
+  return b;
+}
+
+class Range {
+  init(a, b) {
+    this.low = min(a, b);
+    this.high = max(a, b);
+  }
+
+  print_me() {
+    print "[";
+    print this.low;
+    print ", ";
+    print this.high;
+    print "]";
+  }
+}
+
+var r = Range(2, 3);
+r.print_me(); // expect: [2, 3]

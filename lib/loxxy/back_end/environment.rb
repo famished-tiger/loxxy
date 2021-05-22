@@ -25,11 +25,15 @@ module Loxxy
       # @return [Hash{String => Variable}] Pairs of the kind
       attr_reader :defns
 
+      # @return [Array<LoxNode>] stack of values needed in evaluating an expression
+      attr_reader :expr_stack
+
       # Construct a environment instance.
       # @param aParent [Environment, NilClass] Parent environment to this one.
       def initialize(aParent = nil)
         @enclosing = aParent
         @defns = {}
+        @expr_stack = []
       end
 
       # Add a new variable to the environment.

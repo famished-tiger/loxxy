@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Loxxy
-  VERSION = '0.3.01'
+  VERSION = '0.3.02'
 end

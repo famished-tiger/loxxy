@@ -1,3 +1,18 @@
+## [0.3.02] - 2021-05-22
+- New built-in expressions `getc`, `chr`, `exit` and `print_eeror` , fixes with deeply nested returns, set expressions
+
+### New
+- Class `BackEnd::Engine` new built-in functions `getc`, `chr`, `exit`, and `print_error`
+
+### Changed
+- Class `Ast::LoxSetExpr` value to assign is now a distinct atrrbute instead of a subnode
+-  Class `BackEnd::Engine` two distinct stacks: one of expression evaluation, another for argument passing
+
+### Fixed
+- Class `BackEnd::LoxClass`: in some contexts the init method returned twice 'this'.
+- Method `LoxFunction#call` mismatch between deeply nested returns and environments
+
+
 ## [0.3.01] - 2021-05-08
 - Fix in `Scanner` class, added more tests in test suite.
 

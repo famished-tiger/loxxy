@@ -430,6 +430,50 @@ LOX_END
         expect(sample_cfg[:ostream].string).to eq('<fn foo><native fn>')
       end
 
+      it "should implement 'getc' function" do
+        input_str = 'Abc'
+        cfg = { istream: StringIO.new(input_str) }
+        interpreter = Loxxy::Interpreter.new(cfg)
+        source = 'getc();'
+        result = interpreter.evaluate(source)
+        expect(result.value).to eq(65) # codepoint for letter 'A'
+      end
+
+      it "should implement 'chr' function" do
+        source = 'chr(65); // => "A"'
+        result = subject.evaluate(source)
+        expect(result.value).to eq('A')
+      end
+
+      # This test is disabled since it causes RSpec to stop immediately
+      # it "should implement 'exit' function" do
+      #   source = 'exit(100); // Process halts with exit code 100'
+      #   expect { subject.evaluate(source) }.to raise(SystemExit)
+      # end
+
+      it "should implement 'print_error' function" do
+        source = 'print_error("Some error"); // => Some error on stderr'
+        stderr_backup = $stderr
+        $stderr = StringIO.new
+        expect { subject.evaluate(source) }.not_to raise_error
+        expect($stderr.string).to eq('Some error')
+        $stderr = stderr_backup
+      end
+
+      # rubocop: disable Style/StringConcatenation
+      it 'should return in absence of explicit return statement' do
+        program = <<-LOX_END
+          fun foo() {
+            print "foo";
+          }
+
+          print foo();
+        LOX_END
+        expect { subject.evaluate(program) }.not_to raise_error
+        expect(sample_cfg[:ostream].string).to eq('foo' + 'nil')
+      end
+      # rubocop: enable Style/StringConcatenation
+
       it 'should support return statements' do
         program = <<-LOX_END
           fun max(a, b) {

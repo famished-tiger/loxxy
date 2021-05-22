@@ -23,7 +23,7 @@ module Loxxy
       end
 
       def accept(_visitor)
-        engine.stack.push self
+        engine.expr_stack.push self
       end
 
       # Text representation of a Lox instance

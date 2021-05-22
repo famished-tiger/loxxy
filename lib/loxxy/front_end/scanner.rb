@@ -91,7 +91,6 @@ module Loxxy
 
       private
 
-      # rubocop: disable Lint/DuplicateBranch
       def _next_token
         skip_intertoken_spaces
         curr_ch = scanner.peek(1)
@@ -125,7 +124,6 @@ module Loxxy
 
         return token
       end
-      # rubocop: enable Lint/DuplicateBranch
 
       def build_token(aSymbolName, aLexeme)
         begin

@@ -1,0 +1,29 @@
+class Point {
+  init(x_val, y_val) {
+    this.x = x_val;
+    this.y = y_val;
+  }
+  
+  print_it() {
+    print "(";
+      print this.x; print ", ";
+      print this.y;
+    print ")";
+  }
+}
+
+class Line {
+  init(x1, y1, x2, y2) {
+    this.vertex_1 = Point(x1, y1);
+    this.vertex_2 = Point(x2, y2);
+  }
+  
+  print_it() {
+    this.vertex_1.print_it();
+    print " -> ";
+    this.vertex_2.print_it();    
+  }
+}
+
+var line = Line(2, 3, 5, 7);
+line.print_it(); // expect: (2, 3) -> (5, 7)

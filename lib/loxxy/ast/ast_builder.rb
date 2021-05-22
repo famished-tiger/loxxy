@@ -318,7 +318,7 @@ module Loxxy
         name_assignee = theChildren[1].token.lexeme.dup
         if theChildren[0].kind_of?(Ast::LoxSetExpr)
           theChildren[0].property = name_assignee
-          theChildren[0].subnodes << theChildren[3]
+          theChildren[0].value = theChildren[3]
           theChildren[0]
         else
           Ast::LoxAssignExpr.new(tokens[1].position, name_assignee, theChildren[3])

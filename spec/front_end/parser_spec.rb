@@ -353,8 +353,8 @@ LOX_END
           expect(expr).to be_kind_of(Ast::LoxSetExpr)
           expect(expr.object.name).to eq('someObject')
           expect(expr.property).to eq('someProperty')
-          expect(expr.subnodes[0]).to be_kind_of(Ast::LoxVariableExpr)
-          expect(expr.subnodes[0].name).to eq('value')
+          expect(expr.value).to be_kind_of(Ast::LoxVariableExpr)
+          expect(expr.value.name).to eq('value')
         end
 
         it 'should parse complex set access' do
@@ -372,8 +372,8 @@ LOX_END
           expr = ptree.root.subnodes[0]
           expect(expr).to be_kind_of(Ast::LoxSetExpr)
           expect(expr.property).to eq('meat')
-          expect(expr.subnodes[0]).to be_kind_of(Ast::LoxVariableExpr)
-          expect(expr.subnodes[0].name).to eq('ham')
+          expect(expr.value).to be_kind_of(Ast::LoxVariableExpr)
+          expect(expr.value.name).to eq('ham')
           expect(expr.object).to be_kind_of(Ast::LoxGetExpr)
           expect(expr.object.property).to eq('filling')
           expect(expr.object.object).to be_kind_of(Ast::LoxGetExpr)
