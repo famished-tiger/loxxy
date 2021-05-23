@@ -36,7 +36,9 @@ describe 'method:' do
     end
 
     it "passes 'refer_to_name.lox'" do
-      run_negative_test(Loxxy::RuntimeError)
+      # Non-compliant error message
+      err_msg = "[line 3:11] Undefined variable 'method'."
+      run_negative_test(Loxxy::RuntimeError, err_msg)
     end
 
     it "passes 'too_many_arguments.lox'" do

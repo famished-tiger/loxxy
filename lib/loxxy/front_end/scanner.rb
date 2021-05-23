@@ -61,6 +61,20 @@ module Loxxy
         print return super this true var while
       ].map { |x| [x, x] }.to_h
 
+      # Single character that have a special meaning when escaped
+      # @return [{Char => String}]
+      @@escape_chars = {
+        ?a => "\a",
+        ?b => "\b",
+        ?e => "\e",
+        ?f => "\f",
+        ?n => "\n",
+        ?r => "\r",
+        ?s => "\s",
+        ?t => "\t",
+        ?v => "\v"
+      }.freeze
+
       # Constructor. Initialize a tokenizer for Lox input.
       # @param source [String] Lox text to tokenize.
       def initialize(source = nil)
@@ -104,18 +118,14 @@ module Loxxy
         elsif (lexeme = scanner.scan(/[!=><]=?/))
           # One or two special character tokens
           token = build_token(@@lexeme2name[lexeme], lexeme)
+        elsif scanner.scan(/"/) # Start of string detected...
+          token = build_string_token
         elsif (lexeme = scanner.scan(/\d+(?:\.\d+)?/))
           token = build_token('NUMBER', lexeme)
-        elsif (lexeme = scanner.scan(/"(?:\\"|[^"])*"/))
-          token = build_token('STRING', lexeme)
         elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z_0-9]*/))
           keyw = @@keywords[lexeme]
           tok_type = keyw ? keyw.upcase : 'IDENTIFIER'
           token = build_token(tok_type, lexeme)
-        elsif scanner.scan(/"(?:\\"|[^"])*\z/)
-          # Error: unterminated string...
-          col = scanner.pos - @line_start + 1
-          raise ScanError, "Error: [line #{lineno}:#{col}]: Unterminated string."
         else # Unknown token
           col = scanner.pos - @line_start + 1
           _erroneous = curr_ch.nil? ? '' : scanner.scan(/./)
@@ -153,8 +163,6 @@ module Loxxy
             value = Datatype::Nil.instance
           when 'NUMBER'
             value = Datatype::Number.new(aLexeme)
-          when 'STRING'
-            value = Datatype::LXString.new(unescape_string(aLexeme))
           when 'TRUE'
             value = Datatype::True.instance
           else
@@ -164,27 +172,47 @@ module Loxxy
         return [value, symb]
       end
 
-      # Replace any sequence sequence by their "real" value.
-      def unescape_string(aText)
-        result = +''
-        previous = nil
-
-        aText.each_char do |ch|
-          if previous
-            if ch == ?n
-              result << "\n"
-            else
-              result << ch
-            end
-            previous = nil
-          elsif ch == '\\'
-            previous = ?\
+      # precondition: current position at leading quote
+      def build_string_token
+        scan_pos = scanner.pos
+        line = @lineno
+        column_start = scan_pos - @line_start
+        literal = +''
+        loop do
+          substr = scanner.scan(/[^"\\\r\n]*/)
+          if scanner.eos?
+            pos_start = "line #{line}:#{column_start}"
+            raise ScanError, "Error: [#{pos_start}]: Unterminated string."
           else
-            result << ch
+            literal << substr
+            special = scanner.scan(/["\\\r\n]/)
+            case special
+            when '"' # Terminating quote found
+              break
+            when "\r"
+              next_line
+              special << scanner.scan(/./) if scanner.match?(/\n/)
+              literal << special
+            when "\n"
+              next_line
+              literal << special
+            when '\\'
+              ch = scanner.scan(/./)
+              next unless ch
+
+              escaped = @@escape_chars[ch]
+              if escaped
+                literal << escaped
+              else
+                literal << ch
+              end
+            end
           end
         end
-
-        result
+        pos = Rley::Lexical::Position.new(line, column_start)
+        lox_string = Datatype::LXString.new(literal)
+        lexeme = scanner.string[scan_pos - 1..scanner.pos - 1]
+        Literal.new(lox_string, lexeme, 'STRING', pos)
       end
 
       # Skip non-significant whitespaces and comments.

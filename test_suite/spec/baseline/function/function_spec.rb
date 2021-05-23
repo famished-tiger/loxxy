@@ -49,7 +49,9 @@ describe 'Function:' do
     end
 
     it "passes 'local_mutual_recursion.lox'" do
-      run_negative_test
+      # Non-compliant error message
+      err_msg = "[line 4:12] Undefined variable 'isOdd'."
+      run_negative_test(Loxxy::RuntimeError, err_msg)
     end
 
     it "passes 'missing_arguments.lox'" do

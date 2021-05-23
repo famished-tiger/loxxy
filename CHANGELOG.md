@@ -1,3 +1,13 @@
+## [0.3.03] - 2021-05-23
+- Fixes in the location of an undefined variable. Rewrite of the scanning of lox string.
+
+### Changed
+-  Method `BackEnd::Engine#after_variable_expr` the error message `Undefined variable` nows gives the location of the offending variable.
+- Class `FrontEnd#Scanner` complete refactoring of String recognition.
+
+### Fixed
+- Method `Ast::AstBuilder#reduce_variable_expr` now associates the correct location of the variable.
+
 ## [0.3.02] - 2021-05-22
 - New built-in expressions `getc`, `chr`, `exit` and `print_eeror` , fixes with deeply nested returns, set expressions
 

@@ -84,11 +84,15 @@ describe 'Variable:' do
     end
 
     it "passes 'undefined_global.lox'" do
-      run_negative_test
+      # Non-compliant message
+      err_msg = "[line 1:7] Undefined variable 'notDefined'."
+      run_negative_test(Loxxy::RuntimeError, err_msg)
     end
 
     it "passes 'undefined_local.lox'" do
-      run_negative_test
+      # Non-compliant message
+      err_msg = "[line 2:9] Undefined variable 'notDefined'."
+      run_negative_test(Loxxy::RuntimeError, err_msg)
     end
 
     it "passes 'use_false_as_var.lox'" do

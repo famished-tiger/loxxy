@@ -1,1 +1,2 @@
-print "This string contains \"quotes\""; // expect: This string contains "quotes"
+var quoted = "This string contains \"quotes\""; 
+print quoted; // expect: This string contains "quotes"

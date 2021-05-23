@@ -395,9 +395,10 @@ module Loxxy
       end
 
       # rule('primary' => 'IDENTIFIER')
-      def reduce_variable_expr(_production, _range, tokens, theChildren)
+      def reduce_variable_expr(_production, _range, _tokens, theChildren)
         var_name = theChildren[0].token.lexeme
-        LoxVariableExpr.new(tokens[0].position, var_name)
+        pos = theChildren[0].token.position
+        LoxVariableExpr.new(pos, var_name)
       end
 
       # rule('primary' => 'THIS')

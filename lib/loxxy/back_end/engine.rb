@@ -326,7 +326,10 @@ module Loxxy
       def after_variable_expr(aVarExpr, aVisitor)
         var_name = aVarExpr.name
         var = variable_lookup(aVarExpr)
-        raise Loxxy::RuntimeError, "Undefined variable '#{var_name}'." unless var
+        unless var
+          pos = "line #{aVarExpr.position.line}:#{aVarExpr.position.column}"
+          raise Loxxy::RuntimeError, "[#{pos}] Undefined variable '#{var_name}'."
+        end
 
         var.value.accept(aVisitor) # Evaluate variable value then push on stack
       end

@@ -15,7 +15,6 @@ describe 'String (non-std):' do
 
     it "passes 'escaped_backslash.lox'" do
       run_positive_test
-      # run_positive_test("1\n2\n3") # Parsing expectations ignores newlines
     end
 
     it "passes 'newlines.lox'" do

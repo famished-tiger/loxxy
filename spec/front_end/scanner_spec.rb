@@ -211,22 +211,25 @@ LOX_END
         end
 
         it 'should recognize escaped quotes' do
-          embedded_quotes = %q{she said: \"Hello\"}
-          result = subject.send(:unescape_string, embedded_quotes)
-          expect(result).to eq('she said: "Hello"')
+          embedded_quotes = %q{"she said: \"Hello\""}
+          subject.start_with(embedded_quotes)
+          result = subject.tokens[0]
+          expect(result.value).to eq('she said: "Hello"')
         end
 
         it 'should recognize escaped backslash' do
-          embedded_backslash = 'backslash>\\\\'
-          result = subject.send(:unescape_string, embedded_backslash)
-          expect(result).to eq('backslash>\\')
+          embedded_backslash = '"backslash>\\\\"'
+          subject.start_with(embedded_backslash)
+          result = subject.tokens[0]
+          expect(result.value).to eq('backslash>\\')
         end
 
         # rubocop: disable Style/StringConcatenation
         it 'should recognize newline escape sequence' do
-          embedded_newline = 'line1\\nline2'
-          result = subject.send(:unescape_string, embedded_newline)
-          expect(result).to eq('line1' + "\n" + 'line2')
+          embedded_newline = '"line1\\nline2"'
+          subject.start_with(embedded_newline)
+          result = subject.tokens[0]
+          expect(result.value).to eq('line1' + "\n" + 'line2')
         end
         # rubocop: enable Style/StringConcatenation
 
@@ -289,7 +292,7 @@ LOX_END
         it 'should complain if it finds an unterminated string' do
           subject.start_with('var a = "Unfinished;')
           err = Loxxy::ScanError
-          err_msg = 'Error: [line 1:21]: Unterminated string.'
+          err_msg = 'Error: [line 1:9]: Unterminated string.'
           expect { subject.tokens }.to raise_error(err, err_msg)
         end
 

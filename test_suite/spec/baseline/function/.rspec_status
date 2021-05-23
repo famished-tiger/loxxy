@@ -1,0 +1,17 @@
+example_id                                       | status | run_time        |
+------------------------------------------------ | ------ | --------------- |
+./spec/baseline/function/function_spec.rb[1:1:1] | passed | 0.02289 seconds |
+./spec/baseline/function/function_spec.rb[1:1:2] | failed | 0.03762 seconds |
+./spec/baseline/function/function_spec.rb[1:1:3] | passed | 0.05272 seconds |
+./spec/baseline/function/function_spec.rb[1:1:4] | passed | 0.03129 seconds |
+./spec/baseline/function/function_spec.rb[1:1:5] | passed | 0.18523 seconds |
+./spec/baseline/function/function_spec.rb[1:1:6] | passed | 0.01381 seconds |
+./spec/baseline/function/function_spec.rb[1:1:7] | failed | 0.03136 seconds |
+./spec/baseline/function/function_spec.rb[1:2:1] | passed | 0.01593 seconds |
+./spec/baseline/function/function_spec.rb[1:2:2] | passed | 0.02609 seconds |
+./spec/baseline/function/function_spec.rb[1:2:3] | passed | 0.05152 seconds |
+./spec/baseline/function/function_spec.rb[1:2:4] | passed | 0.01328 seconds |
+./spec/baseline/function/function_spec.rb[1:2:5] | passed | 0.00867 seconds |
+./spec/baseline/function/function_spec.rb[1:2:6] | passed | 0.0064 seconds  |
+./spec/baseline/function/function_spec.rb[1:2:7] | passed | 0.46394 seconds |
+./spec/baseline/function/function_spec.rb[1:2:8] | passed | 0.08562 seconds |

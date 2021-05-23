@@ -47,11 +47,10 @@ module Loxxy
 
       def validated_value(aValue)
         unless aValue.is_a?(String)
-          raise StandardError, "Invalid number value #{aValue}"
+          raise StandardError, "Invalid string value #{aValue}"
         end
 
-        # Remove double quotes delimiter
-        aValue.gsub(/(^")|("$)/, '')
+        aValue
       end
     end # class
   end # module
