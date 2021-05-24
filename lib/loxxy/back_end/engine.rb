@@ -475,10 +475,12 @@ module Loxxy
       end
 
       # Read a single character and return the character code as an integer.
+      # LoxLox requires the end of input to be a negative number
       def native_getc
         proc do
           ch = @istream.getc
-          Datatype::Number.new(ch.codepoints[0])
+          val = ch ? ch.codepoints[0] : -1
+          Datatype::Number.new(val)
         end
       end
 

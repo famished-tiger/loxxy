@@ -71,7 +71,6 @@ module Loxxy
       # @param aClassStmt [AST::LOXClassStmt] the for statement node to visit
       def visit_class_stmt(aClassStmt)
         broadcast(:before_class_stmt, aClassStmt)
-        traverse_subnodes(aClassStmt) # The methods are visited here...
         broadcast(:after_class_stmt, aClassStmt, self)
       end
 

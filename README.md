@@ -19,7 +19,8 @@ Although __Lox__ is fairly simple, it is far from being a toy language:
 ### Loxxy gem features
 - Complete tree-walking interpreter including lexer, parser and resolver
 - 100% pure Ruby with clean design (not a port from some other language)
-- Passes the `jox` (THE reference `Lox` implementation) test suite  
+- Passes the `jox` (THE reference `Lox` implementation) test suite
+- Can run a Lox imterpreter implemented in ... `Lox` [LoxLox](https://github.com/benhoyt/loxlox),
 - Minimal runtime dependency (Rley gem). Won't drag a bunch of gems...  
 - Ruby API for integrating a Lox interpreter with your code.
 - A command-line interpreter `loxxy`
@@ -53,6 +54,7 @@ And then execute:
 ### 2. Your first `Lox`  program
 Create a text file and enter the following lines:
 ```javascript
+// hello.lox
 // Your firs Lox program
 print "Hello, world.";
 ```
@@ -75,6 +77,7 @@ Let's admit it, the hello world example was unimpressive.
 To a get a taste of `Lox` object-oriented capabilities, let's try another `Hello world` variant:
 
 ```javascript
+// oo_hello.lox
 // Object-oriented hello world
 class Greeter {
   // in Lox, initializers/constructors are named `init`
@@ -98,6 +101,7 @@ Our next assignment: compute the first 20 elements of the Fibbonacci sequence.
 Here's an answer using the `while` loop construct:
 
 ```javascript
+// fibbonacci.lox
 // Compute the first 20 elements from the Fibbonacci sequence
 
 var a = 0;  // Use the var keyword to declare a new variable
@@ -127,6 +131,7 @@ Fans of `for` loops will be pleased to find their favorite looping construct.
 Here again, the Fibbonacci sequence refactored with a `for` loop:
 
 ```javascript
+// fibbonacci_v2.lox
 // Fibbonacci sequence - version 2
 var a = 0;
 var b = 1;
@@ -169,13 +174,69 @@ for (var i = 0; i < count; i = i + 1) {
 }
 ```
 
+### Loxxy goes meta...
+The `Loxxy` is able to run the `LoxLox` interpreter.
+[LoxLox](https://github.com/benhoyt/loxlox) is a Lox interpreter written in Lox by Ben Hoyt.  
+This interpreter with over 1900 lines long is (one of) the longest Lox pragram.
+As such, it is a good testbed for any Lox interpreter.
+
+Executing a lox program with the LoxLox interpreter that is itself running on top of Loxxy.
+#### Step 1 Download `lox.lox´ file
+Download the [LoxLox](https://github.com/benhoyt/loxlox) source file in Github.
+
+#### Step 2 (alternative a): running from the command line
+
+```
+$ loxxy lox.lox
+```
+
+Once loxxy CLI starts its interpreter that, in turn, executes the LoxLox interpreter.
+This may take a couple of seconds.
+Don't be surprised, if the program seems unresponsive: it is waiting for you input.
+Enter a line like this:
+```
+  print "Hello, world!";
+```  
+Then terminate with an end of file (crtl-D on Linuxes, crtl-z on Windows) followed by an enter key.
+You should see the famous greeting.
+
+#### Step 2 (alternative b): launching the interpreter from Ruby snippet
+The following snippet executes the LoxLox interpreter and feeds to it the
+input text. That input text is made available through a StringIO that replaces
+the `$stdio` device.
+
+```ruby
+require 'stringio'
+require 'loxxy'
+
+# Place your Lox pragram within the heredoc
+program = <<-LOX_END
+  print "Hello, world!";
+LOX_END
+
+lox_filename = 'lox.lox'
+File.open(lox_filename, 'r') do |f|
+  source = f.read
+  cfg = { istream: StringIO.new(program, 'r')}
+  lox = Loxxy::Interpreter.new(cfg)
+  lox.evaluate(source)
+end
+```
+
+Save this snippet as a Ruby file, launch Ruby with this file in command line.
+After a couple of seconds, you'll see the Ruby interpreter that executes the 
+Loxxy interpreter that itself executes the LoxLox interpreter written in Lox.
+That last interpreter is the one that run the hello world line.
+
+That's definitively meta...
+
 This completes our quick tour of `Lox`, to learn more about the language,
 check the online book [Crafting Interpreters](https://craftinginterpreters.com/ )
 
 ## What's the fuss about Lox?
 ... Nothing...  
 Bob Nystrom designed a language __simple__ enough so that he could present
-two implementations (an interpreter, then a compiler) in one single book.
+two interpreter implementations (a tree-walking one, then a bytecode one) in one single book.
 
 In other words, __Lox__ contains interesting features found in most general-purpose
 languages. In addition to that, there are [numerous implementations](https://github.com/munificent/craftinginterpreters/wiki/Lox-implementations) in different languages 
@@ -202,14 +263,11 @@ There are already a number of programming languages derived from `Lox`...
 ### Purpose of this project:
 - To deliver an open source example of a programming language fully implemented in Ruby  
   (from the scanner and parser to an interpreter).
-- The implementation should be mature enough to run [LoxLox](https://github.com/benhoyt/loxlox),  
-  a Lox interpreter written in Lox.
   
 ### Roadmap
 - Extend the test suite
 - Improve the error handling  
 - Improve the documentation
-- Ability run the LoxLox interpreter
 
 ## Hello world example
 The next examples show how to use the interpreter directly from Ruby code.

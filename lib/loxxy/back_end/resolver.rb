@@ -138,6 +138,11 @@ module Loxxy
         aSetExpr.object.accept(aVisitor)
       end
 
+      def after_logical_expr(aLogicalExpr, aVisitor)
+        # Force the visit of second operand (resolver should ignore shortcuts)
+        aLogicalExpr.operands.last.accept(aVisitor)
+      end
+
       # Variable expressions require their variables resolved
       def before_variable_expr(aVarExpr)
         var_name = aVarExpr.name

@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'lox_compound_expr'
+require_relative 'lox_node'
 
 module Loxxy
   module Ast
-    class LoxClassStmt < LoxCompoundExpr
+    # A parse tree node that represents a Lox class declaration.
+    class LoxClassStmt < LoxNode
       # @return [String] the class name
       attr_reader :name
 
@@ -14,11 +15,13 @@ module Loxxy
       # @return [Array<Ast::LoxFunStmt>] the methods
       attr_reader :body
 
+      # Constructor for a parse node that represents a Lox function declaration
       # @param aPosition [Rley::Lexical::Position] Position of the entry in the input stream.
-      # @param condExpr [Loxxy::Ast::LoxNode] iteration condition
-      # @param theBody [Array<Loxxy::Ast::LoxNode>]
+      # @param aName [String] the class name
+      # @param aSuperclassName [String] the super class name
+      # @param theMethods [Array<Loxxy::Ast::LoxFunStmt>] the methods
       def initialize(aPosition, aName, aSuperclassName, theMethods)
-        super(aPosition, [])
+        super(aPosition)
         @name = aName.dup
         @superclass = aSuperclassName
         @body = theMethods

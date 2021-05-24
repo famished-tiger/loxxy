@@ -22,13 +22,25 @@ module Loxxy
         @fields = {}
       end
 
-      def accept(_visitor)
-        engine.expr_stack.push self
+      # In Lox, only false and Nil have false value...
+      # @return [FalseClass]
+      def falsey?
+        false # Default implementation
+      end
+
+      # Any instance is truthy
+      # @return [TrueClass]
+      def truthy?
+        true # Default implementation
       end
 
       # Text representation of a Lox instance
       def to_str
         "#{klass.to_str} instance"
+      end
+
+      def accept(_visitor)
+        engine.expr_stack.push self
       end
 
       # Look up the value of property with given name

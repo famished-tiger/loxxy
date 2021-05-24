@@ -1,12 +1,21 @@
-## [0.3.03] - 2021-05-23
-- Fixes in the location of an undefined variable. Rewrite of the scanning of lox string.
+## [0.4.00] - 2021-05-24
+- Version bump. `Loxxy` is capable to run the LoxLox interpreter, an interpreter written in `Lox`.
+
+### New
+- Method `BackEnd::LoxInstance#falsey?` added
+- Method `BackEnd::LoxInstance#truthy?` added
 
 ### Changed
 -  Method `BackEnd::Engine#after_variable_expr` the error message `Undefined variable` nows gives the location of the offending variable.
-- Class `FrontEnd#Scanner` complete refactoring of String recognition.
+- Class `Ast::LoxClassStmt`is now a subclass of `LoxNode`
+
+- File `README.md` added an explanation on how to run `LoxLox`interpreter.
 
 ### Fixed
-- Method `Ast::AstBuilder#reduce_variable_expr` now associates the correct location of the variable.
+- Method `Ast::LoxClassStmt#initialize` fixed inconsistencies in its Yard/RDoc documentation.
+- Method `Ast::LoxFunStmt#initialize` fixed inconsistencies in its Yard/RDoc documentation.
+- Method `BackEnd::Engine#native_getc` now returns -1 when its reaches EOF.
+- Method `BackEnd::Resolver#after_logical_expr` was missing and this caused the lack of resultation in the second operand.
 
 ## [0.3.02] - 2021-05-22
 - New built-in expressions `getc`, `chr`, `exit` and `print_eeror` , fixes with deeply nested returns, set expressions

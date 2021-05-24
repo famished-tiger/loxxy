@@ -1,0 +1,10 @@
+fun convert(value) {
+  var ch = value;
+
+  // Loxxy had a bug & couldn't handle the second variable (after the `or`)
+  if (ch == 32 or ch == 9) return 0;
+
+  return value;
+}
+
+print convert(123); // expect: 123
