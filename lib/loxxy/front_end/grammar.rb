@@ -7,9 +7,9 @@ module Loxxy
   module FrontEnd
     ########################################
     # Grammar for Lox language
-    # Authoritave grammar at:
+    # Authoritative grammar at:
     #   https://craftinginterpreters.com/appendix-i.html
-    builder = Rley::Syntax::GrammarBuilder.new do
+    builder = Rley::grammar_builder do
       # Punctuators, separators...
       add_terminals('LEFT_PAREN', 'RIGHT_PAREN', 'LEFT_BRACE', 'RIGHT_BRACE')
       add_terminals('COMMA', 'DOT', 'MINUS', 'PLUS')
@@ -26,30 +26,21 @@ module Loxxy
       add_terminals('EOF')
 
       # Top-level rule that matches an entire Lox program
-      rule('program' => 'EOF').as 'null_program'
-      rule('program' => 'declaration_plus EOF').as 'lox_program'
+      rule('program' => 'declaration* EOF').as 'lox_program'
 
       # Declarations: bind an identifier to something
-      rule('declaration_plus' => 'declaration_plus declaration').as 'declaration_plus_more'
-      rule('declaration_plus' => 'declaration').as 'declaration_plus_end'
       rule('declaration' => 'classDecl')
       rule('declaration' => 'funDecl')
       rule('declaration' => 'varDecl')
       rule('declaration' => 'stmt')
 
       rule('classDecl' => 'CLASS classNaming class_body').as 'class_decl'
-      rule('classNaming' => 'IDENTIFIER LESS IDENTIFIER').as 'class_subclassing'
-      rule('classNaming' => 'IDENTIFIER').as 'class_name'
-      rule('class_body' => 'LEFT_BRACE methods_opt RIGHT_BRACE').as 'class_body'
-      rule('methods_opt' => 'method_plus')
-      rule('methods_opt' => [])
-      rule('method_plus' => 'method_plus function').as 'method_plus_more'
-      rule('method_plus' => 'function').as 'method_plus_end'
+      rule('classNaming' => 'IDENTIFIER (LESS IDENTIFIER)?').as 'class_naming'
+      rule('class_body' => 'LEFT_BRACE function* RIGHT_BRACE').as 'class_body'
 
       rule('funDecl' => 'FUN function').as 'fun_decl'
 
-      rule('varDecl' => 'VAR IDENTIFIER SEMICOLON').as 'var_declaration'
-      rule('varDecl' => 'VAR IDENTIFIER EQUAL expression SEMICOLON').as 'var_initialization'
+      rule('varDecl' => 'VAR IDENTIFIER (EQUAL expression)? SEMICOLON').as 'var_declaration'
 
       # Statements: produce side effects, but don't introduce bindings
       rule('stmt' => 'statement')
@@ -65,12 +56,11 @@ module Loxxy
       rule('exprStmt' => 'expression SEMICOLON').as 'exprStmt'
 
       rule('forStmt' => 'FOR LEFT_PAREN forControl RIGHT_PAREN statement').as 'for_stmt'
-      rule('forControl' => 'forInitialization forTest forUpdate').as 'for_control'
+      rule('forControl' => 'forInitialization forTest expression?').as 'for_control'
       rule('forInitialization' => 'varDecl')
       rule('forInitialization' => 'exprStmt')
       rule('forInitialization' => 'SEMICOLON').as 'empty_for_initialization'
-      rule('forTest' => 'expression_opt SEMICOLON').as 'for_test'
-      rule('forUpdate' => 'expression_opt')
+      rule('forTest' => 'expression? SEMICOLON').as 'for_test'
 
       rule('ifStmt' => 'IF ifCondition statement ELSE statement').as 'if_else_stmt'
       rule('unbalancedStmt' => 'IF ifCondition stmt').as 'if_stmt'
@@ -78,19 +68,14 @@ module Loxxy
       rule('ifCondition' => 'LEFT_PAREN expression RIGHT_PAREN').as 'keep_symbol2'
 
       rule('printStmt' => 'PRINT expression SEMICOLON').as 'print_stmt'
-      rule('returnStmt' => 'RETURN expression_opt SEMICOLON').as 'return_stmt'
+      rule('returnStmt' => 'RETURN expression? SEMICOLON').as 'return_stmt'
       rule('whileStmt' => 'WHILE LEFT_PAREN expression RIGHT_PAREN statement').as 'while_stmt'
-      rule('block' => 'LEFT_BRACE declaration_plus RIGHT_BRACE').as 'block_stmt'
-      rule('block' => 'LEFT_BRACE RIGHT_BRACE').as 'block_empty'
+      rule('block' => 'LEFT_BRACE declaration* RIGHT_BRACE').as 'block_stmt'
 
       # Expressions: produce values
-      rule('expression_opt' => 'expression')
-      rule('expression_opt' => [])
       rule('expression' => 'assignment')
-      rule('assignment' => 'owner_opt IDENTIFIER EQUAL assignment').as 'assign_expr'
+      rule('assignment' => '(call DOT)? IDENTIFIER EQUAL assignment').as 'assign_expr'
       rule('assignment' => 'logic_or')
-      rule('owner_opt' => 'call DOT').as 'set_expr'
-      rule('owner_opt' => [])
       rule('logic_or' => 'logic_and')
       rule('logic_or' => 'logic_and disjunct_plus').as 'logical_expr'
       rule('disjunct_plus' => 'disjunct_plus OR logic_and').as 'binary_plus_more'
@@ -130,10 +115,8 @@ module Loxxy
       rule('unaryOp' => 'BANG')
       rule('unaryOp' => 'MINUS')
       rule('call' => 'primary')
-      rule('call' => 'primary refinement_plus').as 'call_expr'
-      rule('refinement_plus' => 'refinement_plus refinement').as 'refinement_plus_more'
-      rule('refinement_plus' => 'refinement').as 'refinement_plus_end'
-      rule('refinement' => 'LEFT_PAREN arguments_opt RIGHT_PAREN').as 'call_arglist'
+      rule('call' => 'primary refinement+').as 'call_expr'
+      rule('refinement' => 'LEFT_PAREN arguments? RIGHT_PAREN').as 'call_arglist'
       rule('refinement' => 'DOT IDENTIFIER').as 'get_expr'
       rule('primary' => 'TRUE').as 'literal_expr'
       rule('primary' => 'FALSE').as 'literal_expr'
@@ -146,15 +129,9 @@ module Loxxy
       rule('primary' => 'SUPER DOT IDENTIFIER').as 'super_expr'
 
       # Utility rules
-      rule('function' => 'IDENTIFIER LEFT_PAREN params_opt RIGHT_PAREN block').as 'function'
-      rule('params_opt' => 'parameters')
-      rule('params_opt' => [])
-      rule('parameters' => 'parameters COMMA IDENTIFIER').as 'parameters_plus_more'
-      rule('parameters' => 'IDENTIFIER').as 'parameters_plus_end'
-      rule('arguments_opt' => 'arguments')
-      rule('arguments_opt' => [])
-      rule('arguments' => 'arguments COMMA expression').as 'arguments_plus_more'
-      rule('arguments' => 'expression').as 'arguments_plus_end'
+      rule('function' => 'IDENTIFIER LEFT_PAREN parameters? RIGHT_PAREN block').as 'function'
+      rule('parameters' => 'IDENTIFIER (COMMA IDENTIFIER)*').as 'parameters'
+      rule('arguments' => 'expression (COMMA expression)*').as 'arguments'
     end
 
     unless defined?(Grammar)

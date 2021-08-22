@@ -1,3 +1,11 @@
+## [0.4.01] - 2021-08-22
+- Grammar and AST::AstBuilder adapted to take profit of extended grammar notiation in Rley 0.8.01
+
+### Changed
+- Class `Ast::ASTBuilder` removal of methods made redundant with new Rley version
+- File `.rubocop.yml` added config for new cops
+- File `grammar.rb` changed rules to use new extended rule syntax in Rley
+
 ## [0.4.00] - 2021-05-24
 - Version bump. `Loxxy` is capable to run the LoxLox interpreter, an interpreter written in `Lox`.
 

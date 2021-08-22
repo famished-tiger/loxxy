@@ -48,7 +48,7 @@ Gem::Specification.new do |spec|
   DESCR_END
   spec.homepage      = 'https://github.com/famished-tiger/loxxy'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '~> 2.4'
+  spec.required_ruby_version = '~> 2.5'
 
   spec.bindir        = 'bin'
   spec.executables   = ['loxxy']
@@ -58,7 +58,7 @@ Gem::Specification.new do |spec|
   PkgExtending.pkg_documentation(spec)
 
   # Runtime dependencies
-  spec.add_dependency 'rley', '~> 0.7.06'
+  spec.add_dependency 'rley', '~> 0.8.01'
 
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 2.0'

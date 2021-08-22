@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rspec' # Use the RSpec framework
-require 'loxxy'
+require_relative '../lib/loxxy'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

@@ -143,63 +143,36 @@ module Loxxy
       #  SEMANTIC ACTIONS
       #####################################
 
-      # rule('program' => 'EOF').as 'null_program'
-      def reduce_null_program(_production, _range, _tokens, _theChildren)
-        Ast::LoxNoopExpr.new(tokens[0].position)
-      end
-
-      # rule('program' => 'declaration_plus EOF').as ''
+      # rule('program' => 'declaration+ EOF').as ''
       def reduce_lox_program(_production, _range, tokens, theChildren)
-        LoxSeqDecl.new(tokens[0].position, theChildren[0])
-      end
-
-      # rule('declaration_plus' => 'declaration_plus declaration').as ''
-      def reduce_declaration_plus_more(_production, _range, _tokens, theChildren)
-        theChildren[0] << theChildren[1]
-      end
-
-      # rule('declaration_plus' => 'declaration')
-      def reduce_declaration_plus_end(_production, _range, _tokens, theChildren)
-        [theChildren[0]]
+        if theChildren[0].empty?
+          Ast::LoxNoopExpr.new(tokens[0].position)
+        else
+          LoxSeqDecl.new(tokens[0].position, theChildren[0])
+        end
       end
 
       # rule('classDecl' => 'CLASS classNaming class_body')
       def reduce_class_decl(_production, _range, _tokens, theChildren)
-        if theChildren[1].kind_of?(Array)
-          name = theChildren[1].first
-          parent = theChildren[1].last
-        else
-          name = theChildren[1]
-          parent = nil
-        end
+        name = theChildren[1].first
+        parent = theChildren[1].last
         Ast::LoxClassStmt.new(tokens[1].position, name, parent, theChildren[2])
       end
 
-      # rule('classNaming' => 'IDENTIFIER')
-      def reduce_class_name(_production, _range, _tokens, theChildren)
-        theChildren[0].token.lexeme
-      end
-
-      # rule('classNaming' => 'IDENTIFIER LESS IDENTIFIER')
-      def reduce_class_subclassing(_production, _range, _tokens, theChildren)
-        super_token = theChildren[2].token
-        super_var = LoxVariableExpr.new(super_token.position, super_token.lexeme)
+      # rule('classNaming' => 'IDENTIFIER (LESS IDENTIFIER)?')
+      def reduce_class_naming(_production, _range, _tokens, theChildren)
+        if theChildren[1].nil?
+          super_var = nil
+        else
+          super_token = theChildren[1].subnodes[1].token
+          super_var = LoxVariableExpr.new(super_token.position, super_token.lexeme)
+        end
         [theChildren[0].token.lexeme, super_var]
       end
 
-      # rule('class_body' => 'LEFT_BRACE methods_opt RIGHT_BRACE')
+      # rule('class_body' => 'LEFT_BRACE function* RIGHT_BRACE')
       def reduce_class_body(_production, _range, _tokens, theChildren)
-        theChildren[1].nil? ? [] : theChildren[1]
-      end
-
-      # rule('method_plus' => 'method_plus function')
-      def reduce_method_plus_more(_production, _range, _tokens, theChildren)
-        theChildren[0] << theChildren[1]
-      end
-
-      # rule('method_plus' => 'function')
-      def reduce_method_plus_end(_production, _range, _tokens, theChildren)
-        theChildren
+        theChildren[1]
       end
 
       # rule('funDecl' => 'FUN function')
@@ -212,16 +185,11 @@ module Loxxy
       return_first_child(range, tokens, theChildren) # Discard the semicolon
       end
 
-      # rule('varDecl' => 'VAR IDENTIFIER SEMICOLON')
+      # rule('varDecl' => 'VAR IDENTIFIER (EQUAL expression)? SEMICOLON')
       def reduce_var_declaration(_production, _range, tokens, theChildren)
         var_name = theChildren[1].token.lexeme.dup
-        Ast::LoxVarStmt.new(tokens[1].position, var_name, nil)
-      end
-
-      # rule('varDecl' => 'VAR IDENTIFIER EQUAL expression SEMICOLON')
-      def reduce_var_initialization(_production, _range, tokens, theChildren)
-        var_name = theChildren[1].token.lexeme.dup
-        Ast::LoxVarStmt.new(tokens[1].position, var_name, theChildren[3])
+        init_val = theChildren[2] ? theChildren[2].subnodes[1] : nil
+        Ast::LoxVarStmt.new(tokens[1].position, var_name, init_val)
       end
 
       # rule('forStmt' => 'FOR LEFT_PAREN forControl RIGHT_PAREN statement')
@@ -248,7 +216,7 @@ module Loxxy
         for_stmt
       end
 
-      # rule('forControl' => 'forInitialization forTest forUpdate')
+      # rule('forControl' => 'forInitialization forTest expression?')
       def reduce_for_control(_production, _range, tokens, theChildren)
         (init, test, update) = theChildren
         if test.nil? && update
@@ -265,7 +233,7 @@ module Loxxy
         nil
       end
 
-      # rule('forTest' => 'expression_opt SEMICOLON')
+      # rule('forTest' => 'expression? SEMICOLON')
       def reduce_for_test(_production, range, tokens, theChildren)
         return_first_child(range, tokens, theChildren)
       end
@@ -292,7 +260,7 @@ module Loxxy
         Ast::LoxPrintStmt.new(tokens[1].position, theChildren[1])
       end
 
-      # rule('returnStmt' => 'RETURN expression_opt SEMICOLON')
+      # rule('returnStmt' => 'RETURN expression? SEMICOLON')
       def reduce_return_stmt(_production, _range, tokens, theChildren)
         Ast::LoxReturnStmt.new(tokens[1].position, theChildren[1])
       end
@@ -302,32 +270,29 @@ module Loxxy
         Ast::LoxWhileStmt.new(tokens[1].position, theChildren[2], theChildren[4])
       end
 
-      # rule('block' => 'LEFT_BRACE declaration_plus RIGHT_BRACE')
+      # rule('block' => 'LEFT_BRACE declaration* RIGHT_BRACE')
       def reduce_block_stmt(_production, _range, tokens, theChildren)
-        decls = LoxSeqDecl.new(tokens[1].position, theChildren[1])
-        Ast::LoxBlockStmt.new(tokens[1].position, decls)
+        decls = nil
+        if theChildren[1]
+          pos = tokens[1].position
+          decls = LoxSeqDecl.new(tokens[1].position, theChildren[1])
+        else
+          pos = tokens[0].position
+        end
+        Ast::LoxBlockStmt.new(pos, decls)
       end
 
-      # rule('block' => 'LEFT_BRACE RIGHT_BRACE').as 'block_empty'
-      def reduce_block_empty(_production, _range, tokens, _children)
-        Ast::LoxBlockStmt.new(tokens[0].position, nil)
-      end
-
-      # rule('assignment' => 'owner_opt IDENTIFIER EQUAL assignment')
+      # rule('assignment' => '(call DOT)? IDENTIFIER EQUAL assignment')
       def reduce_assign_expr(_production, _range, tokens, theChildren)
         name_assignee = theChildren[1].token.lexeme.dup
-        if theChildren[0].kind_of?(Ast::LoxSetExpr)
-          theChildren[0].property = name_assignee
-          theChildren[0].value = theChildren[3]
-          theChildren[0]
+        if theChildren[0]
+          set_expr = Ast::LoxSetExpr.new(tokens[1].position, theChildren[0].subnodes[0])
+          set_expr.property = name_assignee
+          set_expr.value = theChildren[3]
+          set_expr
         else
           Ast::LoxAssignExpr.new(tokens[1].position, name_assignee, theChildren[3])
         end
-      end
-
-      # rule('owner_opt' => 'call DOT')
-      def reduce_set_expr(_production, _range, tokens, theChildren)
-        Ast::LoxSetExpr.new(tokens[1].position, theChildren[0])
       end
 
 
@@ -343,6 +308,7 @@ module Loxxy
 
       # rule('call' => 'primary refinement_plus').as 'call_expr'
       def reduce_call_expr(_production, _range, _tokens, theChildren)
+        # return theChildren[0] unless theChildren[1]
         members = theChildren.flatten
         call_expr = nil
         loop do
@@ -365,7 +331,7 @@ module Loxxy
         theChildren
       end
 
-      # rule('refinement' => 'LEFT_PAREN arguments_opt RIGHT_PAREN')
+      # rule('refinement' => 'LEFT_PAREN arguments? RIGHT_PAREN')
       def reduce_call_arglist(_production, _range, tokens, theChildren)
         args = theChildren[1] || []
         if args.size > 255
@@ -422,24 +388,21 @@ module Loxxy
         LoxFunStmt.new(pos, first_child.token.lexeme, theChildren[2], theChildren[4])
       end
 
-      # rule('parameters' => 'parameters COMMA IDENTIFIER')
-      def reduce_parameters_plus_more(_production, _range, _tokens, theChildren)
-        theChildren[0] << theChildren[2].token.lexeme
+      # rule('parameters' => 'IDENTIFIER (COMMA IDENTIFIER)*').as 'parameters'
+      def reduce_parameters(_production, _range, _tokens, theChildren)
+        first_lexeme = theChildren[0].token.lexeme
+        return [first_lexeme] unless theChildren[1]
+
+        successors = theChildren[1].map { |seq_node| seq_node.subnodes[1].token.lexeme }
+        successors.unshift(first_lexeme)
       end
 
-      # rule('parameters' => 'IDENTIFIER')
-      def reduce_parameters_plus_end(_production, _range, _tokens, theChildren)
-        [theChildren[0].token.lexeme]
-      end
+      # rule('arguments' => 'expression (COMMA expression)*')
+      def reduce_arguments(_production, _range, _tokens, theChildren)
+        return [theChildren[0]] unless theChildren[1]
 
-      # rule('arguments' => 'arguments COMMA expression')
-      def reduce_arguments_plus_more(_production, _range, _tokens, theChildren)
-        theChildren[0] << theChildren[2]
-      end
-
-      # rule('arguments' => 'expression')
-      def reduce_arguments_plus_end(_production, _range, _tokens, theChildren)
-        theChildren
+        successors = theChildren[1].map { |seq_node| seq_node.subnodes[1] }
+        successors.unshift(theChildren[0])
       end
     end # class
   end # module

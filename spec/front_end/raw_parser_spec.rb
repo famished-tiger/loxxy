@@ -26,7 +26,10 @@ module Loxxy
           #   program => declaration_star EOF
           #   where the declaration_star MUST be empty
           expect(aParseTree.root.symbol.name).to eq('program')
-          eof = aParseTree.root.subnodes.first
+          (decls, eof) = aParseTree.root.subnodes
+          expect(decls).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(decls.symbol.name).to eq('declaration_star')
+          expect(decls.subnodes).to be_empty
           expect(eof).to be_kind_of(Rley::PTree::TerminalNode)
           expect(eof.symbol.name).to eq('EOF')
         end
@@ -73,8 +76,12 @@ LOX_END
           expect(root.symbol.name).to eq('program')
           (decls, eof) = root.subnodes
           expect(decls).to be_kind_of(Rley::PTree::NonTerminalNode)
-          expect(decls.symbol.name).to eq('declaration_plus')
-          stmt = decls.subnodes[0].subnodes[0]
+          expect(decls.symbol.name).to eq('declaration_star')
+          expect(decls.subnodes[0]).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(decls.subnodes[0].symbol.name).to eq('declaration_star')
+          expect(decls.subnodes[1]).to be_kind_of(Rley::PTree::NonTerminalNode)
+          expect(decls.subnodes[1].symbol.name).to eq('declaration')
+          stmt = decls.subnodes[1].subnodes[0]
           expect(stmt).to be_kind_of(Rley::PTree::NonTerminalNode)
           expect(stmt.symbol.name).to eq('stmt')
           statement = stmt.subnodes[0]

@@ -11,7 +11,7 @@ module Loxxy
       # Let nodes take `visitee` role as defined in the Visitor design pattern
       extend ASTVisitee
 
-      # return [Rley::Lexical::Position] Position of the entry in the input stream.
+      # @return [Rley::Lexical::Position] Position of the entry in the input stream.
       attr_reader :position
 
       # @param aPosition [Rley::Lexical::Position] Position of the entry in the input stream.
