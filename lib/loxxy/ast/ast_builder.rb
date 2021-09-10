@@ -164,7 +164,7 @@ module Loxxy
         if theChildren[1].nil?
           super_var = nil
         else
-          super_token = theChildren[1].subnodes[1].token
+          super_token = theChildren[1].last.token
           super_var = LoxVariableExpr.new(super_token.position, super_token.lexeme)
         end
         [theChildren[0].token.lexeme, super_var]
@@ -188,7 +188,7 @@ module Loxxy
       # rule('varDecl' => 'VAR IDENTIFIER (EQUAL expression)? SEMICOLON')
       def reduce_var_declaration(_production, _range, tokens, theChildren)
         var_name = theChildren[1].token.lexeme.dup
-        init_val = theChildren[2] ? theChildren[2].subnodes[1] : nil
+        init_val = theChildren[2] ? theChildren[2].last : nil
         Ast::LoxVarStmt.new(tokens[1].position, var_name, init_val)
       end
 
@@ -286,7 +286,7 @@ module Loxxy
       def reduce_assign_expr(_production, _range, tokens, theChildren)
         name_assignee = theChildren[1].token.lexeme.dup
         if theChildren[0]
-          set_expr = Ast::LoxSetExpr.new(tokens[1].position, theChildren[0].subnodes[0])
+          set_expr = Ast::LoxSetExpr.new(tokens[1].position, theChildren[0].first)
           set_expr.property = name_assignee
           set_expr.value = theChildren[3]
           set_expr
@@ -393,7 +393,7 @@ module Loxxy
         first_lexeme = theChildren[0].token.lexeme
         return [first_lexeme] unless theChildren[1]
 
-        successors = theChildren[1].map { |seq_node| seq_node.subnodes[1].token.lexeme }
+        successors = theChildren[1].map { |seq_node| seq_node.last.token.lexeme }
         successors.unshift(first_lexeme)
       end
 
@@ -401,7 +401,7 @@ module Loxxy
       def reduce_arguments(_production, _range, _tokens, theChildren)
         return [theChildren[0]] unless theChildren[1]
 
-        successors = theChildren[1].map { |seq_node| seq_node.subnodes[1] }
+        successors = theChildren[1].map { |seq_node| seq_node.last }
         successors.unshift(theChildren[0])
       end
     end # class

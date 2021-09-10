@@ -1,3 +1,18 @@
+## [0.4.02] - 2021-09-10
+- Fixes in`AST::AstBuilder` class to  cope with changes inRley 0.8.03
+
+### Changed
+- File `loxxy.gemspec` forced dependency to Rley 0.8.03
+
+### Fixed
+- Method `Ast::AstBuilder#reduce_class_naming` fixed access to `IDENTIFER` in (LESS IDENTIFER)?
+- Method `Ast::AstBuilder#reduce_var_declaration` fixed access to `expression` in (EQUAL expression)? 
+- Method `Ast::AstBuilder#reduce_assign_expr`fixed access to `call` in (call DOT)? 
+- Method `Ast::AstBuilder#reduce_parameters`fixed access to `IDENTIFIER` in (COMMA IDENTIFIER)* 
+- Method `Ast::AstBuilder#reduce_arguments`fixed access to `expression` in (COMMA expression)* 
+
+
+
 ## [0.4.01] - 2021-08-22
 - Grammar and AST::AstBuilder adapted to take profit of extended grammar notiation in Rley 0.8.01
 

@@ -58,7 +58,7 @@ Gem::Specification.new do |spec|
   PkgExtending.pkg_documentation(spec)
 
   # Runtime dependencies
-  spec.add_dependency 'rley', '~> 0.8.01'
+  spec.add_dependency 'rley', '~> 0.8.03'
 
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 2.0'
