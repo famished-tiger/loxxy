@@ -1,15 +1,22 @@
+## [0.4.04] - 2021-09-11
+- Grammar optimization (3 rules less, use of match_closest feature from `Rley`)
+
+### Changed
+- Method `Ast::AstBuilder#reduce_arguments` code re-styling: use shorthand &:
+- File `grammar.rb` use `match_closest` constraint from Rley to cope with dangling else statement
+
 ## [0.4.02] - 2021-09-10
-- Fixes in`AST::AstBuilder` class to  cope with changes inRley 0.8.03
+- Fixes in`AST::AstBuilder` class to  cope with changes in Rley 0.8.03
 
 ### Changed
 - File `loxxy.gemspec` forced dependency to Rley 0.8.03
 
 ### Fixed
 - Method `Ast::AstBuilder#reduce_class_naming` fixed access to `IDENTIFER` in (LESS IDENTIFER)?
-- Method `Ast::AstBuilder#reduce_var_declaration` fixed access to `expression` in (EQUAL expression)? 
-- Method `Ast::AstBuilder#reduce_assign_expr`fixed access to `call` in (call DOT)? 
-- Method `Ast::AstBuilder#reduce_parameters`fixed access to `IDENTIFIER` in (COMMA IDENTIFIER)* 
-- Method `Ast::AstBuilder#reduce_arguments`fixed access to `expression` in (COMMA expression)* 
+- Method `Ast::AstBuilder#reduce_var_declaration` fixed access to `expression` in (EQUAL expression)?
+- Method `Ast::AstBuilder#reduce_assign_expr`fixed access to `call` in (call DOT)?
+- Method `Ast::AstBuilder#reduce_parameters`fixed access to `IDENTIFIER` in (COMMA IDENTIFIER)*
+- Method `Ast::AstBuilder#reduce_arguments`fixed access to `expression` in (COMMA expression)*
 
 
 
@@ -68,14 +75,14 @@
 - Milestone: `Loxxy` passes all reference test suite.
 
 ### Fixed
-- Method `BackEnd::Resolver#before_variable_expr`: Standard `Lox` allows re-declaration of a variable at top-level scope 
+- Method `BackEnd::Resolver#before_variable_expr`: Standard `Lox` allows re-declaration of a variable at top-level scope
 
- 
+
 ## [0.2.06] - 2021-05-04
 - Nearly passing the 'official' test suite, fixing non-compliant behavior, specialized exceptions for errors
 
 ### New
-- Module `LoxFileTester` module that hosts methods that simplify the tests of `Lox` source file. 
+- Module `LoxFileTester` module that hosts methods that simplify the tests of `Lox` source file.
 
 ### Changed
 - Folder `test_suite` vastly reorganized. Sub-folder `baseline` contains spec files testing the `Lox` files from official implementation
@@ -85,7 +92,7 @@
 
 ### Fixed
 - `0/0` expression results in a ZeroDivisionError exception, in Lox this result to a NaN (Not a Number). Now, `Loxxy` is aligned to standard `Lox`
-- `FrontEnd::Scanner` now always treats expression like `-123` as the unary or binary minus operator applied to a positive number. 
+- `FrontEnd::Scanner` now always treats expression like `-123` as the unary or binary minus operator applied to a positive number.
 
 ## [0.2.05] - 2021-04-26
 - `Loxxy` now transforms for loops into while loops (desugaring), fix in Scanner class
@@ -112,7 +119,7 @@
 - Method `BackEnd::Resolver#after_for_stmt now accepts nil test expression
 
 ## [0.2.03] - 2021-04-24
-- Fixes for the set (field) expressions, `accept` methods for AST nodes are meta-programmed 
+- Fixes for the set (field) expressions, `accept` methods for AST nodes are meta-programmed
 
 ### New
 - Module `Ast::Visitee` provides the `define_accept` method that generate `accept` method with meta-programming
@@ -287,7 +294,7 @@
 - Fix and test suite for return statements
 
 ### CHANGED
-- `Loxxy` reports an error when a return statement occurs in top-level scope 
+- `Loxxy` reports an error when a return statement occurs in top-level scope
 
 ### Fixed
 - A return without explicit value genrated an exception in some cases.
@@ -311,7 +318,7 @@
 - Class `BackEnd::Environment`: added the attributes `predecessor` and `embedding` to support closures.
 - Class `BackeEnd::LoxFunction`: added the attribute `closure` that is equal to the environment where the function is declared.
 - Constructor `BackEnd::LoxFunction#new` now takes a `BackEnd::Engine`as its fourth parameter
-- Methods `BackEnd::SymbolTable#enter_environment`, `BackEnd::SymbolTable#leave_environment` take into account closures. 
+- Methods `BackEnd::SymbolTable#enter_environment`, `BackEnd::SymbolTable#leave_environment` take into account closures.
 
 ### Fixed
 - Method `Ast::AstBuilder#after_var_stmt` now takes into account the value from the top of stack
@@ -357,7 +364,7 @@
 
 ### Changed
 - File `console` renamed to `loxxy`. Very basic command-line interface.
-- Custom exception classes 
+- Custom exception classes
 - File `README.md` updated list of supported `Lox` keywords.
 
 
@@ -388,8 +395,8 @@
 - Method `Ast::ASTVisitor#visit_fun_stmt` for visiting an `Ast::LoxFunStmt` node
 - Method `Ast::LoxBlockStmt#empty?` returns true if the code block is empty
 - Method `BackEnd::Engine#after_fun_stmt`
-- Method `BackEnd::NativeFunction#call` 
-- Method `BackEnd::NativeFunction#to_str` 
+- Method `BackEnd::NativeFunction#call`
+- Method `BackEnd::NativeFunction#to_str`
 - Method `BackEnd::LoxFunction` runtime representation of a Lox function.
 
 ### Changed
@@ -458,7 +465,7 @@
 - Method `Ast::ASTBuilder#reduce_assign_expr` creates an `Ast::LoxAssignExpr` node
 - Method `Ast::ASTVisitor#visit_assign_expr` for visiting an `Ast::LoxAssignExpr` node
 - Method `BackEnd::Engine#after_assign_expr` implementation of the assignment
-- Method `BackEnd::Variable#assign` to assign a value to a variable 
+- Method `BackEnd::Variable#assign` to assign a value to a variable
 
 ## [0.0.23] - 2021-01-20
 - Fix for variables without explicit initialization.

@@ -401,7 +401,7 @@ module Loxxy
       def reduce_arguments(_production, _range, _tokens, theChildren)
         return [theChildren[0]] unless theChildren[1]
 
-        successors = theChildren[1].map { |seq_node| seq_node.last }
+        successors = theChildren[1].map(&:last)
         successors.unshift(theChildren[0])
       end
     end # class
