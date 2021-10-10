@@ -46,7 +46,7 @@ module Loxxy
         end
 
         it 'should cope with whitespaces only input' do
-          ptree = subject.parse(' ' * 80 + "\n" * 20)
+          ptree = subject.parse((' ' * 80) + ("\n" * 20))
           check_empty_input_result(ptree)
         end
 

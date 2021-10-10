@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 require 'rley' # Load the gem
 
 module Loxxy

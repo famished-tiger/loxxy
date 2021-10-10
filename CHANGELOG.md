@@ -1,3 +1,13 @@
+## [0.4.05] - 2021-10-10
+- Removal of `Literal` class, code restyling to please Rubocop 1.22
+
+### Changed
+- Class `Scanner` remove all dependencies to `Frontend::Literal` class
+- File `.rubocop.yml` added new cops from Rubocop 1.21 and 1.22
+- File `parser_spec.rb` use of parentheses in ambiguous expressions
+- File `raw_parser_spec.rb` use of parentheses in ambiguous expressions
+- File `loxxy.gemspec` forced dependency to Rley 0.8.06
+
 ## [0.4.04] - 2021-09-11
 - Grammar optimization (3 rules less, use of match_closest feature from `Rley`)
 

@@ -105,7 +105,7 @@ LOX_END
         it 'should recognize a false boolean token' do
           subject.start_with('false')
           token_false = subject.tokens[0]
-          expect(token_false).to be_kind_of(Literal)
+          expect(token_false).to be_kind_of(Rley::Lexical::Literal)
           expect(token_false.terminal).to eq('FALSE')
           expect(token_false.lexeme).to eq('false')
           expect(token_false.value).to be_kind_of(Datatype::False)
@@ -115,7 +115,7 @@ LOX_END
         it 'should recognize a true boolean token' do
           subject.start_with('true')
           token_true = subject.tokens[0]
-          expect(token_true).to be_kind_of(Literal)
+          expect(token_true).to be_kind_of(Rley::Lexical::Literal)
           expect(token_true.terminal).to eq('TRUE')
           expect(token_true.lexeme).to eq('true')
           expect(token_true.value).to be_kind_of(Datatype::True)
@@ -137,7 +137,7 @@ LOX_END
 
           subject.start_with(input)
           subject.tokens[0..-2].each_with_index do |tok, i|
-            expect(tok).to be_kind_of(Literal)
+            expect(tok).to be_kind_of(Rley::Lexical::Literal)
             expect(tok.terminal).to eq('NUMBER')
             (lexeme, val) = expectations[i]
             expect(tok.lexeme).to eq(lexeme)
@@ -177,10 +177,10 @@ LOX_END
           tokens = subject.tokens[0..-2]
           expect(tokens[0]).to be_kind_of(Rley::Lexical::Token)
           expect(tokens[0].terminal).to eq('DOT')
-          expect(tokens[1]).to be_kind_of(Literal)
+          expect(tokens[1]).to be_kind_of(Rley::Lexical::Literal)
           expect(tokens[1].terminal).to eq('NUMBER')
           expect(tokens[1].value.value).to eq(456)
-          expect(tokens[2]).to be_kind_of(Literal)
+          expect(tokens[2]).to be_kind_of(Rley::Lexical::Literal)
           expect(tokens[2].terminal).to eq('NUMBER')
           expect(tokens[2].value.value).to eq(123)
           expect(tokens[3]).to be_kind_of(Rley::Lexical::Token)
@@ -202,7 +202,7 @@ LOX_END
 
           subject.start_with(input)
           subject.tokens[0..-2].each_with_index do |str, i|
-            expect(str).to be_kind_of(Literal)
+            expect(str).to be_kind_of(Rley::Lexical::Literal)
             expect(str.terminal).to eq('STRING')
             val = expectations[i]
             expect(str.value).to be_kind_of(Datatype::LXString)
@@ -236,7 +236,7 @@ LOX_END
         it 'should recognize a nil token' do
           subject.start_with('nil')
           token_nil = subject.tokens[0]
-          expect(token_nil).to be_kind_of(Literal)
+          expect(token_nil).to be_kind_of(Rley::Lexical::Literal)
           expect(token_nil.terminal).to eq('NIL')
           expect(token_nil.lexeme).to eq('nil')
           expect(token_nil.value).to be_kind_of(Datatype::Nil)

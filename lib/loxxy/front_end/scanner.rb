@@ -4,7 +4,6 @@ require 'strscan'
 require 'rley'
 require_relative '../error'
 require_relative '../datatype/all_datatypes'
-require_relative 'literal'
 
 module Loxxy
   module FrontEnd
@@ -142,7 +141,7 @@ module Loxxy
           col = scanner.pos - lex_length - @line_start + 1
           pos = Rley::Lexical::Position.new(@lineno, col)
           if value
-            token = Literal.new(value, aLexeme.dup, symb, pos)
+            token = Rley::Lexical::Literal.new(value, aLexeme.dup, symb, pos)
           else
             token = Rley::Lexical::Token.new(aLexeme.dup, symb, pos)
           end
@@ -212,7 +211,7 @@ module Loxxy
         pos = Rley::Lexical::Position.new(line, column_start)
         lox_string = Datatype::LXString.new(literal)
         lexeme = scanner.string[scan_pos - 1..scanner.pos - 1]
-        Literal.new(lox_string, lexeme, 'STRING', pos)
+        Rley::Lexical::Literal.new(lox_string, lexeme, 'STRING', pos)
       end
 
       # Skip non-significant whitespaces and comments.

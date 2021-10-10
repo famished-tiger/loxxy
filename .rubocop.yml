@@ -84,6 +84,9 @@ Layout/TrailingWhitespace:
 Lint/AmbiguousAssignment:
   Enabled: true
 
+Lint/AmbiguousOperatorPrecedence: # new in 1.21
+  Enabled: true
+
 Lint/AmbiguousRange:
   Enabled: true
 
@@ -105,6 +108,9 @@ Lint/EmptyClass:
 Lint/EmptyInPattern:
   Enabled: true
 
+Lint/IncompatibleIoSelectWithFiberScheduler: # new in 1.21
+  Enabled: true
+
 Lint/LambdaWithoutLiteralBlock:
   Enabled: true
 
@@ -124,6 +130,9 @@ Lint/RaiseException:
   Enabled: true
 
 Lint/RedundantDirGlobSort:
+  Enabled: true
+
+Lint/RequireRelativeSelfPath: # new in 1.22
   Enabled: true
 
 Lint/RescueException:
@@ -213,6 +222,9 @@ Naming/MethodName:
 Naming/VariableName:
   Enabled: false
 
+Security/IoMethods: # new in 1.22
+  Enabled: true
+
 Style/Alias:
   Enabled: true
 
@@ -293,9 +305,9 @@ Style/InverseMethods:
 
 Style/MissingRespondToMissing:
   Enabled: false
-  
+
 Style/MultilineInPatternThen:
-  Enabled: true  
+  Enabled: true
 
 Style/NegatedIfElseCondition:
   Enabled: true
@@ -306,11 +318,17 @@ Style/Next:
 Style/NilLambda:
   Enabled: true
 
+Style/NumberedParameters: # new in 1.22
+  Enabled: true
+
+Style/NumberedParametersLimit: # new in 1.22
+  Enabled: true
+
 Style/NumericLiterals:
   Enabled: false
-  
+
 Style/QuotedSymbols:
-  Enabled: true  
+  Enabled: true
 
 Style/RaiseArgs:
   Enabled: true
@@ -323,15 +341,18 @@ Style/RedundantReturn:
 
 Style/RedundantSelf:
   Enabled: true
-  
+
 Style/RedundantSelfAssignmentBranch:
-  Enabled: true  
+  Enabled: true
 
 Style/RegexpLiteral:
   Enabled: false
 
 Style/PercentLiteralDelimiters:
   Enabled: false
+
+Style/SelectByRegexp: # new in 1.22
+  Enabled: true
 
 Style/StderrPuts:
   Enabled: false
