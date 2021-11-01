@@ -1,3 +1,16 @@
+## [0.4.06] - 2021-11-01
+- Code update to cope with `Rley` v.0.8.08 changes
+
+### Changed
+- File `AST::AstBuilder` some `reduce_` to cope implementation change of ? quantifier
+- Method `AST::LoxCallExpr#initialize` call to `Array#flatten` with argList argument
+- File `loxxy.gemspec` dependency towards `rely` minimal version number is now `0.8.08`
+- Some spec files updated after `rley` changes of ?, *, + quantifiers
+
+### Removed
+- File `front_end/literal.rb`: obsolete
+
+
 ## [0.4.05] - 2021-10-10
 - Removal of `Literal` class, code restyling to please Rubocop 1.22
 
@@ -16,7 +29,7 @@
 - File `grammar.rb` use `match_closest` constraint from Rley to cope with dangling else statement
 
 ## [0.4.02] - 2021-09-10
-- Fixes in`AST::AstBuilder` class to  cope with changes in Rley 0.8.03
+- Fixes in`AST::AstBuilder` class to cope with changes in Rley 0.8.03
 
 ### Changed
 - File `loxxy.gemspec` forced dependency to Rley 0.8.03

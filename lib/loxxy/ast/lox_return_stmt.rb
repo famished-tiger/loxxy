@@ -6,7 +6,7 @@ module Loxxy
   module Ast
     class LoxReturnStmt < LoxCompoundExpr
       # @param aPosition [Rley::Lexical::Position] Position of the entry in the input stream.
-      # @param anExpression [Ast::LoxNode] expression to return
+      # @param anExpression [Ast::LoxNode, NilClass] expression to return
       def initialize(aPosition, anExpression)
         expr = anExpression || Datatype::Nil.instance
         super(aPosition, [expr])

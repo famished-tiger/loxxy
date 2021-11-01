@@ -12,7 +12,7 @@ module Loxxy
       # @param argList [Array<Loxxy::Ast::LoxNode>]
       def initialize(aPosition, argList)
         super(aPosition, [])
-        @arguments = argList
+        @arguments = argList.flatten
       end
 
       define_accept # Add `accept` method as found in Visitor design pattern

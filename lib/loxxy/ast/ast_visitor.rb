@@ -244,7 +244,6 @@ module Loxxy
 
         # Let's proceed with the visit of subnodes
         subnodes.each { |a_node| a_node.accept(self) }
-
         broadcast(:after_subnodes, aParentNode, subnodes)
       end
 

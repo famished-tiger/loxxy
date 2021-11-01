@@ -222,10 +222,8 @@ module Loxxy
         if test.nil? && update
           # when test expr is nil but update expr is not, then force test to be true
           test = LoxLiteralExpr.new(tokens[0].position, Datatype::True.instance)
-          [init, test, update]
-        else
-          theChildren
         end
+        [init, test, update&.first]
       end
 
       # rule('forInitialization' => 'SEMICOLON')
@@ -234,8 +232,8 @@ module Loxxy
       end
 
       # rule('forTest' => 'expression? SEMICOLON')
-      def reduce_for_test(_production, range, tokens, theChildren)
-        return_first_child(range, tokens, theChildren)
+      def reduce_for_test(_production, _range, _tokens, theChildren)
+        theChildren[0]&.first
       end
 
       # rule('ifStmt' => 'IF ifCondition statement ELSE statement')
@@ -262,7 +260,8 @@ module Loxxy
 
       # rule('returnStmt' => 'RETURN expression? SEMICOLON')
       def reduce_return_stmt(_production, _range, tokens, theChildren)
-        Ast::LoxReturnStmt.new(tokens[1].position, theChildren[1])
+        ret_expr = theChildren[1].nil? ? nil : theChildren[1].first
+        Ast::LoxReturnStmt.new(tokens[1].position, ret_expr)
       end
 
       # rule('whileStmt' => 'WHILE LEFT_PAREN expression RIGHT_PAREN statement').as ''
@@ -275,7 +274,7 @@ module Loxxy
         decls = nil
         if theChildren[1]
           pos = tokens[1].position
-          decls = LoxSeqDecl.new(tokens[1].position, theChildren[1])
+          decls = LoxSeqDecl.new(pos, theChildren[1].flatten)
         else
           pos = tokens[0].position
         end
@@ -377,15 +376,16 @@ module Loxxy
         LoxSuperExpr.new(theChildren[0].token.position, theChildren[2].token.lexeme)
       end
 
-      # rule('function' => 'IDENTIFIER LEFT_PAREN params_opt RIGHT_PAREN block').as 'function'
+      # rule('function' => 'IDENTIFIER LEFT_PAREN parameters? RIGHT_PAREN block').as 'function'
       def reduce_function(_production, _range, _tokens, theChildren)
         first_child = theChildren.first
         pos = first_child.token.position
-        if theChildren[2] && theChildren[2].size > 255
+        params = theChildren[2] ? theChildren[2].flatten : []
+        if params.size > 255
           msg = "Can't have more than 255 parameters."
           raise Loxxy::SyntaxError, msg
         end
-        LoxFunStmt.new(pos, first_child.token.lexeme, theChildren[2], theChildren[4])
+        LoxFunStmt.new(pos, first_child.token.lexeme, params, theChildren[4])
       end
 
       # rule('parameters' => 'IDENTIFIER (COMMA IDENTIFIER)*').as 'parameters'
@@ -399,7 +399,7 @@ module Loxxy
 
       # rule('arguments' => 'expression (COMMA expression)*')
       def reduce_arguments(_production, _range, _tokens, theChildren)
-        return [theChildren[0]] unless theChildren[1]
+        return [theChildren[0]] if theChildren[1].empty?
 
         successors = theChildren[1].map(&:last)
         successors.unshift(theChildren[0])
