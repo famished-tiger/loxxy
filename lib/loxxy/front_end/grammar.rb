@@ -5,7 +5,7 @@ require 'rley' # Load the gem
 module Loxxy
   module FrontEnd
     ########################################
-    # Grammar for Lox language
+    # Grammar for the Lox language
     # Authoritative grammar at:
     #   https://craftinginterpreters.com/appendix-i.html
     builder = Rley::grammar_builder do

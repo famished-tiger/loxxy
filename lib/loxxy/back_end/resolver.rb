@@ -220,7 +220,7 @@ module Loxxy
         curr_scope = scopes.last
           # Oddly enough, Lox allows variable re-declaration at top-level
         if curr_scope.include?(aVarName)
-          msg = "Error at '#{aVarName}': Already variable with this name in this scope."
+          msg = "Error at '#{aVarName}': Already a variable with this name in this scope."
           raise Loxxy::RuntimeError, msg
         elsif curr_scope.size == 255 && current_function != :none
           msg = "Error at '#{aVarName}': Too many local variables in function."

@@ -67,19 +67,19 @@ describe 'Variable:' do
   context 'Invalid cases:' do
     it "passes 'collide_with_parameter.lox'" do
       # Standard message
-      err_msg = "Error at 'a': Already variable with this name in this scope."
+      err_msg = "Error at 'a': Already a variable with this name in this scope."
       run_negative_test(Loxxy::RuntimeError, err_msg)
     end
 
     it "passes 'duplicate_local.lox'" do
       # Standard message
-      err_msg = "Error at 'a': Already variable with this name in this scope."
+      err_msg = "Error at 'a': Already a variable with this name in this scope."
       run_negative_test(Loxxy::RuntimeError, err_msg)
     end
 
     it "passes 'duplicate_parameter.lox'" do
       # Standard message
-      err_msg = "Error at 'arg': Already variable with this name in this scope."
+      err_msg = "Error at 'arg': Already a variable with this name in this scope."
       run_negative_test(Loxxy::RuntimeError, err_msg)
     end
 

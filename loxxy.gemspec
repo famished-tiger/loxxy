@@ -48,7 +48,7 @@ Gem::Specification.new do |spec|
   DESCR_END
   spec.homepage      = 'https://github.com/famished-tiger/loxxy'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '~> 2.5'
+  spec.required_ruby_version = '>= 2.5'
 
   spec.bindir        = 'bin'
   spec.executables   = ['loxxy']
