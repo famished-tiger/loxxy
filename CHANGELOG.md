@@ -1,4 +1,10 @@
-## [0.4.07] - 2022-11-21
+## [0.4.08] - 2022-04-09
+- Refactoring of the `Scanner` class.
+
+### Changed
+- `Frontend::Scanner` class: major code refactoring. 
+
+## [0.4.07] - 2021-11-21
 - Minor fixes; dependency towards Rubies 3+ allowed...
 
 ### Fixed

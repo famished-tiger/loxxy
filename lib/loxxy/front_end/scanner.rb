@@ -20,6 +20,15 @@ module Loxxy
     # Delimiters: e.g. parentheses '(',  ')'
     # Separators: e.g. comma
     class Scanner
+      PATT_BLOCK_COMMENT_BEGIN = /\/\*/.freeze
+      PATT_BLOCK_COMMENT_END = /\*\//.freeze
+      PATT_COMPARISON = /[!=><]=?/.freeze
+      PATT_IDENTIFIER = /[a-zA-Z_][a-zA-Z_0-9]*/.freeze
+      PATT_LINE_COMMENT = /\/\/[^\r\n]*/.freeze
+      PATT_NEWLINE = /(?:\r\n)|\r|\n/.freeze
+      PATT_NUMBER = /\d+(?:\.\d+)?/.freeze
+      PATT_WHITESPACE = /[ \t\f]+/.freeze
+
       # @return [StringScanner] Low-level input scanner
       attr_reader(:scanner)
 
@@ -31,7 +40,7 @@ module Loxxy
 
       # One or two special character tokens.
       # These are enumerated in section 4.2.1 Token type
-      @@lexeme2name = {
+      Lexeme2name = {
         '(' => 'LEFT_PAREN',
         ')' => 'RIGHT_PAREN',
         '{' => 'LEFT_BRACE',
@@ -77,16 +86,16 @@ module Loxxy
       # Constructor. Initialize a tokenizer for Lox input.
       # @param source [String] Lox text to tokenize.
       def initialize(source = nil)
-        @scanner = StringScanner.new('')
-        start_with(source) if source
+        reset
+        input = source || ''
+        @scanner = StringScanner.new(input)
       end
 
       # Reset the tokenizer and make the given text, the current input.
       # @param source [String] Lox text to tokenize.
       def start_with(source)
+        reset
         @scanner.string = source
-        @lineno = 1
-        @line_start = 0
       end
 
       # Scan the source and return an array of tokens.
@@ -99,39 +108,79 @@ module Loxxy
         end
         tok_sequence << build_token('EOF', nil)
 
-        return tok_sequence
+        tok_sequence
       end
 
       private
 
-      def _next_token
-        skip_intertoken_spaces
-        curr_ch = scanner.peek(1)
-        return nil if curr_ch.nil? || curr_ch.empty?
+      def reset
+        @state = :default
+        @lineno = 1
+        @line_start = 0
+      end
 
+      def _next_token
+        nesting_level = 0
         token = nil
 
-        if '(){},.;+-/*'.include? curr_ch
-          # Single delimiter or separator character
-          token = build_token(@@lexeme2name[curr_ch], scanner.getch)
-        elsif (lexeme = scanner.scan(/[!=><]=?/))
-          # One or two special character tokens
-          token = build_token(@@lexeme2name[lexeme], lexeme)
-        elsif scanner.scan(/"/) # Start of string detected...
-          token = build_string_token
-        elsif (lexeme = scanner.scan(/\d+(?:\.\d+)?/))
-          token = build_token('NUMBER', lexeme)
-        elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z_0-9]*/))
-          keyw = @@keywords[lexeme]
-          tok_type = keyw ? keyw.upcase : 'IDENTIFIER'
-          token = build_token(tok_type, lexeme)
-        else # Unknown token
-          col = scanner.pos - @line_start + 1
-          _erroneous = curr_ch.nil? ? '' : scanner.scan(/./)
-          raise ScanError, "Error: [line #{lineno}:#{col}]: Unexpected character."
-        end
+        # Loop until end of input reached or token found
+        until token || scanner.eos?
+          if scanner.skip(PATT_NEWLINE)
+            next_line_scanned
+            next
+          end
 
-        return token
+          case @state
+            when :default
+              next if scanner.skip(PATT_WHITESPACE) # Skip whitespaces
+
+              curr_ch = scanner.peek(1)
+
+              token = if scanner.skip(PATT_LINE_COMMENT)
+                next
+              elsif scanner.skip(PATT_BLOCK_COMMENT_BEGIN)
+                @state = :in_block_comment
+                nesting_level = 1
+                next
+              elsif '(){},.;+-/*'.include? curr_ch
+                # Single delimiter or separator character
+                build_token(Lexeme2name[curr_ch], scanner.getch)
+              elsif (lexeme = scanner.scan(PATT_COMPARISON))
+                # One or two special character tokens
+                build_token(Lexeme2name[lexeme], lexeme)
+              elsif scanner.scan(/"/) # Start of string detected...
+                build_string_token
+              elsif (lexeme = scanner.scan(PATT_NUMBER))
+                build_token('NUMBER', lexeme)
+              elsif (lexeme = scanner.scan(PATT_IDENTIFIER))
+                keyw = @@keywords[lexeme]
+                tok_type = keyw ? keyw.upcase : 'IDENTIFIER'
+                build_token(tok_type, lexeme)
+              else # Unknown token
+                col = scanner.pos - @line_start + 1
+                _erroneous = curr_ch.nil? ? '' : scanner.scan(/./)
+                raise ScanError, "Error: [line #{lineno}:#{col}]: Unexpected character."
+              end
+
+            when :in_block_comment
+              comment_part = scanner.scan_until(/(?:\/\*)|(?:\*\/)|(?:(?:\r\n)|\r|\n)/)
+              unterminated_comment unless comment_part
+
+              case scanner.matched
+                when PATT_NEWLINE
+                  next_line_scanned
+                when PATT_BLOCK_COMMENT_END
+                  nesting_level -= 1
+                  @state = :default if nesting_level.zero?
+                when PATT_BLOCK_COMMENT_BEGIN
+                  nesting_level += 1
+              end
+              next
+          end # case
+        end # until
+
+        unterminated_comment unless nesting_level.zero?
+        token
       end
 
       def build_token(aSymbolName, aLexeme)
@@ -214,56 +263,12 @@ module Loxxy
         Rley::Lexical::Literal.new(lox_string, lexeme, 'STRING', pos)
       end
 
-      # Skip non-significant whitespaces and comments.
-      # Advance the scanner until something significant is found.
-      def skip_intertoken_spaces
-        loop do
-          ws_found = scanner.skip(/[ \t\f]+/) ? true : false
-          nl_found = scanner.skip(/(?:\r\n)|\r|\n/)
-          if nl_found
-            ws_found = true
-            next_line
-          end
-          cmt_found = false
-          if scanner.scan(/\/(\/|\*)/)
-            cmt_found = true
-            case scanner.matched
-              when '//'
-                scanner.skip(/[^\r\n]*(?:(?:\r\n)|\r|\n)?/)
-                next_line
-              when '/*'
-                skip_block_comment
-                next
-            end
-          end
-          break unless ws_found || cmt_found
-        end
-
-        scanner.pos
+      def unterminated_comment
+        msg = "Unterminated '/* ... */' block comment on line #{lineno}"
+        raise ScanError, msg
       end
 
-      def skip_block_comment
-        nesting_level = 1
-        loop do
-          comment_part = scanner.scan_until(/(?:\/\*)|(?:\*\/)|(?:(?:\r\n)|\r|\n)/)
-          unless comment_part
-            msg = "Unterminated '/* ... */' block comment on line #{lineno}"
-            raise ScanError, msg
-          end
-
-          case scanner.matched
-            when /(?:(?:\r\n)|\r|\n)/
-              next_line
-            when '*/'
-              nesting_level -= 1
-              break if nesting_level.zero?
-            when '/*'
-              nesting_level += 1
-          end
-        end
-      end
-
-      def next_line
+      def next_line_scanned
         @lineno += 1
         @line_start = scanner.pos
       end
