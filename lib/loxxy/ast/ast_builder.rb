@@ -188,7 +188,7 @@ module Loxxy
       # rule('varDecl' => 'VAR IDENTIFIER (EQUAL expression)? SEMICOLON')
       def reduce_var_declaration(_production, _range, tokens, theChildren)
         var_name = theChildren[1].token.lexeme.dup
-        init_val = theChildren[2] ? theChildren[2].last : nil
+        init_val = theChildren[2]&.last
         Ast::LoxVarStmt.new(tokens[1].position, var_name, init_val)
       end
 
@@ -260,7 +260,7 @@ module Loxxy
 
       # rule('returnStmt' => 'RETURN expression? SEMICOLON')
       def reduce_return_stmt(_production, _range, tokens, theChildren)
-        ret_expr = theChildren[1].nil? ? nil : theChildren[1].first
+        ret_expr = theChildren[1]&.first
         Ast::LoxReturnStmt.new(tokens[1].position, ret_expr)
       end
 

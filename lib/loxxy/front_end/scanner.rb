@@ -67,7 +67,7 @@ module Loxxy
       @@keywords = %w[
         and class else false fun for if nil or
         print return super this true var while
-      ].map { |x| [x, x] }.to_h
+      ].to_h { |x| [x, x] }
 
       # Single character that have a special meaning when escaped
       # @return [{Char => String}]

@@ -10,12 +10,10 @@ module PkgExtending
     file_list = Dir[
       '.rubocop.yml',
       '.rspec',
-      '.travis.yml',
       '.yardopts',
       'Gemfile',
       'Rakefile',
       'CHANGELOG.md',
-      'CODE_OF_CONDUCT.md',
       'LICENSE.txt',
       'README.md',
       'loxxy.gemspec',
@@ -48,7 +46,7 @@ Gem::Specification.new do |spec|
   DESCR_END
   spec.homepage      = 'https://github.com/famished-tiger/loxxy'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '>= 2.5'
+  spec.required_ruby_version = '>= 2.6'
 
   spec.bindir        = 'bin'
   spec.executables   = ['loxxy']
@@ -58,10 +56,11 @@ Gem::Specification.new do |spec|
   PkgExtending.pkg_documentation(spec)
 
   # Runtime dependencies
-  spec.add_dependency 'rley', '~> 0.8.08'
+  spec.add_dependency 'rley', '~> 0.8.10'
 
   # Development dependencies
-  spec.add_development_dependency 'bundler', '~> 2.0'
-  spec.add_development_dependency 'rake', '~> 12.0'
-  spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'bundler', '~> 2.5.0'
+  spec.add_development_dependency 'rake', '~> 13.1.0'
+  spec.add_development_dependency 'rspec', '~> 3.12'
+  spec.add_development_dependency 'yard', '~> 0.9.34'
 end

@@ -15,7 +15,7 @@ module Loxxy
       subject { Engine.new(sample_options) }
 
       context 'Initialization:' do
-        it 'should accept a option Hash at initialization' do
+        it 'should accept an option Hash at initialization' do
           expect { Engine.new(sample_options) }.not_to raise_error
         end
 

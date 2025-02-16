@@ -1,3 +1,9 @@
+## [0.4.09] - 2025-01-16
+- Tested with MRI Ruby 3.4.1.
+- Minor changes
+- [NEW] Added `demo` folder
+- [FIX] Some Rubocop 1.72.0 offences fixed.
+
 ## [0.4.08] - 2022-04-09
 - Refactoring of the `Scanner` class.
 
@@ -13,7 +19,6 @@
 - File `collide_with_paramaeter.lox` Fixed typo in error message.
 - File `duplicate_local.lox` Fixed typo in error message.
 - File `duplicate_parameter.lox` Fixed typo in error message.
-
 
 ## [0.4.06] - 2021-11-01
 - Code update to cope with `Rley` v.0.8.08 changes

@@ -19,8 +19,8 @@ Although __Lox__ is fairly simple, it is far from being a toy language:
 ### Loxxy gem features
 - Complete tree-walking interpreter including lexer, parser and resolver
 - 100% pure Ruby with clean design (not a port from some other language)
-- Passes the `jox` (THE reference `Lox` implementation) test suite
-- Can run a Lox imterpreter implemented in ... `Lox` [LoxLox](https://github.com/benhoyt/loxlox),
+- Passes the `jlox` (THE reference `Lox` implementation) test suite
+- Can run a Lox interpreter implemented in ... `Lox` [LoxLox](https://github.com/benhoyt/loxlox),
 - Minimal runtime dependency (Rley gem). Won't drag a bunch of gems...  
 - Ruby API for integrating a Lox interpreter with your code.
 - A command-line interpreter `loxxy`
@@ -55,7 +55,7 @@ And then execute:
 Create a text file and enter the following lines:
 ```javascript
 // hello.lox
-// Your firs Lox program
+// Your first Lox program
 print "Hello, world.";
 ```
 
@@ -326,7 +326,9 @@ lox_input = <<-LOX_END
   print "Hello, world!";
 LOX_END
 
-
+lox = Loxxy::Interpreter.new
+lox.evaluate(lox_program) # => Hello, world!
+```
 
 ## Suppported Lox language features
 

@@ -178,7 +178,6 @@ module Loxxy
         resolve_local(aThisExpr, aVisitor)
       end
 
-      # rubocop: disable Style/CaseLikeIf
       # rubocop: disable Style/StringConcatenation
       def after_super_expr(aSuperExpr, aVisitor)
         msg_prefix = "Error at 'super': Can't use 'super' "
@@ -195,7 +194,6 @@ module Loxxy
         resolve_local(aSuperExpr, aVisitor)
       end
       # rubocop: enable Style/StringConcatenation
-      # rubocop: enable Style/CaseLikeIf
 
       # function declaration creates a new scope for its body & binds its parameters for that scope
       def before_fun_stmt(aFunStmt, aVisitor)
