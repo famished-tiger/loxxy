@@ -46,7 +46,8 @@ Gem::Specification.new do |spec|
   DESCR_END
   spec.homepage      = 'https://github.com/famished-tiger/loxxy'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '>= 2.6'
+  spec.required_ruby_version = '>= 3.1'
+  spec.metadata = { 'rubygems_mfa_required' => 'true' }
 
   spec.bindir        = 'bin'
   spec.executables   = ['loxxy']
@@ -56,11 +57,10 @@ Gem::Specification.new do |spec|
   PkgExtending.pkg_documentation(spec)
 
   # Runtime dependencies
-  spec.add_dependency 'rley', '~> 0.8.10'
+  spec.add_dependency 'rley', '0.9', '>= 0.9.02'
 
   # Development dependencies
-  spec.add_development_dependency 'bundler', '~> 2.5.0'
-  spec.add_development_dependency 'rake', '~> 13.1.0'
-  spec.add_development_dependency 'rspec', '~> 3.12'
-  spec.add_development_dependency 'yard', '~> 0.9.34'
+  spec.add_development_dependency 'bundler', '~> 2.4', '>= 2.4.1'
+  spec.add_development_dependency 'rake', '~> 13'
+  spec.add_development_dependency 'rspec', '~> 3', '>= 3.10.0'
 end

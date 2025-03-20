@@ -20,14 +20,14 @@ module Loxxy
     # Delimiters: e.g. parentheses '(',  ')'
     # Separators: e.g. comma
     class Scanner
-      PATT_BLOCK_COMMENT_BEGIN = /\/\*/.freeze
-      PATT_BLOCK_COMMENT_END = /\*\//.freeze
-      PATT_COMPARISON = /[!=><]=?/.freeze
-      PATT_IDENTIFIER = /[a-zA-Z_][a-zA-Z_0-9]*/.freeze
-      PATT_LINE_COMMENT = /\/\/[^\r\n]*/.freeze
-      PATT_NEWLINE = /(?:\r\n)|\r|\n/.freeze
-      PATT_NUMBER = /\d+(?:\.\d+)?/.freeze
-      PATT_WHITESPACE = /[ \t\f]+/.freeze
+      PATT_BLOCK_COMMENT_BEGIN = /\/\*/
+      PATT_BLOCK_COMMENT_END = /\*\//
+      PATT_COMPARISON = /[!=><]=?/
+      PATT_IDENTIFIER = /[a-zA-Z_][a-zA-Z_0-9]*/
+      PATT_LINE_COMMENT = /\/\/[^\r\n]*/
+      PATT_NEWLINE = /(?:\r\n)|\r|\n/
+      PATT_NUMBER = /\d+(?:\.\d+)?/
+      PATT_WHITESPACE = /[ \t\f]+/
 
       # @return [StringScanner] Low-level input scanner
       attr_reader(:scanner)
@@ -148,7 +148,7 @@ module Loxxy
               elsif (lexeme = scanner.scan(PATT_COMPARISON))
                 # One or two special character tokens
                 build_token(Lexeme2name[lexeme], lexeme)
-              elsif scanner.scan(/"/) # Start of string detected...
+              elsif scanner.scan('"') # Start of string detected...
                 build_string_token
               elsif (lexeme = scanner.scan(PATT_NUMBER))
                 build_token('NUMBER', lexeme)

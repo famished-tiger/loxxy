@@ -2,8 +2,16 @@ AllCops:
   Exclude:
     - 'exp/**/*'
     - 'demo/**/*'
+  NewCops: enable
+  SuggestExtensions: false
 
-Gemspec/DateAssignment:
+Gemspec/DeprecatedAttributeAssignment:
+  Enabled: true
+
+Gemspec/DevelopmentDependencies:
+  EnforcedStyle: gemspec
+
+Gemspec/RequireMFA: # new in 1.23
   Enabled: true
 
 Layout/ArgumentAlignment:
@@ -60,113 +68,11 @@ Layout/MultilineMethodCallBraceLayout:
   Enabled: true
   EnforcedStyle: same_line
 
-Layout/SpaceAroundOperators:
-  Enabled: true
-
-Layout/SpaceBeforeBrackets:
-  Enabled: true
-
-Layout/SpaceInsideParens:
-  Enabled: true
-
-Layout/IndentationStyle:
-  Enabled: true
-
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
-
-Layout/TrailingEmptyLines:
-  Enabled: true
-
-Layout/TrailingWhitespace:
-  Enabled: true
-
-Lint/AmbiguousAssignment:
-  Enabled: true
-
 Lint/AmbiguousOperatorPrecedence: # new in 1.21
-  Enabled: true
-
-Lint/AmbiguousRange:
-  Enabled: true
-
-Lint/DeprecatedConstants:
-  Enabled: true
-
-Lint/DuplicateBranch:
-  Enabled: true
-
-Lint/DuplicateRegexpCharacterClassElement:
-  Enabled: true
-
-Lint/EmptyBlock:
   Enabled: true
 
 Lint/EmptyClass:
   Enabled: false
-
-Lint/EmptyInPattern:
-  Enabled: true
-
-Lint/IncompatibleIoSelectWithFiberScheduler: # new in 1.21
-  Enabled: true
-
-Lint/LambdaWithoutLiteralBlock:
-  Enabled: true
-
-Lint/Loop:
-  Enabled: true
-
-Lint/NoReturnInBeginEndBlocks:
-  Enabled: true
-
-Lint/NumberedParameterAssignment:
-  Enabled: true
-
-Lint/OrAssignmentToConstant:
-  Enabled: true
-
-Lint/RaiseException:
-  Enabled: true
-
-Lint/RedundantDirGlobSort:
-  Enabled: true
-
-Lint/RequireRelativeSelfPath: # new in 1.22
-  Enabled: true
-
-Lint/RescueException:
-  Enabled: true
-
-Lint/StructNewOverride:
-  Enabled: true
-
-Lint/SymbolConversion:
-  Enabled: true
-
-Lint/ToEnumArguments:
-  Enabled: true
-
-Lint/TripleQuotes:
-  Enabled: true
-
-Lint/UnexpectedBlockArity:
-  Enabled: true
-
-Lint/UnmodifiedReduceAccumulator:
-  Enabled: true
-
-Lint/UnusedMethodArgument:
-  Enabled: true
-
-Lint/UselessAccessModifier:
-  Enabled: true
-
-Lint/Void:
-  Enabled: false
-
-Lint/UselessAssignment:
-  Enabled: true
 
 Metrics/AbcSize:
   Enabled: false
@@ -207,12 +113,6 @@ Naming/ConstantName:
 Naming/ClassAndModuleCamelCase:
   Enabled: false
 
-Naming/BlockParameterName:
-  Enabled: true
-
-Naming/InclusiveLanguage:
-  Enabled: true
-
 Naming/MethodParameterName:
   Enabled: false
 
@@ -221,15 +121,6 @@ Naming/MethodName:
 
 Naming/VariableName:
   Enabled: false
-
-Security/IoMethods: # new in 1.22
-  Enabled: true
-
-Style/Alias:
-  Enabled: true
-
-Style/ArgumentsForwarding:
-  Enabled: true
 
 Style/AsciiComments:
   Enabled: false
@@ -249,9 +140,6 @@ Style/ClassCheck:
 Style/ClassVars:
   Enabled: false
 
-Style/CollectionCompact:
-  Enabled: true
-
 Style/ColonMethodCall:
   Enabled: false
 
@@ -264,41 +152,17 @@ Style/CommentedKeyword:
 Style/ConditionalAssignment:
   Enabled: false
 
-Style/DefWithParentheses:
-  Enabled: true
-
 Style/Documentation:
   Enabled: false
-
-Style/DocumentDynamicEvalDefinition:
-  Enabled: true
 
 Style/ExpandPathArguments:
   Enabled: false
 
-Style/ExponentialNotation:
-  Enabled: true
-
 Style/GuardClause:
   Enabled: false
 
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashExcept:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true
-
 Style/IfUnlessModifier:
   Enabled: false
-
-Style/InPatternThen:
-  Enabled: true
 
 Style/InverseMethods:
   Enabled: false
@@ -306,44 +170,14 @@ Style/InverseMethods:
 Style/MissingRespondToMissing:
   Enabled: false
 
-Style/MultilineInPatternThen:
-  Enabled: true
-
-Style/NegatedIfElseCondition:
-  Enabled: true
-
 Style/Next:
   Enabled: false
-
-Style/NilLambda:
-  Enabled: true
-
-Style/NumberedParameters: # new in 1.22
-  Enabled: true
-
-Style/NumberedParametersLimit: # new in 1.22
-  Enabled: true
 
 Style/NumericLiterals:
   Enabled: false
 
-Style/QuotedSymbols:
-  Enabled: true
-
-Style/RaiseArgs:
-  Enabled: true
-
-Style/RedundantArgument:
-  Enabled: true
-
 Style/RedundantReturn:
   Enabled: false
-
-Style/RedundantSelf:
-  Enabled: true
-
-Style/RedundantSelfAssignmentBranch:
-  Enabled: true
 
 Style/RegexpLiteral:
   Enabled: false
@@ -351,17 +185,8 @@ Style/RegexpLiteral:
 Style/PercentLiteralDelimiters:
   Enabled: false
 
-Style/SelectByRegexp: # new in 1.22
-  Enabled: true
-
 Style/StderrPuts:
   Enabled: false
-
-Style/StringLiterals:
-  Enabled: true
-
-Style/SwapValues:
-  Enabled: true
 
 Style/TernaryParentheses:
   Enabled: false
@@ -369,105 +194,18 @@ Style/TernaryParentheses:
 Style/UnlessElse:
   Enabled: false
 
-# Rubocop complains when it doesn't find an explicit setting for the following cops:
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: true
+#RSpec/ContextWording:
+#  Enabled: false
+#
+#RSpec/ExampleLength:
+#  Max: 40
+#
+#RSpec/MultipleExpectations:
+#  Max: 15
+#
+#RSpec/NoExpectationExample:
+#  Enabled: false
+#
+#RSpec/RepeatedDescription:
+#  Enabled: false
 
-Lint/BinaryOperatorWithIdenticalOperands:
-  Enabled: true
-
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-
-Lint/DuplicateElsifCondition:
-  Enabled: true
-
-Lint/DuplicateRescueException:
-  Enabled: true
-
-Lint/EmptyConditionalBody:
-  Enabled: true
-
-Lint/FloatComparison:
-  Enabled: true
-
-Lint/MissingSuper:
-  Enabled: true
-
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-
-Lint/OutOfRangeRegexpRef:
-  Enabled: true
-
-Lint/SelfAssignment:
-  Enabled: true
-
-Lint/TopLevelReturnWithArgument:
-  Enabled: true
-
-Lint/UnreachableLoop:
-  Enabled: true
-
-Style/AccessorGrouping:
-  Enabled: true
-
-Style/ArrayCoercion:
-  Enabled: true
-
-Style/BisectedAttrAccessor:
-  Enabled: true
-
-Style/CaseLikeIf:
-  Enabled: true
-
-Style/EndlessMethod:
-  Enabled: true
-
-Style/ExplicitBlockArgument:
-  Enabled: true
-
-Style/GlobalStdStream:
-  Enabled: true
-
-Style/HashAsLastArrayItem:
-  Enabled: true
-
-Style/HashConversion:
-  Enabled: true
-
-Style/HashLikeCase:
-  Enabled: true
-
-Style/IfWithBooleanLiteralBranches:
-  Enabled: true
-
-Style/OptionalBooleanParameter:
-  Enabled: true
-
-Style/RedundantAssignment:
-  Enabled: true
-
-Style/RedundantFetchBlock:
-  Enabled: true
-
-Style/RedundantFileExtensionInRequire:
-  Enabled: true
-
-Style/RedundantRegexpCharacterClass:
-  Enabled: true
-
-Style/RedundantRegexpEscape:
-  Enabled: true
-
-Style/SingleArgumentDig:
-  Enabled: true
-
-Style/SlicingWithRange:
-  Enabled: true
-
-Style/StringChars:
-  Enabled: true
-
-Style/StringConcatenation:
-  Enabled: true

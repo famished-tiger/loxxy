@@ -47,7 +47,7 @@ module Loxxy
       # Create a new AST builder instance.
       # @param theTokens [Array<Rley::Lexical::Token>] The sequence of input tokens.
       def initialize(theTokens)
-        super(theTokens)
+        super
         @strict = false
       end
 

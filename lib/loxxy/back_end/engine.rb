@@ -446,6 +446,7 @@ module Loxxy
         add_native_fun('print_error', native_print_error)
       end
 
+      # rubocop: disable Lint/UselessConstantScoping
       NativeFunction = Struct.new(:callable, :interp) do
         def accept(_visitor)
           interp.expr_stack.push self
@@ -459,6 +460,7 @@ module Loxxy
           '<native fn>'
         end
       end
+      # rubocop: enable Lint/UselessConstantScoping
 
       def add_native_fun(aName, aProc)
         native_fun = Variable.new(aName, NativeFunction.new(aProc, self))

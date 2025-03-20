@@ -2,7 +2,7 @@
 
 require 'rspec' # Use the RSpec framework
 require 'loxxy'
-require_relative './support/lox_file_tester'
+require_relative 'support/lox_file_tester'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

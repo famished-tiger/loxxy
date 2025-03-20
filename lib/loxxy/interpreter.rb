@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative './front_end/parser'
-require_relative './ast/ast_visitor'
-require_relative './back_end/engine'
+require_relative 'front_end/parser'
+require_relative 'ast/ast_visitor'
+require_relative 'back_end/engine'
 
 module Loxxy
   # A Lox tree-walking interpreter.
