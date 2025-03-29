@@ -49,7 +49,7 @@ module Loxxy
       # Returns a string with a human-readable representation of the object.
       # @return [String]
       def inspect
-        +"#<#{self.class}:#{object_id.to_s(16)}>"
+        "#<#{self.class}:#{object_id.to_s(16)}>"
       end
 
       private

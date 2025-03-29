@@ -1,5 +1,9 @@
 ## [0.4.10] - 2025-0x-xx
-- Tested with Rley 0.9.02 and Rubocop 1.74
+- Tested with Rley 0.9.02 and Rubocop 1.75.1
+
+### Changed
+- spec files: test refactoring to please `rubocop-spec` plugin
+
 
 ## [0.4.09] - 2025-01-16
 - Tested with MRI Ruby 3.4.1.

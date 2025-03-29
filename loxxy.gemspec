@@ -42,7 +42,8 @@ Gem::Specification.new do |spec|
   spec.description   = <<-DESCR_END
   A Ruby implementation of the Lox programming language. Lox is a dynamically typed,
   object-oriented programming language that features first-class functions, closures,
-  classes, and inheritance.
+  classes, and inheritance. The interpreter passes all unit tests from the original Java implementation.
+  It is also able to run `LoxLox` a Lox interpreter written in Lox itself.
   DESCR_END
   spec.homepage      = 'https://github.com/famished-tiger/loxxy'
   spec.license       = 'MIT'
@@ -57,7 +58,7 @@ Gem::Specification.new do |spec|
   PkgExtending.pkg_documentation(spec)
 
   # Runtime dependencies
-  spec.add_dependency 'rley', '0.9', '>= 0.9.02'
+  spec.add_dependency 'rley', '~> 0.9', '>= 0.9.02'
 
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 2.4', '>= 2.4.1'

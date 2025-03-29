@@ -194,18 +194,27 @@ Style/TernaryParentheses:
 Style/UnlessElse:
   Enabled: false
 
+## Optional rubocop-rspec plugin rule checking
 #RSpec/ContextWording:
+#  Enabled: false
+#
+#RSpec/DescribeClass:
 #  Enabled: false
 #
 #RSpec/ExampleLength:
 #  Max: 40
 #
 #RSpec/MultipleExpectations:
-#  Max: 15
+#  Max: 25
 #
 #RSpec/NoExpectationExample:
 #  Enabled: false
 #
 #RSpec/RepeatedDescription:
 #  Enabled: false
-
+#
+#RSpec/RepeatedExample:
+#  Enabled: false
+#
+#RSpec/RepeatedExampleGroupDescription:
+#  Enabled: false

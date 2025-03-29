@@ -8,22 +8,23 @@ require_relative '../../lib/loxxy/datatype/boolean'
 module Loxxy
   module Datatype
     describe Boolean do
-      let(:thruth_value) { false }
-      subject { Boolean.new(thruth_value) }
+      let(:truth_value) { false }
+
+      subject(:a_boolean) { described_class.new(truth_value) }
 
       context 'Initialization:' do
-        it 'should accept a boolean value at initialization' do
-          expect { Boolean.new(thruth_value) }.not_to raise_error
+        it 'accepts a boolean value at initialization' do
+          expect { described_class.new(truth_value) }.not_to raise_error
         end
 
-        it 'should know its value' do
-          expect(subject.value).to eq(thruth_value)
+        it 'knows its value' do
+          expect(a_boolean.value).to eq(truth_value)
         end
       end
 
       context 'Provided services:' do
-        it 'should give its display representation' do
-          expect(subject.to_str).to eq('false')
+        it 'gives its display representation' do
+          expect(a_boolean.to_str).to eq('false')
         end
       end
     end # describe

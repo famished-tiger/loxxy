@@ -23,26 +23,27 @@ module Loxxy
       end
 
       let(:sample_text) { 'print "Hello, world";' }
-      subject { Scanner.new }
+
+      subject(:scanner) { described_class.new }
 
       context 'Initialization:' do
         it 'could be initialized with a text to tokenize or...' do
-          expect { Scanner.new(sample_text) }.not_to raise_error
+          expect { described_class.new(sample_text) }.not_to raise_error
         end
 
         it 'could be initialized without argument...' do
-          expect { Scanner.new }.not_to raise_error
+          expect { described_class.new }.not_to raise_error
         end
 
-        it 'should have its scanner initialized' do
-          expect(subject.scanner).to be_kind_of(StringScanner)
+        it 'has its scanner initialized' do
+          expect(scanner.scanner).to be_a(StringScanner)
         end
       end # context
 
       context 'Input tokenization:' do
-        it 'should recognize single special character token' do
+        it 'recognizes single special character token' do
           input = '(){},.-+;*/'
-          subject.start_with(input)
+          scanner.start_with(input)
           expectations = [
             # [token lexeme]
             %w[LEFT_PAREN (],
@@ -57,12 +58,12 @@ module Loxxy
             %w[STAR *],
             %w[SLASH /]
           ]
-          match_expectations(subject, expectations)
+          match_expectations(scanner, expectations)
         end
 
-        it 'should recognize one or two special character tokens' do
+        it 'recognizes one or two special character tokens' do
           input = '! != = == > >= < <='
-          subject.start_with(input)
+          scanner.start_with(input)
           expectations = [
             # [token lexeme]
             %w[BANG !],
@@ -74,15 +75,15 @@ module Loxxy
             %w[LESS <],
             %w[LESS_EQUAL <=]
           ]
-          match_expectations(subject, expectations)
+          match_expectations(scanner, expectations)
         end
 
-        it 'should recognize non-datatype keywords' do
+        it 'recognizes non-datatype keywords' do
           keywords = <<-LOX_END
             and class else fun for if or
             print return super this var while
 LOX_END
-          subject.start_with(keywords)
+          scanner.start_with(keywords)
           expectations = [
             # [token lexeme]
             %w[AND and],
@@ -99,30 +100,30 @@ LOX_END
             %w[VAR var],
             %w[WHILE while]
           ]
-          match_expectations(subject, expectations)
+          match_expectations(scanner, expectations)
         end
 
-        it 'should recognize a false boolean token' do
-          subject.start_with('false')
-          token_false = subject.tokens[0]
-          expect(token_false).to be_kind_of(Rley::Lexical::Literal)
+        it 'recognizes a false boolean token' do
+          scanner.start_with('false')
+          token_false = scanner.tokens[0]
+          expect(token_false).to be_a(Rley::Lexical::Literal)
           expect(token_false.terminal).to eq('FALSE')
           expect(token_false.lexeme).to eq('false')
-          expect(token_false.value).to be_kind_of(Datatype::False)
+          expect(token_false.value).to be_a(Datatype::False)
           expect(token_false.value.value).to be_falsy
         end
 
-        it 'should recognize a true boolean token' do
-          subject.start_with('true')
-          token_true = subject.tokens[0]
-          expect(token_true).to be_kind_of(Rley::Lexical::Literal)
+        it 'recognizes a true boolean token' do
+          scanner.start_with('true')
+          token_true = scanner.tokens[0]
+          expect(token_true).to be_a(Rley::Lexical::Literal)
           expect(token_true.terminal).to eq('TRUE')
           expect(token_true.lexeme).to eq('true')
-          expect(token_true.value).to be_kind_of(Datatype::True)
+          expect(token_true.value).to be_a(Datatype::True)
           expect(token_true.value.value).to be_truthy
         end
 
-        it 'should recognize number values' do
+        it 'recognizes number values' do
           input = <<-LOX_END
             123     987654
             0       123.456
@@ -135,18 +136,18 @@ LOX_END
             ['123.456', 123.456]
           ]
 
-          subject.start_with(input)
-          subject.tokens[0..-2].each_with_index do |tok, i|
-            expect(tok).to be_kind_of(Rley::Lexical::Literal)
+          scanner.start_with(input)
+          scanner.tokens[0..-2].each_with_index do |tok, i|
+            expect(tok).to be_a(Rley::Lexical::Literal)
             expect(tok.terminal).to eq('NUMBER')
             (lexeme, val) = expectations[i]
             expect(tok.lexeme).to eq(lexeme)
-            expect(tok.value).to be_kind_of(Datatype::Number)
+            expect(tok.value).to be_a(Datatype::Number)
             expect(tok.value.value).to eq(val)
           end
         end
 
-        it 'should recognize negative number values' do
+        it 'recognizes negative number values' do
           input = <<-LOX_END
             -0
             -0.001
@@ -157,8 +158,8 @@ LOX_END
             ['-', '0.001']
           ].flatten
 
-          subject.start_with(input)
-          tokens = subject.tokens
+          scanner.start_with(input)
+          tokens = scanner.tokens
           tokens.pop
           i = 0
           tokens.each_slice(2) do |(sign, lit)|
@@ -170,24 +171,24 @@ LOX_END
           end
         end
 
-        it 'should recognize leading and trailing dots as distinct tokens' do
+        it 'recognizes leading and trailing dots as distinct tokens' do
           input = '.456 123.'
 
-          subject.start_with(input)
-          tokens = subject.tokens[0..-2]
-          expect(tokens[0]).to be_kind_of(Rley::Lexical::Token)
+          scanner.start_with(input)
+          tokens = scanner.tokens[0..-2]
+          expect(tokens[0]).to be_a(Rley::Lexical::Token)
           expect(tokens[0].terminal).to eq('DOT')
-          expect(tokens[1]).to be_kind_of(Rley::Lexical::Literal)
+          expect(tokens[1]).to be_a(Rley::Lexical::Literal)
           expect(tokens[1].terminal).to eq('NUMBER')
           expect(tokens[1].value.value).to eq(456)
-          expect(tokens[2]).to be_kind_of(Rley::Lexical::Literal)
+          expect(tokens[2]).to be_a(Rley::Lexical::Literal)
           expect(tokens[2].terminal).to eq('NUMBER')
           expect(tokens[2].value.value).to eq(123)
-          expect(tokens[3]).to be_kind_of(Rley::Lexical::Token)
+          expect(tokens[3]).to be_a(Rley::Lexical::Token)
           expect(tokens[3].terminal).to eq('DOT')
         end
 
-        it 'should recognize string values' do
+        it 'recognizes string values' do
           input = <<-LOX_END
           ""
           "string"
@@ -200,85 +201,85 @@ LOX_END
             '123'
           ]
 
-          subject.start_with(input)
-          subject.tokens[0..-2].each_with_index do |str, i|
-            expect(str).to be_kind_of(Rley::Lexical::Literal)
+          scanner.start_with(input)
+          scanner.tokens[0..-2].each_with_index do |str, i|
+            expect(str).to be_a(Rley::Lexical::Literal)
             expect(str.terminal).to eq('STRING')
             val = expectations[i]
-            expect(str.value).to be_kind_of(Datatype::LXString)
+            expect(str.value).to be_a(Datatype::LXString)
             expect(str.value.value).to eq(val)
           end
         end
 
-        it 'should recognize escaped quotes' do
+        it 'recognizes escaped quotes' do
           embedded_quotes = %q{"she said: \"Hello\""}
-          subject.start_with(embedded_quotes)
-          result = subject.tokens[0]
+          scanner.start_with(embedded_quotes)
+          result = scanner.tokens[0]
           expect(result.value).to eq('she said: "Hello"')
         end
 
-        it 'should recognize escaped backslash' do
+        it 'recognizes escaped backslash' do
           embedded_backslash = '"backslash>\\\\"'
-          subject.start_with(embedded_backslash)
-          result = subject.tokens[0]
+          scanner.start_with(embedded_backslash)
+          result = scanner.tokens[0]
           expect(result.value).to eq('backslash>\\')
         end
 
         # rubocop: disable Style/StringConcatenation
-        it 'should recognize newline escape sequence' do
+        it 'recognizes newline escape sequence' do
           embedded_newline = '"line1\\nline2"'
-          subject.start_with(embedded_newline)
-          result = subject.tokens[0]
+          scanner.start_with(embedded_newline)
+          result = scanner.tokens[0]
           expect(result.value).to eq('line1' + "\n" + 'line2')
         end
         # rubocop: enable Style/StringConcatenation
 
-        it 'should recognize a nil token' do
-          subject.start_with('nil')
-          token_nil = subject.tokens[0]
-          expect(token_nil).to be_kind_of(Rley::Lexical::Literal)
+        it 'recognizes a nil token' do
+          scanner.start_with('nil')
+          token_nil = scanner.tokens[0]
+          expect(token_nil).to be_a(Rley::Lexical::Literal)
           expect(token_nil.terminal).to eq('NIL')
           expect(token_nil.lexeme).to eq('nil')
-          expect(token_nil.value).to be_kind_of(Datatype::Nil)
+          expect(token_nil.value).to be_a(Datatype::Nil)
         end
 
-        it 'should differentiate nil from variable spelled same' do
-          subject.start_with('Nil')
-          similar = subject.tokens[0]
+        it 'differentiates nil from variable spelled same' do
+          scanner.start_with('Nil')
+          similar = scanner.tokens[0]
           expect(similar.terminal).to eq('IDENTIFIER')
           expect(similar.lexeme).to eq('Nil')
         end
       end # context
 
       context 'Handling comments:' do
-        it 'should cope with one line comment only' do
-          subject.start_with('// comment')
+        it 'copes with one line comment only' do
+          scanner.start_with('// comment')
 
           # No token found, except eof marker
-          eof_token = subject.tokens[0]
+          eof_token = scanner.tokens[0]
           expect(eof_token.terminal).to eq('EOF')
         end
 
         # rubocop: disable Lint/PercentStringArray
-        it 'should skip end of line comments' do
+        it 'skips end of line comments' do
           input = <<-LOX_END
             // first comment
             print "ok"; // second comment
             // third comment
 LOX_END
-          subject.start_with(input)
+          scanner.start_with(input)
           expectations = [
             # [token lexeme]
             %w[PRINT print],
             %w[STRING "ok"],
             %w[SEMICOLON ;]
           ]
-          match_expectations(subject, expectations)
+          match_expectations(scanner, expectations)
         end
         # rubocop: enable Lint/PercentStringArray
 
-        it 'should cope with single slash (divide) expression' do
-          subject.start_with('8 / 2')
+        it 'copes with single slash (divide) expression' do
+          scanner.start_with('8 / 2')
 
           expectations = [
             # [token lexeme]
@@ -286,21 +287,21 @@ LOX_END
             %w[SLASH /],
             %w[NUMBER 2]
           ]
-          match_expectations(subject, expectations)
+          match_expectations(scanner, expectations)
         end
 
-        it 'should complain if it finds an unterminated string' do
-          subject.start_with('var a = "Unfinished;')
+        it 'complains if it finds an unterminated string' do
+          scanner.start_with('var a = "Unfinished;')
           err = Loxxy::ScanError
           err_msg = 'Error: [line 1:9]: Unterminated string.'
-          expect { subject.tokens }.to raise_error(err, err_msg)
+          expect { scanner.tokens }.to raise_error(err, err_msg)
         end
 
-        it 'should complain if it finds an unexpected character' do
-          subject.start_with('var a = ?1?;')
+        it 'complains if it finds an unexpected character' do
+          scanner.start_with('var a = ?1?;')
           err = Loxxy::ScanError
           err_msg = 'Error: [line 1:9]: Unexpected character.'
-          expect { subject.tokens }.to raise_error(err, err_msg)
+          expect { scanner.tokens }.to raise_error(err, err_msg)
         end
       end # context
     end # describe

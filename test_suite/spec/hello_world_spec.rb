@@ -6,7 +6,8 @@ require 'stringio'
 
 describe 'Loxxy::Interpreter' do
   let(:output) { StringIO.new }
-  it 'should execute the hello world program' do
+
+  it 'runs the hello world program' do
     lox = Loxxy::Interpreter.new(ostream: output)
     program = <<-LOX_END
     // Your first Lox program

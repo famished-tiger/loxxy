@@ -8,17 +8,17 @@ require_relative '../../lib/loxxy/datatype/boolean'
 module Loxxy
   module Datatype
     describe Nil do
-      subject { Nil.instance }
+      subject(:nil_literal) { described_class.instance }
 
       context 'Initialization:' do
-        it 'should know its value' do
-          expect(subject.value).to be_nil
+        it 'knows its value' do
+          expect(nil_literal.value).to be_nil
         end
       end
 
       context 'Provided services:' do
-        it 'should give its display representation' do
-          expect(subject.to_str).to eq('nil')
+        it 'gives its display representation' do
+          expect(nil_literal.to_str).to eq('nil')
         end
       end
     end # describe

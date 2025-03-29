@@ -9,53 +9,54 @@ module Loxxy
   module Datatype
     describe LXString do
       let(:sample_text) { 'some_text' }
-      subject { LXString.new(sample_text) }
+
+      subject(:a_string) { described_class.new(sample_text) }
 
       context 'Initialization:' do
-        it 'should accept a String value at initialization' do
-          expect { LXString.new(sample_text) }.not_to raise_error
+        it 'accepts a String value at initialization' do
+          expect { described_class.new(sample_text) }.not_to raise_error
         end
 
-        it 'should know its value' do
-          expect(subject.value).to eq(sample_text)
+        it 'knows its value' do
+          expect(a_string.value).to eq(sample_text)
         end
       end
 
       context 'Provided services:' do
-        it 'should give its display representation' do
-          expect(subject.to_str).to eq(sample_text)
+        it 'gives its display representation' do
+          expect(a_string.to_str).to eq(sample_text)
         end
 
         # rubocop: disable Lint/BinaryOperatorWithIdenticalOperands
         it 'compares with another Lox string' do
-          result = subject == LXString.new(sample_text.dup)
+          result = a_string == described_class.new(sample_text.dup)
           expect(result).to be_true
 
-          result = subject == LXString.new('other-text')
+          result = a_string == described_class.new('other-text')
           expect(result).to be_false
 
-          result = subject == LXString.new('')
+          result = a_string == described_class.new('')
           expect(result).to be_false
 
           # Two empty strings are equal
-          result = LXString.new('') == LXString.new('')
+          result = described_class.new('') == described_class.new('')
           expect(result).to be_true
         end
         # rubocop: enable Lint/BinaryOperatorWithIdenticalOperands
 
         it 'compares with a Ruby string' do
-          result = subject == sample_text.dup
+          result = a_string == sample_text.dup
           expect(result).to be_true
 
-          result = subject == 'other-text'
+          result = a_string == 'other-text'
           expect(result).to be_false
 
-          result = subject == ''
+          result = a_string == ''
           expect(result).to be_false
         end
 
         it 'performs the concatenation with another string' do
-          concatenation = LXString.new('str') + LXString.new('ing')
+          concatenation = described_class.new('str') + described_class.new('ing')
           expect(concatenation == 'string').to be_true
         end
       end

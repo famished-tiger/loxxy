@@ -10,8 +10,9 @@ module Loxxy
     describe Environment do
       let(:foo) { Datatype::LXString.new('foo') }
       let(:bar) { Datatype::LXString.new('bar') }
-      let(:mother) { Environment.new }
-      subject { Environment.new(mother) }
+      let(:mother) { described_class.new }
+
+      subject(:an_environ) { described_class.new(mother) }
 
       # Shortand factory method.
       def var(aName, aValue)
@@ -20,38 +21,38 @@ module Loxxy
 
       context 'Initialization:' do
         it 'could be initialized without argument' do
-          expect { Environment.new }.not_to raise_error
+          expect { described_class.new }.not_to raise_error
         end
 
         it 'could be initialized with a parent environment' do
-          expect { Environment.new(mother) }.not_to raise_error
+          expect { described_class.new(mother) }.not_to raise_error
         end
 
-        it "shouldn't have definitions by default" do
-          expect(subject.defns).to be_empty
+        it "doesn't have definitions by default" do
+          expect(an_environ.defns).to be_empty
         end
 
-        it 'should know its parent (if any)' do
-          expect(subject.enclosing).to eq(mother)
+        it 'knows its parent (if any)' do
+          expect(an_environ.enclosing).to eq(mother)
         end
       end # context
 
       context 'Provided services:' do
-        it 'should accept the addition of a variable' do
-          subject.insert(var('a', foo))
-          expect(subject.defns).not_to be_empty
-          var_a = subject.defns['a']
-          expect(var_a).to be_kind_of(Variable)
+        it 'accepts the addition of a variable' do
+          an_environ.insert(var('a', foo))
+          expect(an_environ.defns).not_to be_empty
+          var_a = an_environ.defns['a']
+          expect(var_a).to be_a(Variable)
           expect(var_a.name).to eq('a')
         end
 
-        it 'should accept the addition of multiple variables' do
-          subject.insert(var('a', foo))
-          expect(subject.defns).not_to be_empty
+        it 'accepts the addition of multiple variables' do
+          an_environ.insert(var('a', foo))
+          expect(an_environ.defns).not_to be_empty
 
-          subject.insert(var('b', bar))
-          var_b = subject.defns['b']
-          expect(var_b).to be_kind_of(Variable)
+          an_environ.insert(var('b', bar))
+          var_b = an_environ.defns['b']
+          expect(var_b).to be_a(Variable)
           expect(var_b.name).to eq('b')
         end
       end # context
